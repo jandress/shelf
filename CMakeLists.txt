@@ -1,9 +1,9 @@
-cmake_minimum_required(VERSION 2.8.11)
+cmake_minimum_required(VERSION 3.5)
 
 # Options
-option(test "Build all tests." ON)
+option(test "Build all tests." OFF)
 option(debug "Build with debug flags." OFF)
-option(qt "Build with QT GUI." OFF)
+option(qt "Build with QT GUI." ON)
 option(windows "Enabled windows build." OFF)
 
 #define project
@@ -52,6 +52,10 @@ find_package(Boost 1.46 COMPONENTS program_options iostreams system filesystem r
 # includes
 include_directories(SYSTEM ${Boost_INCLUDE_DIR})
 include_directories(SYSTEM lib/hash-lib)
+include_directories(${Qt5Core_INCLUDE_DIRS})
+include_directories(${Qt5Widgets_INCLUDE_DIRS})
+include_directories(${Qt5Gui_INCLUDE_DIRS})
+
 
 # preprocessor definitions
 if (test)
@@ -81,7 +85,11 @@ if (qt)
             set(CMAKE_PREFIX_PATH "~/Qt/5.2.0/gcc_64")
         endif()
     endif()
-    find_package(Qt5 COMPONENTS Widgets REQUIRED)
+    #find_package(Qt5 COMPONENTS Widgets REQUIRED)
+    find_package(Qt5Core REQUIRED)
+    find_package(Qt5Widgets REQUIRED)
+    find_package(Qt5Gui REQUIRED)
+
 
     # let QT generate files
     qt5_wrap_ui(UI_HEADERS src/ui/mainwindow.ui src/ui/about.ui)
@@ -158,9 +166,12 @@ endif()
 
 # linking comp / libs
 target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
-if (qt)
-    qt5_use_modules(${PROJECT_NAME} Widgets)
-endif()
+#target_link_libraries(${PROJECT_NAME} Qt5::Widgets)
+target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Widgets Qt5::Gui)
+
+#if (qt)
+#    qt5_use_modules(${PROJECT_NAME} Widgets)
+#endif()
 
 ####
 # Testing silliness

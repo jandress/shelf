@@ -1,0 +1,11 @@
+/home/jandress/Downloads/shelf/build/CMakeFiles/elfparser.dir
+/home/jandress/Downloads/shelf/build/CMakeFiles/package.dir
+/home/jandress/Downloads/shelf/build/CMakeFiles/package_source.dir
+/home/jandress/Downloads/shelf/build/CMakeFiles/edit_cache.dir
+/home/jandress/Downloads/shelf/build/CMakeFiles/rebuild_cache.dir
+/home/jandress/Downloads/shelf/build/CMakeFiles/list_install_components.dir
+/home/jandress/Downloads/shelf/build/CMakeFiles/install.dir
+/home/jandress/Downloads/shelf/build/CMakeFiles/install/local.dir
+/home/jandress/Downloads/shelf/build/CMakeFiles/install/strip.dir
+/home/jandress/Downloads/shelf/build/CMakeFiles/elfparser_autogen_timestamp_deps.dir
+/home/jandress/Downloads/shelf/build/CMakeFiles/elfparser_autogen.dir

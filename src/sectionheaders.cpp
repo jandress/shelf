@@ -76,6 +76,7 @@ void SectionHeaders::extractSegments(AbstractSegments& p_segments)
 void SectionHeaders::evaluate(std::vector<std::pair<boost::int32_t, std::string> >& p_reasons,
                               std::map<elf::Capabilties, std::set<std::string> >& p_capabilities) const
 {
+    (void)p_capabilities; //appears to be unused 
     if (m_sectionHeaders.empty())
     {
         p_reasons.push_back(std::make_pair(10, std::string("Sections have been stripped or obfuscated")));
