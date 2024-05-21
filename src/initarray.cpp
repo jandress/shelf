@@ -26,7 +26,6 @@ void InitArray::set(const char* p_data, boost::uint32_t p_size,
                     boost::uint32_t p_offset, boost::uint32_t p_entries,
                     bool is64, bool isLE)
 {
-    (void)p_size; //appears to be unused
     const char* offset = p_data + p_offset;
     const char* end = p_data + p_offset;
     m_offset = p_offset;

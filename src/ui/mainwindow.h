@@ -14,8 +14,6 @@ class ELFParser;
 class QTableWidgetItem;
 class QTreeWidgetItem;
 
-class QAction;
-
 class MainWindow : public QMainWindow
 {
     Q_OBJECT

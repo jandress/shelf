@@ -97,6 +97,7 @@
       </item>
      </layout>
      <zorder>imageLabel</zorder>
+     <zorder>verticalSpacer</zorder>
      <zorder>closeButton</zorder>
     </widget>
    </item>

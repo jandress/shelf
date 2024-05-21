@@ -31,10 +31,10 @@ void SearchTree::addWord(const unsigned char* p_input,
     doAddWord(&m_rootNode, p_input, p_length, p_storeData);
 }
 
-std::set<void*> SearchTree::search(const char* p_inputString,
-                                          std::size_t p_inputLength)
+std::set<void*> SearchTree::search(const char* const p_inputString,
+                                          const std::size_t p_inputLength)
 {
-    return search(reinterpret_cast<const unsigned char* >(p_inputString),
+    return search(reinterpret_cast<const unsigned char* const>(p_inputString),
                   p_inputLength);
 }
 
@@ -67,10 +67,10 @@ void SearchTree::compile()
     std::queue<SearchNode*> nodesByLevel;
     for (std::size_t i = 0; i < m_rootNode.getNextSize(); ++i)
     {
-        SearchNode* next = m_rootNode.getNext(static_cast<unsigned char>(i));
+        SearchNode* next = m_rootNode.getNext(static_cast<const unsigned char>(i));
         if (!next)
         {
-            m_rootNode.setNext(static_cast<unsigned char>(i), &m_rootNode);
+            m_rootNode.setNext(static_cast<const unsigned char>(i), &m_rootNode);
         }
         else
         {
@@ -85,13 +85,13 @@ void SearchTree::compile()
         SearchNode* currentNode = nodesByLevel.front();
         for (std::size_t i = 0; i < currentNode->getNextSize(); ++i)
         {
-            SearchNode* next = currentNode->getNext(static_cast<unsigned char>(i));
+            SearchNode* next = currentNode->getNext(static_cast<const unsigned char>(i));
             if (next)
             {
                 nodesByLevel.push(next);
                 next->setFailure(
                     currentNode->getFailure()->getNext(
-                        static_cast<unsigned char>(i)));
+                        static_cast<const unsigned char>(i)));
                 if (!next->getFailure()->getStoredData().empty())
                 {
                     next->addReturnValues(next->getFailure()->getStoredData());
@@ -99,9 +99,9 @@ void SearchTree::compile()
             }
             else
             {
-                currentNode->setNext(static_cast<unsigned char>(i),
+                currentNode->setNext(static_cast<const unsigned char>(i),
                                      currentNode->getFailure()->getNext(
-                                         static_cast<unsigned char>(i)));
+                                         static_cast<const unsigned char>(i)));
             }
         }
         nodesByLevel.pop();

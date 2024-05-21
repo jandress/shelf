@@ -108,7 +108,6 @@ void Symbols::createSymbols(const char* p_data,
                             const AbstractSegments& p_segments,
                             bool p_is64, bool p_isLE, bool p_isDY)
 {
-    (void)p_segments; //appears to be unused
     m_isDY = p_isDY;
     if (p_symTabOffset == 0 || p_strTabOffset == 0 || p_symTabSize == 0)
     {
@@ -210,7 +209,6 @@ std::string Symbols::findSymbol(boost::uint64_t p_address) const
 void Symbols::evaluate(std::vector<std::pair<boost::int32_t, std::string> >& p_reasons,
                        std::map<elf::Capabilties, std::set<std::string> >& p_capabilities) const
 {
-    (void)p_reasons; //appears to be unused
     boost::uint32_t noType = 0;
     BOOST_FOREACH(const AbstractSymbol& entry, m_symbols)
     {
