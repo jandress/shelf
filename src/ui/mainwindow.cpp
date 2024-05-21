@@ -11,6 +11,8 @@
 #include <QFileDialog>
 #include <QProgressDialog>
 #include <QClipboard>
+#include <QAction>
+#include <QKeySequence>
 
 #include <iostream>
 #include <boost/foreach.hpp>
@@ -31,7 +33,8 @@ MainWindow::MainWindow(QWidget *parent) :
     // create the copy action and apply signals as needed
     m_copyAction.reset(new QAction(tr("Copy"), this));
     m_copyAction->setShortcut(QKeySequence::Copy);
-    connect(m_copyAction.get(), SIGNAL(triggered()), this, SLOT(overviewToClipboard()));
+    //connect(m_copyAction.get(), SIGNAL(triggered()), this, SLOT(overviewToClipboard()));
+    connect(m_copyAction.get(), &QAction::triggered, this, &MainWindow::overviewToClipboard);
 
     // attach copy to widget
     m_ui->overviewTable->addAction(m_copyAction.get());
@@ -366,6 +369,8 @@ void MainWindow::overviewToClipboard()
 
 void MainWindow::sectionSelected(QTableWidgetItem* p_first, QTableWidgetItem* p_second)
 {
+    Q_UNUSED(p_first);
+    Q_UNUSED(p_second);
     QTableWidgetItem* selected = m_ui->sectionsTable->item(p_first->row(), 5);
     std::string details(m_parser->getSegments().printSegment(boost::lexical_cast<boost::uint64_t>(selected->text().toStdString())));
     m_ui->sectionInfo->setPlainText(QString(details.c_str()));
@@ -373,6 +378,8 @@ void MainWindow::sectionSelected(QTableWidgetItem* p_first, QTableWidgetItem* p_
 
 void MainWindow::programSelected(QTableWidgetItem* p_first, QTableWidgetItem* p_second)
 {
+    Q_UNUSED(p_first);
+    Q_UNUSED(p_second);
     QTableWidgetItem* selected = m_ui->programsTable->item(p_first->row(), 1);
     std::string details(m_parser->getSegments().printSegment(boost::lexical_cast<boost::uint64_t>(selected->text().toStdString())));
     m_ui->programsInfo->setPlainText(QString(details.c_str()));

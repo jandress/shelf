@@ -13,7 +13,7 @@
 
 namespace
 {
-    bool parseCommandLine(int p_argCount, char* p_argArray[],
+    [[maybe_unused]] bool parseCommandLine(int p_argCount, char* p_argArray[],
                           std::string& p_file, std::string& p_directory,
                           bool& p_print, bool& p_printReasons, bool& p_capabilities)
     {
@@ -89,7 +89,7 @@ namespace
      * \param[in] p_printCapabilities print extra knowledge about the binary
      * \param[in] p_printELF print the various data structures we parse
      */
-    void do_parsing(const std::string& p_fileName, bool p_printReasons,
+    [[maybe_unused]] void do_parsing(const std::string& p_fileName, bool p_printReasons,
                     bool p_printCapabilities, bool p_printELF)
     {
         ELFParser parser;
