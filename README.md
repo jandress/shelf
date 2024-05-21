@@ -9,14 +9,13 @@ www.elfparser.com
 ELF Parser can be compiled on Windows, OS X, or Linux (demangling and unit tests don't work on Windows). Windows uses the VS 2010 project in the base directory for compilation whereas Linux/OS X uses CMake. Compiling on Linux goes like this:
 
 ```
+sudo apt-get install build-essential cmake libboost-all-dev qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools libbz2-dev liblzma-dev libzstd-dev
 cd ~/elfparser
 mkdir build
 cd build/
 cmake ..
 make
 ```
-Obviously, you will need to resolve any dependencies. Specifically, Boost is required and Qt is required for the GUI build.
-
 ## Compile Targets
 ELF Parser has a number of compilation targets that can be configured by CMakeLists.txt. The targets are:
 * Unit tests

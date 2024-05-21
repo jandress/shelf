@@ -127,6 +127,8 @@ void DynamicSection::doDynamic64(const elf::dynamic::dynamic_64* p_dynamic,
                                  const char* p_start, const char* p_end,
                                  boost::uint64_t p_baseAddress, bool p_isLE)
 {
+    (void)p_start; //appears to be unused
+    (void)p_baseAddress; //appears to be unused
     for ( ; reinterpret_cast<const char*>(p_dynamic) < p_end; ++p_dynamic)
     {
         boost::uint64_t tag = p_isLE ? p_dynamic->m_tag : htobe64(p_dynamic->m_tag);
@@ -144,6 +146,8 @@ void DynamicSection::doDynamic32 (const elf::dynamic::dynamic_32* p_dynamic,
                                   const char* p_start, const char* p_end,
                                   boost::uint64_t p_baseAddress, bool p_isLE)
 {
+    (void)p_start; //appears to be unused
+    (void)p_baseAddress; //appears to be unused
     for ( ; reinterpret_cast<const char*>(p_dynamic) < p_end; ++p_dynamic)
     {
         boost::uint32_t tag = p_isLE ? p_dynamic->m_tag : ntohl(p_dynamic->m_tag);
@@ -190,6 +194,7 @@ boost::uint32_t DynamicSection::getInitArrayEntries() const
 void DynamicSection::evaluate(std::vector<std::pair<boost::int32_t, std::string> >& p_reasons,
                               std::map<elf::Capabilties, std::set<std::string> >& p_capabilities) const
 {
+    (void)p_capabilities; //appears to be unused
     std::set<std::string> needed;
     BOOST_FOREACH(const AbstractDynamicEntry& entry, m_entries)
     {
