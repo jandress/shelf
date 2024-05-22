@@ -2,18 +2,24 @@
 ## What problem are you trying to solve?
 I was looking for ELF based malware on https://malwr.com and couldn't help but notice how little analysis gets done on them. More surprising, to me, is that even well known malware like Kaiten gets flagged by very few AV (https://malwr.com/analysis/NThiZTU0MWUwZGI2NDAzYWI5YWU2ZjkzNTJmYTNjZTY/). ELF Parser attempts to move ELF malware analysis forward by quickly providing basic information and static analysis of the binary. The end goal of ELF Parser is to indicate to the analyst if it thinks the binary is malicious / dangerous and if so why.
 
-## Website
-www.elfparser.com
-
 ## How do I compile it?
-ELF Parser can be compiled on Windows, OS X, or Linux (demangling and unit tests don't work on Windows). Windows uses the VS 2010 project in the base directory for compilation whereas Linux/OS X uses CMake. Compiling on Linux goes like this:
+ELF Parser can be compiled on Windows, OS X, or Linux (demangling and unit tests don't work on Windows). Windows uses the VS 2010 project in the base directory for compilation whereas Linux/OS X uses CMake. 
+
+Compiling the GUI version on Linux goes like this:
 
 ```
 sudo apt-get install build-essential cmake libboost-all-dev qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools libbz2-dev liblzma-dev libzstd-dev
-cd ~/elfparser
+
+git clone https://github.com/jandress/shelf.git
+
+cd ~/shelf
+
 mkdir build
+
 cd build/
-cmake ..
+
+cmake -Dqt=ON ..
+
 make
 ```
 ## Compile Targets
@@ -21,7 +27,7 @@ ELF Parser has a number of compilation targets that can be configured by CMakeLi
 * Unit tests
 * CLI build
 * GUI build
-* Visual Studios build
+* Windows build
 
 ## CLI Usage
 The user can pass in a single file (-f) or a directory (-d) of files:
