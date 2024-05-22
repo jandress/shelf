@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.5)
 # Options
 option(test "Build all tests." OFF)
 option(debug "Build with debug flags." OFF)
-option(qt "Build with QT GUI." ON)
+option(qt "Build with QT GUI." OFF)
 option(windows "Enabled windows build." OFF)
 
 #define project
@@ -11,6 +11,19 @@ if (qt)
     project(elfparser CXX)
 else()
     project(elfparser-cli CXX)
+endif()
+
+# Check if all options are OFF and print usage
+if(NOT test AND NOT debug AND NOT qt AND NOT windows)
+    message("
+Usage: cmake [options] ..
+Options:
+  -Dtest=ON      # Build all tests.
+  -Ddebug=ON     # Build with debug flags.
+  -Dqt=ON        # Build with QT GUI.
+  -Dwindows=ON   # Enable windows build.
+You can specify one or more options.")
+    message(FATAL_ERROR "No options specified.")
 endif()
 
 # project variables
