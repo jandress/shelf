@@ -1,11 +1,17 @@
 # ELF Parser
-## What problem are you trying to solve?
-I was looking for ELF based malware on https://malwr.com and couldn't help but notice how little analysis gets done on them. More surprising, to me, is that even well known malware like Kaiten gets flagged by very few AV (https://malwr.com/analysis/NThiZTU0MWUwZGI2NDAzYWI5YWU2ZjkzNTJmYTNjZTY/). ELF Parser attempts to move ELF malware analysis forward by quickly providing basic information and static analysis of the binary. The end goal of ELF Parser is to indicate to the analyst if it thinks the binary is malicious / dangerous and if so why.
+This is a fork of the original ELF Parser by Jacob Baines. The current focus is to get it building properly on all of its targets, get the various libraries up to date, and perform miscelaneous housekeeping. 
+
+## Compile Targets
+ELF Parser has a number of compilation targets that can be configured by CMakeLists.txt. The targets are:
+* Unit tests
+* CLI build
+* GUI build
+* Windows build
 
 ## How do I compile it?
 ELF Parser can be compiled on Windows, OS X, or Linux (demangling and unit tests don't work on Windows). Windows uses the VS 2010 project in the base directory for compilation whereas Linux/OS X uses CMake. 
 
-Compiling the GUI version on Linux goes like this:
+Compiling the GUI version on Linux goes like this (currently working on Ubuntu 24.04):
 
 ```
 sudo apt-get install build-essential cmake libboost-all-dev qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools libbz2-dev liblzma-dev libzstd-dev
@@ -22,13 +28,6 @@ cmake -Dqt=ON ..
 
 make
 ```
-## Compile Targets
-ELF Parser has a number of compilation targets that can be configured by CMakeLists.txt. The targets are:
-* Unit tests
-* CLI build
-* GUI build
-* Windows build
-
 ## CLI Usage
 The user can pass in a single file (-f) or a directory (-d) of files:
 ```
@@ -145,12 +144,5 @@ options:
     Dropper
         Embedded ELF binary found at file offset 0xb7730 (751408)
 ```
-
-## Shortcomings
-This tool has a number of shortcomings. From the standpoint of a programmer I'm unhappy with all of the hardcoded values (ie, detection of BillGates, examination of symbols). If anyone has a better design I'm all ears!
-
-## Report Bugs
-Please report any issues, bugs, or feature requests on Github or contact me at admin@elfparser.com. Feel free to submit pull requests or email patches.
-
 ## Source License
 GPLv3. See the LICENSE file.
