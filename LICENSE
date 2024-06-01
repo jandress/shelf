@@ -1,5 +1,8 @@
-ELF Parser
-Copyright (C) 2015  Jacob Baines
+Shelf
+
+Copyright for portions of the code used in Shelf are held by Jacob Baines,
+2015 as part of ELF Parser. All other copyright for Shelf is held by 
+Jason Andress, 2024.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
