@@ -1,6 +1,6 @@
 // //////////////////////////////////////////////////////////
 // sha256.cpp
-// Copyright (c) 2014 Stephan Brumme. All rights reserved.
+// Copyright (c) 2014,2015,2021 Stephan Brumme. All rights reserved.
 // see http://create.stephan-brumme.com/disclaimer.html
 //
 
@@ -8,8 +8,10 @@
 
 // big endian architectures need #define __BYTE_ORDER __BIG_ENDIAN
 #ifndef _MSC_VER
-#include "../../src/endian.h"
+#include <endian.h>
 #endif
+
+//#define SHA2_224_SEED_VECTOR
 
 
 /// same as reset()
@@ -26,6 +28,8 @@ void SHA256::reset()
   m_bufferSize = 0;
 
   // according to RFC 1321
+  // "These words were obtained by taking the first thirty-two bits of the
+  //  fractional parts of the square roots of the first eight prime numbers"
   m_hash[0] = 0x6a09e667;
   m_hash[1] = 0xbb67ae85;
   m_hash[2] = 0x3c6ef372;
@@ -34,6 +38,19 @@ void SHA256::reset()
   m_hash[5] = 0x9b05688c;
   m_hash[6] = 0x1f83d9ab;
   m_hash[7] = 0x5be0cd19;
+
+#ifdef SHA2_224_SEED_VECTOR
+  // if you want SHA2-224 instead then use these seeds
+  // and throw away the last 32 bits of getHash
+  m_hash[0] = 0xc1059ed8;
+  m_hash[1] = 0x367cd507;
+  m_hash[2] = 0x3070dd17;
+  m_hash[3] = 0xf70e5939;
+  m_hash[4] = 0xffc00b31;
+  m_hash[5] = 0x68581511;
+  m_hash[6] = 0x64f98fa7;
+  m_hash[7] = 0xbefa4fa4;
+#endif
 }
 
 
@@ -330,14 +347,14 @@ void SHA256::processBuffer()
     addLength = extra + paddedLength - BlockSize;
 
   // must be big endian
-  *addLength++ = (msgBits >> 56) & 0xFF;
-  *addLength++ = (msgBits >> 48) & 0xFF;
-  *addLength++ = (msgBits >> 40) & 0xFF;
-  *addLength++ = (msgBits >> 32) & 0xFF;
-  *addLength++ = (msgBits >> 24) & 0xFF;
-  *addLength++ = (msgBits >> 16) & 0xFF;
-  *addLength++ = (msgBits >>  8) & 0xFF;
-  *addLength   =  msgBits        & 0xFF;
+  *addLength++ = (unsigned char)((msgBits >> 56) & 0xFF);
+  *addLength++ = (unsigned char)((msgBits >> 48) & 0xFF);
+  *addLength++ = (unsigned char)((msgBits >> 40) & 0xFF);
+  *addLength++ = (unsigned char)((msgBits >> 32) & 0xFF);
+  *addLength++ = (unsigned char)((msgBits >> 24) & 0xFF);
+  *addLength++ = (unsigned char)((msgBits >> 16) & 0xFF);
+  *addLength++ = (unsigned char)((msgBits >>  8) & 0xFF);
+  *addLength   = (unsigned char)( msgBits        & 0xFF);
 
   // process blocks
   processBlock(m_buffer);
@@ -347,12 +364,30 @@ void SHA256::processBuffer()
 }
 
 
-/// return latest hash as 16 hex characters
+/// return latest hash as 64 hex characters
 std::string SHA256::getHash()
 {
-  // convert hash to string
-  static const char dec2hex[16+1] = "0123456789abcdef";
+  // compute hash (as raw bytes)
+  unsigned char rawHash[HashBytes];
+  getHash(rawHash);
 
+  // convert to hex string
+  std::string result;
+  result.reserve(2 * HashBytes);
+  for (int i = 0; i < HashBytes; i++)
+  {
+    static const char dec2hex[16+1] = "0123456789abcdef";
+    result += dec2hex[(rawHash[i] >> 4) & 15];
+    result += dec2hex[ rawHash[i]       & 15];
+  }
+
+  return result;
+}
+
+
+/// return latest hash as bytes
+void SHA256::getHash(unsigned char buffer[SHA256::HashBytes])
+{
   // save old hash if buffer is partially filled
   uint32_t oldHash[HashValues];
   for (int i = 0; i < HashValues; i++)
@@ -361,28 +396,17 @@ std::string SHA256::getHash()
   // process remaining bytes
   processBuffer();
 
-  // create hash string
-  char hashBuffer[HashValues*8+1];
-  size_t offset = 0;
+  unsigned char* current = buffer;
   for (int i = 0; i < HashValues; i++)
   {
-    hashBuffer[offset++] = dec2hex[(m_hash[i] >> 28) & 15];
-    hashBuffer[offset++] = dec2hex[(m_hash[i] >> 24) & 15];
-    hashBuffer[offset++] = dec2hex[(m_hash[i] >> 20) & 15];
-    hashBuffer[offset++] = dec2hex[(m_hash[i] >> 16) & 15];
-    hashBuffer[offset++] = dec2hex[(m_hash[i] >> 12) & 15];
-    hashBuffer[offset++] = dec2hex[(m_hash[i] >>  8) & 15];
-    hashBuffer[offset++] = dec2hex[(m_hash[i] >>  4) & 15];
-    hashBuffer[offset++] = dec2hex[ m_hash[i]        & 15];
+    *current++ = (m_hash[i] >> 24) & 0xFF;
+    *current++ = (m_hash[i] >> 16) & 0xFF;
+    *current++ = (m_hash[i] >>  8) & 0xFF;
+    *current++ =  m_hash[i]        & 0xFF;
 
     // restore old hash
     m_hash[i] = oldHash[i];
   }
-  // zero-terminated string
-  hashBuffer[offset] = 0;
-
-  // convert to std::string
-  return hashBuffer;
 }
 
 
