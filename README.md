@@ -11,23 +11,95 @@ ELF Parser has a number of compilation targets that can be configured by CMakeLi
 ## How do I compile it?
 ELF Parser can be compiled on Windows, OS X, or Linux (demangling and unit tests don't work on Windows). Windows uses the VS 2010 project in the base directory for compilation whereas Linux/OS X uses CMake. 
 
+### Linux
 Compiling the GUI version on Linux goes like this (currently working on Ubuntu 24.04):
 
+#### Install all the needed developmnent packages
 ```
 sudo apt-get install build-essential cmake libboost-all-dev qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools libbz2-dev liblzma-dev libzstd-dev
+```
 
+#### Download shelf and make a build directory
+```
 git clone https://github.com/jandress/shelf.git
-
 cd ~/shelf
+```
 
+#### Build the project
+```
 mkdir build
-
 cd build/
-
 cmake -Dqt=ON ..
-
 make
 ```
+
+### Windows
+Compiling the GUI version on Linux goes like this (work in progress on Windows 10):
+
+Get a coffee and a snack, take a deep breath, and buckle in.
+
+#### Install Chocolatey
+```
+@powershell -NoProfile -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin
+```
+#### Install the required development packages
+```
+choco install visualstudio2022community --package-parameters "--add Microsoft.VisualStudio.Workload.NativeDesktop --add Microsoft.VisualStudio.Workload.NativeCrossPlat --includeRecommended --includeOptional" -y
+```
+You will probably need to reboot here
+
+#### Install vcpkg
+```
+git clone https://github.com/microsoft/vcpkg.git
+cd vcpkg
+.\bootstrap-vcpkg.bat
+.\vcpkg integrate install
+```
+
+Yes, there is an option to install vcpkg in the Visual Studio installer now, ymmv.
+
+#### Configure vcpkg
+```
+git clone https://github.com/microsoft/vcpkg.git
+cd vcpkg
+.\bootstrap-vcpkg.bat
+.\vcpkg integrate install
+```
+
+Watch for this in the output:
+
+CMake projects should use: "-DCMAKE_TOOLCHAIN_FILE=C:/Users/admin/Downloads/vcpkg/scripts/buildsystems/vcpkg.cmake"
+
+Save the portion of the line in quotes as it will be needed later
+
+#### Install required libraries with vcpkg
+
+```
+.\vcpkg install boost sqlite3 bzip2 liblzma zstd qt5-base
+```
+
+These will take a looooooong time to install, maybe take up a new hobby or learn a language
+
+If you have trouble getting boost to install (you will), it may be your Visual Studio environment. You can download pkg-mgr (https://github.com/mingw-io/pkg-mgr/releases) and run 'pkg-mgr.exe --info' to see what potential issues may be present. If you have more than one Visual Studio environment installed, this will likely not work. If you have an older verison than current (2022 as of now) installed, this will likely not work.
+
+#### Download shelf and make a build directory
+
+```
+git clone https://github.com/jandress/shelf.git
+cd shelf
+mkdir build
+cd build
+```
+
+#### Build the project
+```
+cmake .. -G "Visual Studio 17 2022" <DCMAKE_TOOLCHAIN_FILE string from earlier goes here>  -Dqt=ON
+cmake --build . --config Release
+```
+
+### macOS
+Work in progress
+
 ## CLI Usage
 The user can pass in a single file (-f) or a directory (-d) of files:
 ```
