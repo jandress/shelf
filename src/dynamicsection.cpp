@@ -3,7 +3,10 @@
 #include "abstract_segments.hpp"
 
 #include <boost/foreach.hpp>
+#include <algorithm>
+
 #include <boost/assign.hpp>
+#include <map>
 
 #ifdef __APPLE__
 #include "endian.h"

@@ -11,9 +11,13 @@
 #include <sstream>
 #include <iostream>
 #include <stdexcept>
+
 #include <boost/regex.hpp>
+#include <regex>
+
 #include <boost/foreach.hpp>
 #include <boost/algorithm/string.hpp>
+#include <algorithm>
 
 namespace
 {

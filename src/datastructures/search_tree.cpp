@@ -1,5 +1,6 @@
 #include "search_tree.hpp"
 #include <boost/concept_check.hpp>
+#include <concepts>
 
 SearchTree::SearchTree() :
     m_rootNode(),

@@ -4,8 +4,13 @@ void on_aboutButton_clicked();
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+
+
 #include <boost/scoped_ptr.hpp>
+#include <memory>
+
 #include <boost/ptr_container/ptr_vector.hpp>
+#include <vector>
 
 namespace Ui {
     class MainWindow;

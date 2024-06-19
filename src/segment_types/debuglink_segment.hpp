@@ -5,6 +5,7 @@
 
 #include <string>
 #include <boost/cstdint.hpp>
+#include <cstdint>
 
 /*!
  * Holds the file name pointed at by the debug link. See more information here:

@@ -4,6 +4,8 @@
 #include "structures/programheader.hpp"
 
 #include <boost/foreach.hpp>
+#include <algorithm>
+
 #include <sstream>
 
 ProgramHeaders::ProgramHeaders() :

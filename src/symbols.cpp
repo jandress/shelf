@@ -9,9 +9,13 @@
 #ifndef WINDOWS
 #include <cxxabi.h>
 #endif
+
 #include <boost/assign.hpp>
+#include <map>
+
 #include <boost/foreach.hpp>
 #include <boost/algorithm/string.hpp>
+#include <algorithm>
 
 namespace
 {

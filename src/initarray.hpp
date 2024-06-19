@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <boost/cstdint.hpp>
+#include <cstdint>
 
 class InitArray
 {

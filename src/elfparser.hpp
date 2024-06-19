@@ -6,8 +6,13 @@
 #include <utility>
 #include <vector>
 #include <string>
+
+
 #include <boost/cstdint.hpp>
+#include <cstdint>
+
 #include <boost/iostreams/device/mapped_file.hpp>
+#include <fstream>
 
 #include "abstract_elfheader.hpp"
 #include "programheaders.hpp"

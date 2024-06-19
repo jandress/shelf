@@ -4,7 +4,9 @@
 #include "segment_type.hpp"
 
 #include <string>
+
 #include <boost/cstdint.hpp>
+#include <cstdint>
 
 /*!
  * Stores the interpreter in a string. Example of the content:

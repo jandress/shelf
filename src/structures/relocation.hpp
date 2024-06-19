@@ -2,7 +2,10 @@
 #define RELOCATION_HPP
 
 #include <boost/cstdint.hpp>
+#include <cstdint>
+
 #include <boost/static_assert.hpp>
+#include <cassert>
 
 namespace elf
 {

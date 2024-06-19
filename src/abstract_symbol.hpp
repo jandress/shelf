@@ -2,7 +2,9 @@
 #define ABSTRACT_SYMBOL_HPP
 
 #include <string>
+
 #include <boost/cstdint.hpp>
+#include <cstdint>
 
 namespace elf
 {

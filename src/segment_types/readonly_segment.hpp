@@ -7,6 +7,7 @@
 #include <vector>
 #include <string>
 #include <boost/cstdint.hpp>
+#include <cstdint>
 
 /*!
  * This segment parses the read only segment looking for ascii strings

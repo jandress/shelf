@@ -1,7 +1,12 @@
 #include <cstdlib>
 #include <iostream>
+
+
 #include <boost/filesystem.hpp>
+#include <filesystem>
+
 #include <boost/program_options.hpp>
+#include <optional>
 
 #include "version.hpp"
 #include "elfparser.hpp"

@@ -5,6 +5,8 @@
 #include <sstream>
 #include <stdexcept>
 #include <boost/foreach.hpp>
+#include <algorithm>
+
 #include <iostream>
 
 #ifdef __APPLE__

@@ -5,6 +5,7 @@
 
 #include <string>
 #include <boost/cstdint.hpp>
+#include <cstdint>
 
 /*!
  * The comment segment. Holds pretty generic information. Example of the

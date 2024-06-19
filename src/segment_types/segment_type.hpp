@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <boost/cstdint.hpp>
+#include <cstdint>
 
 #include "../structures/sectionheader.hpp"
 #include "../structures/capabilities.hpp"

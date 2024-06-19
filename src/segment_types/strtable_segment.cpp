@@ -2,7 +2,9 @@
 
 #include <cstring>
 #include <sstream>
+
 #include <boost/foreach.hpp>
+#include <algorithm>
 
 #ifndef WINDOWS
 #include <cxxabi.h>

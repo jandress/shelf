@@ -5,6 +5,8 @@
 #include <boost/lexical_cast.hpp>
 #include <sstream>
 
+#include <sstream>
+
 #ifdef __APPLE__
 #include "endian.h"
 #elif WINDOWS

@@ -16,7 +16,10 @@
 
 #include <sstream>
 #include <iostream>
+
 #include <boost/foreach.hpp>
+#include <algorithm>
+
 
 AbstractSegments::AbstractSegments() :
     m_data(NULL),

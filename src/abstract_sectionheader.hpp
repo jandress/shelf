@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <boost/cstdint.hpp>
+#include <cstdint>
 
 #ifdef UNIT_TESTS
 #include <gtest/gtest_prod.h>

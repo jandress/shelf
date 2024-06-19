@@ -2,6 +2,8 @@
 #define ABSTRACT_DYNAMIC_HPP
 
 #include <boost/cstdint.hpp>
+#include <cstdint>
+
 #include <string>
 
 class AbstractDynamicEntry

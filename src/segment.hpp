@@ -2,7 +2,9 @@
 #define SEGMENT_HPP
 
 #include <string>
+
 #include <boost/cstdint.hpp>
+#include <cstdint>
 
 class Segment
 {
