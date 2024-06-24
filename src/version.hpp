@@ -5,7 +5,7 @@
 
 namespace elfparser
 {
-    std::string s_version("Version: ELF Parser 1.4.0\nDate: November 2, 2014\nAuthor: Jacob Baines");
+    std::string s_version("Version: ELF Parser 1.4.0\nDate: November 2, 2014\nAuthor: Jacob Baines"); //this should really not be hardcoded
 }
 
 #endif

@@ -1,7 +1,0 @@
-{
-    "files.associations": {
-        "cstdint": "cpp",
-        "algorithm": "cpp",
-        "cassert": "cpp"
-    }
-}
