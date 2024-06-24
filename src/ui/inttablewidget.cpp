@@ -3,7 +3,9 @@
 
 #include <string>
 #include <sstream>
+
 #include <boost/lexical_cast.hpp>
+#include <sstream>
 
 IntWidgetItem::IntWidgetItem(boost::uint64_t p_value, bool p_hex) :
     QTableWidgetItem(),

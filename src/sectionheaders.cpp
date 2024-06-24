@@ -3,6 +3,8 @@
 #include "abstract_sectionheader.hpp"
 
 #include <boost/foreach.hpp>
+#include <algorithm>
+
 #include <sstream>
 #include <iostream>
 

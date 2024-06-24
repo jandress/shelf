@@ -8,6 +8,7 @@
 #include <string>
 
 #include <boost/ptr_container/ptr_vector.hpp>
+#include <vector>
 
 /*
  *  This is a basic automata implemenation. Used for efficient searching.

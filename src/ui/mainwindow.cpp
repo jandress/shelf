@@ -15,9 +15,16 @@
 #include <QKeySequence>
 
 #include <iostream>
+
 #include <boost/foreach.hpp>
-#include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp>
+#include <algorithm>
+
+#include <boost/lexical_cast.hpp>
+#include <sstream>
+
+
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),

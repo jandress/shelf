@@ -4,23 +4,26 @@ cmake_minimum_required(VERSION 3.5)
 option(test "Build all tests." OFF)
 option(debug "Build with debug flags." OFF)
 option(qt "Build with QT GUI." OFF)
-option(windows "Enabled windows build." OFF)
+option(cli "Build with CLI." OFF)
+option(windows "Enable windows build." OFF)
 
 #define project
 if (qt)
     project(elfparser CXX)
-else()
+endif()
+if (cli)
     project(elfparser-cli CXX)
 endif()
 
 # Check if all options are OFF and print usage
-if(NOT test AND NOT debug AND NOT qt AND NOT windows)
+if(NOT test AND NOT debug AND NOT qt AND NOT cli AND NOT windows)
     message("
 Usage: cmake [options] ..
 Options:
   -Dtest=ON      # Build all tests.
   -Ddebug=ON     # Build with debug flags.
   -Dqt=ON        # Build with QT GUI.
+  -Dcli=ON       # Build with CLI.
   -Dwindows=ON   # Enable windows build.
 You can specify one or more options.")
     message(FATAL_ERROR "No options specified.")
@@ -40,19 +43,19 @@ set(PROJECT_DOMAIN "${PROJECT_DOMAIN_FIRST}.${PROJECT_DOMAIN_SECOND}")
 
 # compiler flags
 if (debug)
-    set(CMAKE_CXX_FLAGS "-g -std=c++0x -Wall -Wextra -Weffc++ -Wshadow -Wcast-align -Wcast-qual -Woverloaded-virtual -Wswitch-default -Winit-self -Wno-deprecated-declarations -Wno-unused-parameter")
+    set(CMAKE_CXX_FLAGS "-g -std=c++17 -Wall -Wextra -Weffc++ -Wshadow -Wcast-align -Wcast-qual -Woverloaded-virtual -Wswitch-default -Winit-self -Wno-deprecated-declarations -Wno-unused-parameter")
 else()
     if (APPLE)
-        set(CMAKE_CXX_FLAGS "-O2 -std=c++0x -Wall -Wextra -Wno-deprecated-declarations")
+        set(CMAKE_CXX_FLAGS "-O2 -std=c++17 -Wall -Wextra -Wno-deprecated-declarations")
     else()
         if(windows)
             if (tests)
                 set(CMAKE_CXX_FLAGS "/EHsc")
-            elseif()
+            else()
                 set(CMAKE_CXX_FLAGS "-O2 /EHsc")
             endif()
         else()
-            set(CMAKE_CXX_FLAGS "-O2 -s -std=c++0x -Wall -Wextra -Wno-deprecated-declarations")
+            set(CMAKE_CXX_FLAGS "-O2 -s -std=c++17 -Wall -Wextra -Wno-deprecated-declarations")
         endif()
     endif()
 endif()
@@ -60,15 +63,19 @@ endif()
 #package locations
 set(CMAKE_MODULE_PATH ${${PROJECT_NAME}_SOURCE_DIR}/CMake)
 set(Boost_USE_STATIC_LIBS ON)
-find_package(Boost 1.46 COMPONENTS program_options iostreams system filesystem regex REQUIRED)
+#find_package(Boost 1.46 COMPONENTS program_options iostreams system filesystem regex REQUIRED)
+find_package(Boost 1.46 COMPONENTS system REQUIRED)
 
 # includes
 include_directories(SYSTEM ${Boost_INCLUDE_DIR})
 include_directories(SYSTEM lib/hash-lib)
-include_directories(${Qt5Core_INCLUDE_DIRS})
-include_directories(${Qt5Widgets_INCLUDE_DIRS})
-include_directories(${Qt5Gui_INCLUDE_DIRS})
+include_directories(lib/CLI11/include)
 
+if (qt)
+    include_directories(${Qt5Core_INCLUDE_DIRS})
+    include_directories(${Qt5Widgets_INCLUDE_DIRS})
+    include_directories(${Qt5Gui_INCLUDE_DIRS})
+endif()
 
 # preprocessor definitions
 if (test)
@@ -98,11 +105,9 @@ if (qt)
             set(CMAKE_PREFIX_PATH "~/Qt/5.2.0/gcc_64")
         endif()
     endif()
-    #find_package(Qt5 COMPONENTS Widgets REQUIRED)
     find_package(Qt5Core REQUIRED)
     find_package(Qt5Widgets REQUIRED)
     find_package(Qt5Gui REQUIRED)
-
 
     # let QT generate files
     qt5_wrap_ui(UI_HEADERS src/ui/mainwindow.ui src/ui/about.ui)
@@ -120,36 +125,72 @@ if (qt)
 endif()
 
 # compilation units
-add_executable(${PROJECT_NAME} ${GUI_TYPE}
-               src/main.cpp
-               src/elfparser.cpp
-               src/programheaders.cpp
-               src/sectionheaders.cpp
-               src/segment.cpp
-               src/symbols.cpp
-               src/dynamicsection.cpp
-               src/abstract_elfheader.cpp
-               src/abstract_programheader.cpp
-               src/abstract_sectionheader.cpp
-               src/abstract_segments.cpp
-               src/abstract_symbol.cpp
-               src/abstract_dynamic.cpp
-               src/initarray.cpp
-               src/segment_types/segment_type.cpp
-               src/segment_types/note_segment.cpp
-               src/segment_types/comment_segment.cpp
-               src/segment_types/debuglink_segment.cpp
-               src/segment_types/interp_segment.cpp
-               src/segment_types/strtable_segment.cpp
-               src/segment_types/readonly_segment.cpp
-               src/datastructures/search_node.cpp
-               src/datastructures/search_tree.cpp
-               src/ui/inttablewidget.cpp
-               lib/hash-lib/sha1.cpp
-               lib/hash-lib/sha256.cpp
-               lib/hash-lib/md5.cpp
-               ${EXTRA_SOURCES}
-               ${RESOURCE_ADDED})
+if (qt)
+    add_executable(elfparser ${GUI_TYPE}
+                   src/main.cpp
+                   src/elfparser.cpp
+                   src/programheaders.cpp
+                   src/sectionheaders.cpp
+                   src/segment.cpp
+                   src/symbols.cpp
+                   src/dynamicsection.cpp
+                   src/abstract_elfheader.cpp
+                   src/abstract_programheader.cpp
+                   src/abstract_sectionheader.cpp
+                   src/abstract_segments.cpp
+                   src/abstract_symbol.cpp
+                   src/abstract_dynamic.cpp
+                   src/initarray.cpp
+                   src/segment_types/segment_type.cpp
+                   src/segment_types/note_segment.cpp
+                   src/segment_types/comment_segment.cpp
+                   src/segment_types/debuglink_segment.cpp
+                   src/segment_types/interp_segment.cpp
+                   src/segment_types/strtable_segment.cpp
+                   src/segment_types/readonly_segment.cpp
+                   src/datastructures/search_node.cpp
+                   src/datastructures/search_tree.cpp
+                   src/ui/inttablewidget.cpp
+                   lib/hash-lib/sha1.cpp
+                   lib/hash-lib/sha256.cpp
+                   lib/hash-lib/md5.cpp
+                   ${EXTRA_SOURCES}
+                   ${RESOURCE_ADDED})
+
+    target_link_libraries(elfparser ${Boost_LIBRARIES} Qt5::Core Qt5::Widgets Qt5::Gui)
+endif()
+
+if (cli)
+    add_executable(elfparser-cli
+                   src/main.cpp
+                   src/elfparser.cpp
+                   src/programheaders.cpp
+                   src/sectionheaders.cpp
+                   src/segment.cpp
+                   src/symbols.cpp
+                   src/dynamicsection.cpp
+                   src/abstract_elfheader.cpp
+                   src/abstract_programheader.cpp
+                   src/abstract_sectionheader.cpp
+                   src/abstract_segments.cpp
+                   src/abstract_symbol.cpp
+                   src/abstract_dynamic.cpp
+                   src/initarray.cpp
+                   src/segment_types/segment_type.cpp
+                   src/segment_types/note_segment.cpp
+                   src/segment_types/comment_segment.cpp
+                   src/segment_types/debuglink_segment.cpp
+                   src/segment_types/interp_segment.cpp
+                   src/segment_types/strtable_segment.cpp
+                   src/segment_types/readonly_segment.cpp
+                   src/datastructures/search_node.cpp
+                   src/datastructures/search_tree.cpp
+                   lib/hash-lib/sha1.cpp
+                   lib/hash-lib/sha256.cpp
+                   lib/hash-lib/md5.cpp)
+
+    target_link_libraries(elfparser-cli ${Boost_LIBRARIES})
+endif()
 
 if(APPLE)
     if (qt)
@@ -171,20 +212,21 @@ if(APPLE)
         execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.app/Contents/Frameworks)
     endif()
 endif()
+
 if (windows)
     if (qt)
-        set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
+        set_target_properties(elfparser PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
     endif()
 endif()
 
-# linking comp / libs
-target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
-#target_link_libraries(${PROJECT_NAME} Qt5::Widgets)
-target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Widgets Qt5::Gui)
+if (qt)
+    INSTALL(TARGETS elfparser DESTINATION /usr/local/bin)
+    INSTALL(FILES ${CMAKE_SOURCE_DIR}/src/ui/icon_72529.png DESTINATION /usr/local/share/elfparser/)
+endif()
 
-#if (qt)
-#    qt5_use_modules(${PROJECT_NAME} Widgets)
-#endif()
+if (cli)
+    INSTALL(TARGETS elfparser-cli DESTINATION /usr/local/bin)
+endif()
 
 ####
 # Testing silliness
@@ -200,35 +242,35 @@ if (test)
     enable_testing()
     include_directories(SYSTEM ${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
-    # Unit test compilation  this seems really inefficient...
+    # Unit test compilation this seems really inefficient...
     add_executable(${PROJECT_NAME}_test
-                    src/elfparser.cpp
-                    src/programheaders.cpp
-                    src/sectionheaders.cpp
-                    src/segment.cpp
-                    src/symbols.cpp
-                    src/dynamicsection.cpp
-                    src/abstract_elfheader.cpp
-                    src/abstract_programheader.cpp
-                    src/abstract_sectionheader.cpp
-                    src/abstract_segments.cpp
-                    src/abstract_symbol.cpp
-                    src/abstract_dynamic.cpp
-                    src/initarray.cpp
-                    src/segment_types/segment_type.cpp
-                    src/segment_types/note_segment.cpp
-                    src/segment_types/comment_segment.cpp
-                    src/segment_types/debuglink_segment.cpp
-                    src/segment_types/interp_segment.cpp
-                    src/segment_types/strtable_segment.cpp
-                    src/segment_types/readonly_segment.cpp
-                    src/datastructures/search_node.cpp
-                    src/datastructures/search_tree.cpp
-                    lib/hash-lib/sha1.cpp
-                    lib/hash-lib/sha256.cpp
-                    lib/hash-lib/md5.cpp
-                    src/tests/ls_tests.cpp
-                    src/tests/tiny_tests.cpp)
+                   src/elfparser.cpp
+                   src/programheaders.cpp
+                   src/sectionheaders.cpp
+                   src/segment.cpp
+                   src/symbols.cpp
+                   src/dynamicsection.cpp
+                   src/abstract_elfheader.cpp
+                   src/abstract_programheader.cpp
+                   src/abstract_sectionheader.cpp
+                   src/abstract_segments.cpp
+                   src/abstract_symbol.cpp
+                   src/abstract_dynamic.cpp
+                   src/initarray.cpp
+                   src/segment_types/segment_type.cpp
+                   src/segment_types/note_segment.cpp
+                   src/segment_types/comment_segment.cpp
+                   src/segment_types/debuglink_segment.cpp
+                   src/segment_types/interp_segment.cpp
+                   src/segment_types/strtable_segment.cpp
+                   src/segment_types/readonly_segment.cpp
+                   src/datastructures/search_node.cpp
+                   src/datastructures/search_tree.cpp
+                   lib/hash-lib/sha1.cpp
+                   lib/hash-lib/sha256.cpp
+                   lib/hash-lib/md5.cpp
+                   src/tests/ls_tests.cpp
+                   src/tests/tiny_tests.cpp)
 
     target_link_libraries(${PROJECT_NAME}_test gtest gtest_main ${Boost_LIBRARIES})
 endif()
@@ -258,7 +300,7 @@ else()
     if (windows)
         INSTALL(DIRECTORY ./build/Release/ DESTINATION .)
         INSTALL(FILES ${CMAKE_SOURCE_DIR}/src/ui/icon_72529.png DESTINATION .)
-        INSTALL(TARGETS ${PROJECT_NAME} DESTINATION .)
+        INSTALL(TARGETS elfparser DESTINATION .)
         SET(CPACK_INSTALL_DIRECTORY "ElfParser")
         SET(CPACK_GENERATOR "NSIS")
         SET(CPACK_PACKAGE_DESCRIPTION "elfparser")
@@ -279,9 +321,12 @@ else()
         SET(CPACK_NSIS_EXECUTABLES_DIRECTORY ".")
         INCLUDE(CPack)
     else()
-        INSTALL(TARGETS ${PROJECT_NAME} DESTINATION /usr/local/bin)
         if (qt)
+            INSTALL(TARGETS elfparser DESTINATION /usr/local/bin)
             INSTALL(FILES ${CMAKE_SOURCE_DIR}/src/ui/icon_72529.png DESTINATION /usr/local/share/elfparser/)
+        endif()
+        if (cli)
+            INSTALL(TARGETS elfparser-cli DESTINATION /usr/local/bin)
         endif()
         SET(CPACK_SET_DESTDIR ON)
         SET(CPACK_GENERATOR "DEB")

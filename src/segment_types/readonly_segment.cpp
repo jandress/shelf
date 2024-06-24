@@ -1,7 +1,11 @@
 #include "readonly_segment.hpp"
 
 #include <boost/assign.hpp>
+#include <map>
+
 #include <boost/foreach.hpp>
+#include <algorithm>
+
 #include <sstream>
 
 ReadOnlySegment::ReadOnlySegment(const char* start, boost::uint32_t p_offset,

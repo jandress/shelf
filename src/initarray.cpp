@@ -2,6 +2,7 @@
 
 #include <sstream>
 #include <boost/foreach.hpp>
+#include <algorithm>
 
 #ifdef __APPLE__
 #include "endian.h"

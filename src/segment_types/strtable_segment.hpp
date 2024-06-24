@@ -6,6 +6,7 @@
 #include <set>
 #include <string>
 #include <boost/cstdint.hpp>
+#include <cstdint>
 
 /*!
  * Holds all the strings in the string table

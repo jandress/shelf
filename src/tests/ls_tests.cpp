@@ -9,6 +9,7 @@
 #include "../symbols.hpp"
 
 #include <boost/foreach.hpp>
+#include <algorithm>
 
 class LSTest : public testing::Test
 {

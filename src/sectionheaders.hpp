@@ -5,7 +5,9 @@
 #include <set>
 #include <string>
 #include <vector>
+
 #include <boost/cstdint.hpp>
+#include <cstdint>
 
 #include "structures/capabilities.hpp"
 

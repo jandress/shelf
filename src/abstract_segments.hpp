@@ -6,8 +6,13 @@
 #include <vector>
 #include <string>
 #include <cstddef>
+
+
 #include <boost/cstdint.hpp>
+#include <cstdint>
+
 #include <boost/ptr_container/ptr_vector.hpp>
+#include <vector>
 
 #include "symbols.hpp"
 #include "initarray.hpp"

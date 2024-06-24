@@ -11,9 +11,12 @@
 #include <sstream>
 #include <iostream>
 #include <stdexcept>
-#include <boost/regex.hpp>
-#include <boost/foreach.hpp>
-#include <boost/algorithm/string.hpp>
+
+//#include <boost/regex.hpp> //replace with #include <regex>
+
+//#include <boost/foreach.hpp> //replace with #include <algorithm>
+//#include <boost/algorithm/string.hpp> //replace with #include <algorithm>
+#include <algorithm>
 
 namespace
 {
@@ -48,23 +51,44 @@ ELFParser::ELFParser() :
     m_searchEngine(),
     m_searchValues()
 {
-    m_searchValues.push_back(new SearchValue("UPX!", elf::k_packed, "UPX signature found"));
-    m_searchValues.push_back(new SearchValue("the UPX Team. All Rights Reserved", elf::k_packed, "UPX copyright string found"));
-    m_searchValues.push_back(new SearchValue("PRIVMSG ", elf::k_irc, "IRC command PRIVMSG found"));
-    m_searchValues.push_back(new SearchValue("JOIN ", elf::k_irc, "IRC command JOIN found"));
-    m_searchValues.push_back(new SearchValue("NOTICE ", elf::k_irc, "IRC command NOTICE found"));
-    m_searchValues.push_back(new SearchValue("ustar\0", elf::k_compression, "Tar Archive signature found"));
-    m_searchValues.push_back(new SearchValue("\x1f\x8b\x08", elf::k_compression, "Gzip signature found"));
-    m_searchValues.push_back(new SearchValue("inflate 1.1.4 Copyright 1995-2002 Mark Adler", elf::k_compression, "Inflate 1.1.4 copyright string"));
-    m_searchValues.push_back(new SearchValue("inflate 1.2.3 Copyright 1995-2005 Mark Adler", elf::k_compression, "Inflate 1.2.3 copyright string"));
-    m_searchValues.push_back(new SearchValue("inflate 1.2.8 Copyright 1995-2013 Mark Adler", elf::k_compression, "Inflate 1.2.8 copyright string"));
-    m_searchValues.push_back(new SearchValue("/proc/cpuinfo",  elf::k_infoGathering, "Examines /proc/cpuinfo"));
-    m_searchValues.push_back(new SearchValue("/proc/meminfo",  elf::k_infoGathering, "Examines /proc/meminfo"));
-    m_searchValues.push_back(new SearchValue("/proc/stat", elf::k_infoGathering, "Examines /proc/stat"));
-    m_searchValues.push_back(new SearchValue("HISTFILE=", elf::k_envVariables, "Accesses the bash history file environment variable HISTFILE."));
-    BOOST_FOREACH(SearchValue& value, m_searchValues)
-    {
-        m_searchEngine.addWord(value.m_search, &value);
+    // m_searchValues.push_back(new SearchValue("UPX!", elf::k_packed, "UPX signature found"));
+    // m_searchValues.push_back(new SearchValue("the UPX Team. All Rights Reserved", elf::k_packed, "UPX copyright string found"));
+    // m_searchValues.push_back(new SearchValue("PRIVMSG ", elf::k_irc, "IRC command PRIVMSG found"));
+    // m_searchValues.push_back(new SearchValue("JOIN ", elf::k_irc, "IRC command JOIN found"));
+    // m_searchValues.push_back(new SearchValue("NOTICE ", elf::k_irc, "IRC command NOTICE found"));
+    // m_searchValues.push_back(new SearchValue("ustar\0", elf::k_compression, "Tar Archive signature found"));
+    // m_searchValues.push_back(new SearchValue("\x1f\x8b\x08", elf::k_compression, "Gzip signature found"));
+    // m_searchValues.push_back(new SearchValue("inflate 1.1.4 Copyright 1995-2002 Mark Adler", elf::k_compression, "Inflate 1.1.4 copyright string"));
+    // m_searchValues.push_back(new SearchValue("inflate 1.2.3 Copyright 1995-2005 Mark Adler", elf::k_compression, "Inflate 1.2.3 copyright string"));
+    // m_searchValues.push_back(new SearchValue("inflate 1.2.8 Copyright 1995-2013 Mark Adler", elf::k_compression, "Inflate 1.2.8 copyright string"));
+    // m_searchValues.push_back(new SearchValue("/proc/cpuinfo",  elf::k_infoGathering, "Examines /proc/cpuinfo"));
+    // m_searchValues.push_back(new SearchValue("/proc/meminfo",  elf::k_infoGathering, "Examines /proc/meminfo"));
+    // m_searchValues.push_back(new SearchValue("/proc/stat", elf::k_infoGathering, "Examines /proc/stat"));
+    // m_searchValues.push_back(new SearchValue("HISTFILE=", elf::k_envVariables, "Accesses the bash history file environment variable HISTFILE."));
+
+    m_searchValues.push_back(std::make_unique<SearchValue>("UPX!", elf::k_packed, "UPX signature found"));
+    m_searchValues.push_back(std::make_unique<SearchValue>("the UPX Team. All Rights Reserved", elf::k_packed, "UPX copyright string found"));
+    m_searchValues.push_back(std::make_unique<SearchValue>("PRIVMSG ", elf::k_irc, "IRC command PRIVMSG found"));
+    m_searchValues.push_back(std::make_unique<SearchValue>("JOIN ", elf::k_irc, "IRC command JOIN found"));
+    m_searchValues.push_back(std::make_unique<SearchValue>("NOTICE ", elf::k_irc, "IRC command NOTICE found"));
+    m_searchValues.push_back(std::make_unique<SearchValue>("ustar\0", elf::k_compression, "Tar Archive signature found"));
+    m_searchValues.push_back(std::make_unique<SearchValue>("\x1f\x8b\x08", elf::k_compression, "Gzip signature found"));
+    m_searchValues.push_back(std::make_unique<SearchValue>("inflate 1.1.4 Copyright 1995-2002 Mark Adler", elf::k_compression, "Inflate 1.1.4 copyright string"));
+    m_searchValues.push_back(std::make_unique<SearchValue>("inflate 1.2.3 Copyright 1995-2005 Mark Adler", elf::k_compression, "Inflate 1.2.3 copyright string"));
+    m_searchValues.push_back(std::make_unique<SearchValue>("inflate 1.2.8 Copyright 1995-2013 Mark Adler", elf::k_compression, "Inflate 1.2.8 copyright string"));
+    m_searchValues.push_back(std::make_unique<SearchValue>("/proc/cpuinfo",  elf::k_infoGathering, "Examines /proc/cpuinfo"));
+    m_searchValues.push_back(std::make_unique<SearchValue>("/proc/meminfo",  elf::k_infoGathering, "Examines /proc/meminfo"));
+    m_searchValues.push_back(std::make_unique<SearchValue>("/proc/stat", elf::k_infoGathering, "Examines /proc/stat"));
+    m_searchValues.push_back(std::make_unique<SearchValue>("HISTFILE=", elf::k_envVariables, "Accesses the bash history file environment variable HISTFILE."));
+
+
+    // BOOST_FOREACH(SearchValue& value, m_searchValues)
+    // {
+    //     m_searchEngine.addWord(value.m_search, &value);
+    // }
+
+    for (const auto& value : m_searchValues) {
+        m_searchEngine.addWord(value->m_search, value.get());
     }
 
     m_searchEngine.compile();
@@ -72,10 +96,11 @@ ELFParser::ELFParser() :
 
 ELFParser::~ELFParser()
 {
-    m_mapped_file.close();
+    //m_mapped_file.close();
 }
 
-boost::uint32_t ELFParser::getScore() const
+//boost::uint32_t ELFParser::getScore() const
+std::uint32_t ELFParser::getScore() const
 {
     return m_score;
 }
@@ -113,7 +138,8 @@ std::string ELFParser::getFamily() const
     return m_segments.determineFamily();
 }
 
-const std::vector<std::pair<boost::int32_t, std::string> >& ELFParser::getReasons() const
+//const std::vector<std::pair<boost::int32_t, std::string> >& ELFParser::getReasons() const
+const std::vector<std::pair<std::int32_t, std::string> >& ELFParser::getReasons() const
 {
     return m_reasons;
 }
@@ -164,8 +190,13 @@ void ELFParser::evaluate()
     m_segments.evaluate(m_reasons, m_capabilities);
 
     std::set<void*> results = m_searchEngine.search(m_mapped_file.data(), m_fileSize);
-    BOOST_FOREACH(void* result, results)
-    {
+    // BOOST_FOREACH(void* result, results)
+    // {
+    //     SearchValue* converted = static_cast<SearchValue*>(result);
+    //     m_capabilities[converted->m_type].insert(converted->m_info);
+    // }
+
+    for (const auto& result : results) {
         SearchValue* converted = static_cast<SearchValue*>(result);
         m_capabilities[converted->m_type].insert(converted->m_info);
     }
@@ -242,7 +273,8 @@ void ELFParser::evaluate()
         }
     }
 
-    for (std::vector<std::pair<boost::int32_t, std::string> >::const_iterator it = m_reasons.begin();
+    //for (std::vector<std::pair<boost::int32_t, std::string> >::const_iterator it = m_reasons.begin();
+    for (std::vector<std::pair<std::int32_t, std::string> >::const_iterator it = m_reasons.begin();
          it != m_reasons.end(); ++it)
     {
         m_score += it->first;
@@ -277,7 +309,8 @@ const DynamicSection& ELFParser::getDynamicSection() const
 void ELFParser::printReasons() const
 {
     std::cout << "---- Scoring Reasons ----" << std::endl;
-    for (std::vector<std::pair<boost::int32_t, std::string> >::const_iterator it = m_reasons.begin();
+    //for (std::vector<std::pair<boost::int32_t, std::string> >::const_iterator it = m_reasons.begin();
+    for (std::vector<std::pair<std::int32_t, std::string> >::const_iterator it = m_reasons.begin();
          it != m_reasons.end(); ++it)
     {
         std::cout << it->first << " -> " << it->second << std::endl;
@@ -359,10 +392,16 @@ void ELFParser::printCapabilities() const
                 std::cout << "\tUnassigned" << std::endl;
                 break;
         }
-        BOOST_FOREACH(const std::string& info, it->second)
+        // BOOST_FOREACH(const std::string& info, it->second)
+        // {
+        //     std::cout << "\t\t" << info << std::endl;
+        // }
+
+        for (const std::string& info : it->second)
         {
             std::cout << "\t\t" << info << std::endl;
         }
+
     }
 }
 
@@ -385,10 +424,13 @@ void ELFParser::regexScan()
     try
     {
         // ips
-        boost::regex pattern("[1-2]?[0-9]?[0-9]\\.[1-2]?[0-9]?[0-9]\\.[1-2]?[0-9]?[0-9]\\.[1-2]?[0-9]?[0-9](?:[:0-9]{2,})*");
+        //boost::regex pattern("[1-2]?[0-9]?[0-9]\\.[1-2]?[0-9]?[0-9]\\.[1-2]?[0-9]?[0-9]\\.[1-2]?[0-9]?[0-9](?:[:0-9]{2,})*");
+        std::regex pattern("[1-2]?[0-9]?[0-9]\\.[1-2]?[0-9]?[0-9]\\.[1-2]?[0-9]?[0-9]\\.[1-2]?[0-9]?[0-9](?:[:0-9]{2,})*");
         const char* start = m_mapped_file.data();
-        boost::cmatch m;
-        while (boost::regex_search(start, m_mapped_file.data() + m_fileSize,m,pattern))
+        //boost::cmatch m;
+        std::cmatch m;
+        //while (boost::regex_search(start, m_mapped_file.data() + m_fileSize,m,pattern))
+        while (std::regex_search(start, m_mapped_file.data() + m_fileSize,m,pattern))
         {
             for (auto x:m)
             {
@@ -398,9 +440,11 @@ void ELFParser::regexScan()
         }
 
         // urls
-        boost::regex urlPattern("(?:(?:http|https)://[A-Za-z0-9_./:%+?+)|(?:www.[A-Za-z0-9/:]+\\.com)");
+        //boost::regex urlPattern("(?:(?:http|https)://[A-Za-z0-9_./:%+?+)|(?:www.[A-Za-z0-9/:]+\\.com)");
+        std::regex urlPattern("(?:(?:http|https)://[A-Za-z0-9_./:%+?+)|(?:www.[A-Za-z0-9/:]+\\.com)");
         start = m_mapped_file.data();
-        while (boost::regex_search(start, m_mapped_file.data() + m_fileSize,m,urlPattern))
+        //while (boost::regex_search(start, m_mapped_file.data() + m_fileSize,m,urlPattern))
+        while (std::regex_search(start, m_mapped_file.data() + m_fileSize,m,urlPattern))
         {
             for (auto x:m)
             {
@@ -410,9 +454,11 @@ void ELFParser::regexScan()
         }
 
         // commands
-        boost::regex shellPattern("(?:(?:wget|chmod|killall|nohup|sed|insmod|echo) [[:print:]]+)|(?:tar -[[:print:]]+)");
+        //boost::regex shellPattern("(?:(?:wget|chmod|killall|nohup|sed|insmod|echo) [[:print:]]+)|(?:tar -[[:print:]]+)");
+        std::regex shellPattern("(?:(?:wget|chmod|killall|nohup|sed|insmod|echo) [[:print:]]+)|(?:tar -[[:print:]]+)");
         start = m_mapped_file.data();
-        while (boost::regex_search(start, m_mapped_file.data() + m_fileSize, m, shellPattern))
+        //while (boost::regex_search(start, m_mapped_file.data() + m_fileSize, m, shellPattern))
+        while (std::regex_search(start, m_mapped_file.data() + m_fileSize, m, shellPattern))
         {
             for (auto x:m)
             {
@@ -422,9 +468,11 @@ void ELFParser::regexScan()
         }
 
         // url request
-        boost::regex urlRequest("(?:POST (?:/|%s)|GET (?:/|%s)|CONNECT (?:/|%s)|User-Agent:)[[:print:]]+");
+        //boost::regex urlRequest("(?:POST (?:/|%s)|GET (?:/|%s)|CONNECT (?:/|%s)|User-Agent:)[[:print:]]+");
+        std::regex urlRequest("(?:POST (?:/|%s)|GET (?:/|%s)|CONNECT (?:/|%s)|User-Agent:)[[:print:]]+");
         start = m_mapped_file.data();
-        while (boost::regex_search(start, m_mapped_file.data() + m_fileSize, m, urlRequest))
+        //while (boost::regex_search(start, m_mapped_file.data() + m_fileSize, m, urlRequest))
+        while (std::regex_search(start, m_mapped_file.data() + m_fileSize, m, urlRequest))
         {
             for (auto x:m)
             {
@@ -434,9 +482,11 @@ void ELFParser::regexScan()
         }
 
         // file paths
-        boost::regex filePaths("/(?:usr|etc|tmp|bin)/[a-zA-Z0-9/\\._\\-]+");
+        //boost::regex filePaths("/(?:usr|etc|tmp|bin)/[a-zA-Z0-9/\\._\\-]+");
+        std::regex filePaths("/(?:usr|etc|tmp|bin)/[a-zA-Z0-9/\\._\\-]+");
         start = m_mapped_file.data();
-        while (boost::regex_search(start, m_mapped_file.data() + m_fileSize, m, filePaths))
+        //while (boost::regex_search(start, m_mapped_file.data() + m_fileSize, m, filePaths))
+        while (std::regex_search(start, m_mapped_file.data() + m_fileSize, m, filePaths))
         {
             for (auto x:m)
             {
@@ -457,7 +507,25 @@ void ELFParser::findELF()
     elfSearch.addWord("\x7f\x45\x4c\x46", this);
     elfSearch.compile();
     std::set<const char*> data = elfSearch.findOffsets(this->m_mapped_file.data() + 1, m_fileSize - 1);
-    BOOST_FOREACH(const char* fib, data) {
+    // BOOST_FOREACH(const char* fib, data) {
+    //     try
+    //     {
+    //         AbstractElfHeader newHeader;
+    //         newHeader.setHeader(fib, fib - (m_mapped_file.data() + m_fileSize));
+    //         if ((fib + newHeader.getProgramOffset()) < (m_mapped_file.data() + m_fileSize))
+    //         {
+    //             std::stringstream binaryFound;
+    //             binaryFound << "Embedded ELF binary found at file offset 0x"
+    //                         << std::hex << fib - m_mapped_file.data()
+    //                         << " (" << std::dec << fib - m_mapped_file.data() << ")";
+    //             m_capabilities[elf::k_dropper].insert(binaryFound.str());
+    //         }
+    //     }
+    //     catch (std::exception& e) {
+    //         // do nothing
+    //     }
+    // }
+    for (const char* fib : data) {
         try
         {
             AbstractElfHeader newHeader;
@@ -475,4 +543,5 @@ void ELFParser::findELF()
             // do nothing
         }
     }
+
 }

@@ -3,7 +3,9 @@
 #define INTENTRY_HPP
 
 #include <QTableWidgetItem>
+
 #include <boost/cstdint.hpp>
+#include <cstdint>
 
 class IntWidgetItem : public QTableWidgetItem
 {

@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <boost/cstdint.hpp>
+#include <cstdint>
 
 #include "abstract_dynamic.hpp"
 #include "structures/capabilities.hpp"
