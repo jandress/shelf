@@ -1,3 +1,4 @@
+//boost free
 #ifndef MAPPEDFILE_HPP
 #define MAPPEDFILE_HPP
 
