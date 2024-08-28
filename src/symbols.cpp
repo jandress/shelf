@@ -1,3 +1,4 @@
+//boost free
 #include "symbols.hpp"
 
 #include "abstract_symbol.hpp"
@@ -10,77 +11,143 @@
 #include <cxxabi.h>
 #endif
 
-#include <boost/assign.hpp>
+//#include <boost/assign.hpp>
 #include <map>
 
-#include <boost/foreach.hpp>
-#include <boost/algorithm/string.hpp>
+//#include <boost/foreach.hpp>
+//#include <boost/algorithm/string.hpp>
 #include <algorithm>
+#include <cstdint>
 
 namespace
 {
     //! files that mark a specific functionality
-    std::map<std::string, std::pair<elf::Capabilties, std::string> > files = boost::assign::map_list_of
-            ("adler32.c", std::make_pair(elf::k_compression, "Compiled with adler32.c"))
-            ("gzip.c", std::make_pair(elf::k_compression, "Compiled with gzip.c"));
+    // std::map<std::string, std::pair<elf::Capabilties, std::string> > files = boost::assign::map_list_of
+    //         ("adler32.c", std::make_pair(elf::k_compression, "Compiled with adler32.c"))
+    //         ("gzip.c", std::make_pair(elf::k_compression, "Compiled with gzip.c"));
+
+    std::map<std::string, std::pair<elf::Capabilties, std::string>> files = {
+        {"adler32.c", {elf::k_compression, "Compiled with adler32.c"}},
+        {"gzip.c", {elf::k_compression, "Compiled with gzip.c"}}
+    };
 
     //! functions that we think should be noted as dangerous
-    std::map<std::string, std::pair<elf::Capabilties, std::string> > capabilities = boost::assign::map_list_of
-        ("fclose", std::make_pair(elf::k_fileFunctions, "fclose() found"))
-        ("feof", std::make_pair(elf::k_fileFunctions, "feof() found"))
-        ("fopen", std::make_pair(elf::k_fileFunctions, "fopen() found"))
-        ("funlockfile", std::make_pair(elf::k_fileFunctions, "funlockfile() found"))
-        ("unlink", std::make_pair(elf::k_fileFunctions, "unlink() found"))
-        ("accept", std::make_pair(elf::k_networkFunctions, "accept() found"))
-        ("bind", std::make_pair(elf::k_networkFunctions, "bind() found"))
-        ("connect", std::make_pair(elf::k_networkFunctions, "connect() found"))
-        ("listen", std::make_pair(elf::k_networkFunctions, "listen() found"))
-        ("socket", std::make_pair(elf::k_networkFunctions, "socket() found"))
-        ("sendto", std::make_pair(elf::k_networkFunctions, "sendto() found"))
-        ("recv", std::make_pair(elf::k_networkFunctions, "recv() found"))
-        ("gethostbyname", std::make_pair(elf::k_networkFunctions, "gethostbyname() found"))
-        ("gethostbyname_r", std::make_pair(elf::k_networkFunctions, "gethostbyname_r() found"))
-        ("inet_addr", std::make_pair(elf::k_networkFunctions, "inet_addr() found"))
-        ("fork", std::make_pair(elf::k_processManipulation, "fork() found"))
-        ("kill", std::make_pair(elf::k_processManipulation, "kill() found"))
-        ("clone", std::make_pair(elf::k_processManipulation, "clone() found"))
-        ("execve", std::make_pair(elf::k_processManipulation, "execve() found"))
-        ("execl", std::make_pair(elf::k_processManipulation, "execl() found"))
-        ("execle", std::make_pair(elf::k_processManipulation, "execle() found"))
-        ("execve", std::make_pair(elf::k_processManipulation, "execve() found"))
-        ("raise", std::make_pair(elf::k_processManipulation, "raise() found"))
-        ("daemon", std::make_pair(elf::k_processManipulation, "daemon() found"))
-        ("pclose", std::make_pair(elf::k_pipeFunctions, "pclose() found"))
-        ("popen", std::make_pair(elf::k_pipeFunctions, "popen() found"))
-        ("rand", std::make_pair(elf::k_crypto, "rand() found"))
-        ("srand", std::make_pair(elf::k_crypto, "srand() found"))
-        ("srandom_r", std::make_pair(elf::k_crypto, "srandom_r() found"))
-        ("random_r", std::make_pair(elf::k_crypto, "random_r() found"))
-        ("phys_pages_info", std::make_pair(elf::k_infoGathering, "phys_pages_info() found"))
-        ("getpagesize", std::make_pair(elf::k_infoGathering, "getpagesize() found"))
-        ("fstat", std::make_pair(elf::k_infoGathering, "fstat() found"))
-        ("uname", std::make_pair(elf::k_infoGathering, "uname() found"))
-        ("access", std::make_pair(elf::k_infoGathering, "access() found"))
-        ("sysinfo", std::make_pair(elf::k_infoGathering, "sysinfo() found"))
-        ("setenv", std::make_pair(elf::k_envVariables, "setenv() found"))
-        ("clearenv", std::make_pair(elf::k_envVariables, "clearenv() found"))
-        ("unsetenv", std::make_pair(elf::k_envVariables, "unsetenv() found"))
-        ("getenv", std::make_pair(elf::k_envVariables, "getenv() found"))
-        ("secure_getenv", std::make_pair(elf::k_envVariables, "secure_getenv() found"))
-        ("chown", std::make_pair(elf::k_permissions, "chown() found"))
-        ("chmod", std::make_pair(elf::k_permissions, "chmod() found"))
-        ("openlog", std::make_pair(elf::k_syslog, "openlog() found"))
-        ("closelog", std::make_pair(elf::k_syslog, "closelog() found"))
-        ("vsyslog", std::make_pair(elf::k_syslog, "vsyslog() found"))
-        ("pcap_open_live", std::make_pair(elf::k_packetSniff, "pcap_open_live() found"))
-        ("pcap_close", std::make_pair(elf::k_packetSniff, "pcap_close() found"))
-        ("pcap_read", std::make_pair(elf::k_packetSniff, "pcap_read() found"))
-        ("pcap_loop", std::make_pair(elf::k_packetSniff, "pcap_loop() found"))
-        ("system", std::make_pair(elf::k_shell, "system() found"))
-        ("tshd_runshell", std::make_pair(elf::k_shell, "tinysh function found."))
-        ("dlsym", std::make_pair(elf::k_hooking, "dlsym() found in hooking context"))
-        ("ptrace", std::make_pair(elf::k_antidebug, "ptrace detection found"));
+//     std::map<std::string, std::pair<elf::Capabilties, std::string> > capabilities = boost::assign::map_list_of
+//         ("fclose", std::make_pair(elf::k_fileFunctions, "fclose() found"))
+//         ("feof", std::make_pair(elf::k_fileFunctions, "feof() found"))
+//         ("fopen", std::make_pair(elf::k_fileFunctions, "fopen() found"))
+//         ("funlockfile", std::make_pair(elf::k_fileFunctions, "funlockfile() found"))
+//         ("unlink", std::make_pair(elf::k_fileFunctions, "unlink() found"))
+//         ("accept", std::make_pair(elf::k_networkFunctions, "accept() found"))
+//         ("bind", std::make_pair(elf::k_networkFunctions, "bind() found"))
+//         ("connect", std::make_pair(elf::k_networkFunctions, "connect() found"))
+//         ("listen", std::make_pair(elf::k_networkFunctions, "listen() found"))
+//         ("socket", std::make_pair(elf::k_networkFunctions, "socket() found"))
+//         ("sendto", std::make_pair(elf::k_networkFunctions, "sendto() found"))
+//         ("recv", std::make_pair(elf::k_networkFunctions, "recv() found"))
+//         ("gethostbyname", std::make_pair(elf::k_networkFunctions, "gethostbyname() found"))
+//         ("gethostbyname_r", std::make_pair(elf::k_networkFunctions, "gethostbyname_r() found"))
+//         ("inet_addr", std::make_pair(elf::k_networkFunctions, "inet_addr() found"))
+//         ("fork", std::make_pair(elf::k_processManipulation, "fork() found"))
+//         ("kill", std::make_pair(elf::k_processManipulation, "kill() found"))
+//         ("clone", std::make_pair(elf::k_processManipulation, "clone() found"))
+//         ("execve", std::make_pair(elf::k_processManipulation, "execve() found"))
+//         ("execl", std::make_pair(elf::k_processManipulation, "execl() found"))
+//         ("execle", std::make_pair(elf::k_processManipulation, "execle() found"))
+//         ("execve", std::make_pair(elf::k_processManipulation, "execve() found"))
+//         ("raise", std::make_pair(elf::k_processManipulation, "raise() found"))
+//         ("daemon", std::make_pair(elf::k_processManipulation, "daemon() found"))
+//         ("pclose", std::make_pair(elf::k_pipeFunctions, "pclose() found"))
+//         ("popen", std::make_pair(elf::k_pipeFunctions, "popen() found"))
+//         ("rand", std::make_pair(elf::k_crypto, "rand() found"))
+//         ("srand", std::make_pair(elf::k_crypto, "srand() found"))
+//         ("srandom_r", std::make_pair(elf::k_crypto, "srandom_r() found"))
+//         ("random_r", std::make_pair(elf::k_crypto, "random_r() found"))
+//         ("phys_pages_info", std::make_pair(elf::k_infoGathering, "phys_pages_info() found"))
+//         ("getpagesize", std::make_pair(elf::k_infoGathering, "getpagesize() found"))
+//         ("fstat", std::make_pair(elf::k_infoGathering, "fstat() found"))
+//         ("uname", std::make_pair(elf::k_infoGathering, "uname() found"))
+//         ("access", std::make_pair(elf::k_infoGathering, "access() found"))
+//         ("sysinfo", std::make_pair(elf::k_infoGathering, "sysinfo() found"))
+//         ("setenv", std::make_pair(elf::k_envVariables, "setenv() found"))
+//         ("clearenv", std::make_pair(elf::k_envVariables, "clearenv() found"))
+//         ("unsetenv", std::make_pair(elf::k_envVariables, "unsetenv() found"))
+//         ("getenv", std::make_pair(elf::k_envVariables, "getenv() found"))
+//         ("secure_getenv", std::make_pair(elf::k_envVariables, "secure_getenv() found"))
+//         ("chown", std::make_pair(elf::k_permissions, "chown() found"))
+//         ("chmod", std::make_pair(elf::k_permissions, "chmod() found"))
+//         ("openlog", std::make_pair(elf::k_syslog, "openlog() found"))
+//         ("closelog", std::make_pair(elf::k_syslog, "closelog() found"))
+//         ("vsyslog", std::make_pair(elf::k_syslog, "vsyslog() found"))
+//         ("pcap_open_live", std::make_pair(elf::k_packetSniff, "pcap_open_live() found"))
+//         ("pcap_close", std::make_pair(elf::k_packetSniff, "pcap_close() found"))
+//         ("pcap_read", std::make_pair(elf::k_packetSniff, "pcap_read() found"))
+//         ("pcap_loop", std::make_pair(elf::k_packetSniff, "pcap_loop() found"))
+//         ("system", std::make_pair(elf::k_shell, "system() found"))
+//         ("tshd_runshell", std::make_pair(elf::k_shell, "tinysh function found."))
+//         ("dlsym", std::make_pair(elf::k_hooking, "dlsym() found in hooking context"))
+//         ("ptrace", std::make_pair(elf::k_antidebug, "ptrace detection found"));
+
+    std::map<std::string, std::pair<elf::Capabilties, std::string>> capabilities = {
+        {"fclose", {elf::k_fileFunctions, "fclose() found"}},
+        {"feof", {elf::k_fileFunctions, "feof() found"}},
+        {"fopen", {elf::k_fileFunctions, "fopen() found"}},
+        {"funlockfile", {elf::k_fileFunctions, "funlockfile() found"}},
+        {"unlink", {elf::k_fileFunctions, "unlink() found"}},
+        {"accept", {elf::k_networkFunctions, "accept() found"}},
+        {"bind", {elf::k_networkFunctions, "bind() found"}},
+        {"connect", {elf::k_networkFunctions, "connect() found"}},
+        {"listen", {elf::k_networkFunctions, "listen() found"}},
+        {"socket", {elf::k_networkFunctions, "socket() found"}},
+        {"sendto", {elf::k_networkFunctions, "sendto() found"}},
+        {"recv", {elf::k_networkFunctions, "recv() found"}},
+        {"gethostbyname", {elf::k_networkFunctions, "gethostbyname() found"}},
+        {"gethostbyname_r", {elf::k_networkFunctions, "gethostbyname_r() found"}},
+        {"inet_addr", {elf::k_networkFunctions, "inet_addr() found"}},
+        {"fork", {elf::k_processManipulation, "fork() found"}},
+        {"kill", {elf::k_processManipulation, "kill() found"}},
+        {"clone", {elf::k_processManipulation, "clone() found"}},
+        {"execve", {elf::k_processManipulation, "execve() found"}},
+        {"execl", {elf::k_processManipulation, "execl() found"}},
+        {"execle", {elf::k_processManipulation, "execle() found"}},
+        {"execve", {elf::k_processManipulation, "execve() found"}},
+        {"raise", {elf::k_processManipulation, "raise() found"}},
+        {"daemon", {elf::k_processManipulation, "daemon() found"}},
+        {"pclose", {elf::k_pipeFunctions, "pclose() found"}},
+        {"popen", {elf::k_pipeFunctions, "popen() found"}},
+        {"rand", {elf::k_crypto, "rand() found"}},
+        {"srand", {elf::k_crypto, "srand() found"}},
+        {"srandom_r", {elf::k_crypto, "srandom_r() found"}},
+        {"random_r", {elf::k_crypto, "random_r() found"}},
+        {"phys_pages_info", {elf::k_infoGathering, "phys_pages_info() found"}},
+        {"getpagesize", {elf::k_infoGathering, "getpagesize() found"}},
+        {"fstat", {elf::k_infoGathering, "fstat() found"}},
+        {"uname", {elf::k_infoGathering, "uname() found"}},
+        {"access", {elf::k_infoGathering, "access() found"}},
+        {"sysinfo", {elf::k_infoGathering, "sysinfo() found"}},
+        {"setenv", {elf::k_envVariables, "setenv() found"}},
+        {"clearenv", {elf::k_envVariables, "clearenv() found"}},
+        {"unsetenv", {elf::k_envVariables, "unsetenv() found"}},
+        {"getenv", {elf::k_envVariables, "getenv() found"}},
+        {"secure_getenv", {elf::k_envVariables, "secure_getenv() found"}},
+        {"chown", {elf::k_permissions, "chown() found"}},
+        {"chmod", {elf::k_permissions, "chmod() found"}},
+        {"openlog", {elf::k_syslog, "openlog() found"}},
+        {"closelog", {elf::k_syslog, "closelog() found"}},
+        {"vsyslog", {elf::k_syslog, "vsyslog() found"}},
+        {"pcap_open_live", {elf::k_packetSniff, "pcap_open_live() found"}},
+        {"pcap_close", {elf::k_packetSniff, "pcap_close() found"}},
+        {"pcap_read", {elf::k_packetSniff, "pcap_read() found"}},
+        {"pcap_loop", {elf::k_packetSniff, "pcap_loop() found"}},
+        {"system", {elf::k_shell, "system() found"}},
+        {"tshd_runshell", {elf::k_shell, "tinysh function found."}},
+        {"dlsym", {elf::k_hooking, "dlsym() found in hooking context"}},
+        {"ptrace", {elf::k_antidebug, "ptrace detection found"}}
+    };
+
 }
+
+
 
 Symbols::Symbols() :
     m_isDY(false),
@@ -103,12 +170,21 @@ std::set<std::string> Symbols::getFiles() const
     return m_files;
 }
 
+// void Symbols::createSymbols(const char* p_data,
+//                             boost::uint64_t p_dataSize,
+//                             boost::uint64_t p_symTabOffset,
+//                             boost::uint32_t p_symTabSize,
+//                             boost::uint64_t p_strTabOffset,
+//                             boost::uint64_t p_strTableSize,
+//                             const AbstractSegments& p_segments,
+//                             bool p_is64, bool p_isLE, bool p_isDY)
+
 void Symbols::createSymbols(const char* p_data,
-                            boost::uint64_t p_dataSize,
-                            boost::uint64_t p_symTabOffset,
-                            boost::uint32_t p_symTabSize,
-                            boost::uint64_t p_strTabOffset,
-                            boost::uint64_t p_strTableSize,
+                            std::uint64_t p_dataSize,
+                            std::uint64_t p_symTabOffset,
+                            std::uint32_t p_symTabSize,
+                            std::uint64_t p_strTabOffset,
+                            std::uint64_t p_strTableSize,
                             const AbstractSegments& p_segments,
                             bool p_is64, bool p_isLE, bool p_isDY)
 {
@@ -119,8 +195,11 @@ void Symbols::createSymbols(const char* p_data,
         return;
     }
 
-    boost::uint8_t multiplier = p_is64 ? sizeof(elf::symbol::symtable_entry64) : sizeof(elf::symbol::symtable_entry32);
-    for (boost::uint32_t i = 0; p_symTabOffset + i < p_dataSize; i += multiplier)
+    // boost::uint8_t multiplier = p_is64 ? sizeof(elf::symbol::symtable_entry64) : sizeof(elf::symbol::symtable_entry32);
+    // for (boost::uint32_t i = 0; p_symTabOffset + i < p_dataSize; i += multiplier)
+
+    std::uint8_t multiplier = p_is64 ? sizeof(elf::symbol::symtable_entry64) : sizeof(elf::symbol::symtable_entry32);
+    for (std::uint32_t i = 0; p_symTabOffset + i < p_dataSize; i += multiplier)
     {
         // create a temp symbol to work with
         AbstractSymbol symbol(p_data, p_symTabOffset + i, p_is64, p_isLE);
@@ -197,26 +276,42 @@ void Symbols::createSymbols(const char* p_data,
     }
 }
 
-std::string Symbols::findSymbol(boost::uint64_t p_address) const
+// std::string Symbols::findSymbol(boost::uint64_t p_address) const
+// {
+//     BOOST_FOREACH(const AbstractSymbol& entry, m_symbols)
+//     {
+//         if (entry.getValue() == p_address)
+//         {
+//             return entry.getName();
+//         }
+//     }
+
+//     return "";
+// }
+
+std::string Symbols::findSymbol(std::uint64_t p_address) const
 {
-    BOOST_FOREACH(const AbstractSymbol& entry, m_symbols)
+    auto it = std::find_if(m_symbols.begin(), m_symbols.end(),
+                           [p_address](const AbstractSymbol& entry) {
+                               return entry.getValue() == p_address;
+                           });
+
+    if (it != m_symbols.end())
     {
-        if (entry.getValue() == p_address)
-        {
-            return entry.getName();
-        }
+        return it->getName();
     }
 
     return "";
 }
 
-
 void Symbols::evaluate(std::vector<std::pair<boost::int32_t, std::string> >& p_reasons,
                        std::map<elf::Capabilties, std::set<std::string> >& p_capabilities) const
 {
     (void)p_reasons; //appears to be unused
-    boost::uint32_t noType = 0;
-    BOOST_FOREACH(const AbstractSymbol& entry, m_symbols)
+    // boost::uint32_t noType = 0;
+    std::uint32_t noType = 0;
+    // BOOST_FOREACH(const AbstractSymbol& entry, m_symbols)
+    for (const auto& entry : m_symbols)
     {
         if ((entry.getType() & 0x0f) == elf::symbol::k_file)
         {
@@ -256,7 +351,8 @@ std::string Symbols::printToStdOut() const
 {
     std::stringstream returnValue;
     returnValue << "Symbols (count=" << m_symbols.size() << ")\n";
-    BOOST_FOREACH(const AbstractSymbol& symbol, m_symbols)
+    // BOOST_FOREACH(const AbstractSymbol& symbol, m_symbols)
+    for (const auto& symbol : m_symbols)
     {
         returnValue << "\t" << "type=" << symbol.getTypeName() << ", binding="
                     << symbol.getBinding() << ", value=0x" << std::hex

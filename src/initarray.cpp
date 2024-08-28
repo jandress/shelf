@@ -1,7 +1,8 @@
+//boost free
 #include "initarray.hpp"
 
 #include <sstream>
-#include <boost/foreach.hpp>
+//#include <boost/foreach.hpp>
 #include <algorithm>
 
 #ifdef __APPLE__
@@ -23,15 +24,19 @@ InitArray::~InitArray()
 {
 }
 
-void InitArray::set(const char* p_data, boost::uint32_t p_size,
-                    boost::uint32_t p_offset, boost::uint32_t p_entries,
+// void InitArray::set(const char* p_data, boost::uint32_t p_size,
+//                     boost::uint32_t p_offset, boost::uint32_t p_entries,
+//                     bool is64, bool isLE)
+void InitArray::set(const char* p_data, std::uint32_t p_size,
+                    std::uint32_t p_offset, std::uint32_t p_entries,
                     bool is64, bool isLE)
 {
     (void)p_size; //appears to be unused
     const char* offset = p_data + p_offset;
     const char* end = p_data + p_offset;
     m_offset = p_offset;
-    boost::uint32_t size = 4;
+    // boost::uint32_t size = 4;
+    std::uint32_t size = 4;
     if (is64)
     {
         size = 8;
@@ -42,7 +47,8 @@ void InitArray::set(const char* p_data, boost::uint32_t p_size,
     {
         if (is64)
         {
-            boost::uint64_t address = *reinterpret_cast<const boost::uint64_t*>(offset);
+            // boost::uint64_t address = *reinterpret_cast<const boost::uint64_t*>(offset);
+            std::uint64_t address = *reinterpret_cast<const std::uint64_t*>(offset);
             if (!isLE)
             {
                 address = htobe64(address);
@@ -51,7 +57,8 @@ void InitArray::set(const char* p_data, boost::uint32_t p_size,
         }
         else
         {
-            boost::uint32_t address = *reinterpret_cast<const boost::uint32_t*>(offset);
+            // boost::uint32_t address = *reinterpret_cast<const boost::uint32_t*>(offset);
+            std::uint32_t address = *reinterpret_cast<const std::uint32_t*>(offset);
             if (!isLE)
             {
                 address = ntohl(address);
@@ -61,12 +68,14 @@ void InitArray::set(const char* p_data, boost::uint32_t p_size,
     }
 }
 
-boost::uint32_t InitArray::getOffset() const
+// boost::uint32_t InitArray::getOffset() const
+std::uint32_t InitArray::getOffset() const
 {
     return m_offset;
 }
 
-std::vector<std::pair<boost::uint64_t, std::string> >& InitArray::getEntries()
+// std::vector<std::pair<boost::uint64_t, std::string> >& InitArray::getEntries()
+std::vector<std::pair<std::uint64_t, std::string> >& InitArray::getEntries()
 {
     return m_entries;
 }
