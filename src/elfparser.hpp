@@ -1,3 +1,4 @@
+//boost free
 #ifndef ELF_PARSER
 #define ELF_PARSER
 
@@ -8,7 +9,7 @@
 #include <string>
 
 
-#include <boost/cstdint.hpp>
+///#include <boost/cstdint.hpp>
 #include <cstdint>
 #include <memory>
 
