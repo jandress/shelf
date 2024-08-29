@@ -1,3 +1,4 @@
+//boost free
 #include "abstract_elfheader.hpp"
 #include "structures/elfheader.hpp"
 #include "structures/sectionheader.hpp"
@@ -76,7 +77,8 @@ std::string AbstractElfHeader::getMagic() const
 
 std::string AbstractElfHeader::getType() const
 {
-    boost::uint16_t type = 0;
+    // boost::uint16_t type = 0;
+    std::uint16_t type = 0;
     if (m_is64)
     {
         type = isLE() ? m_header64->m_type : ntohs(m_header64->m_type);
@@ -105,7 +107,8 @@ std::string AbstractElfHeader::getType() const
 
 std::string AbstractElfHeader::getOSABI() const
 {
-    boost::uint8_t os = m_is64 ? m_header64->m_os : m_header32->m_os;
+    // boost::uint8_t os = m_is64 ? m_header64->m_os : m_header32->m_os;
+    std::uint8_t os = m_is64 ? m_header64->m_os : m_header32->m_os;
     switch (os)
     {
         case 0:
@@ -135,7 +138,8 @@ std::string AbstractElfHeader::getOSABI() const
     }
 }
 
-boost::uint64_t AbstractElfHeader::getEntryPoint() const
+// boost::uint64_t AbstractElfHeader::getEntryPoint() const
+std::uint64_t AbstractElfHeader::getEntryPoint() const
 {
     assert(m_header32 != NULL || m_header64 != NULL);
     if (m_is64)
@@ -166,7 +170,8 @@ std::string AbstractElfHeader::getVersion() const
     return result.str();
 }
 
-boost::uint32_t AbstractElfHeader::getProgramOffset() const
+// boost::uint32_t AbstractElfHeader::getProgramOffset() const
+std::uint32_t AbstractElfHeader::getProgramOffset() const
 {
     assert(m_header32 != NULL || m_header64 != NULL);
     if (m_is64)
@@ -176,7 +181,8 @@ boost::uint32_t AbstractElfHeader::getProgramOffset() const
     return isLE() ? m_header32->m_phoff : ntohl(m_header32->m_phoff);
 }
 
-boost::uint16_t AbstractElfHeader::getProgramCount() const
+// boost::uint16_t AbstractElfHeader::getProgramCount() const
+std::uint16_t AbstractElfHeader::getProgramCount() const
 {
     assert(m_header32 != NULL || m_header64 != NULL);
     if (m_is64)
@@ -186,7 +192,8 @@ boost::uint16_t AbstractElfHeader::getProgramCount() const
     return isLE() ? m_header32->m_phnum : ntohs(m_header32->m_phnum);
 }
 
-boost::uint16_t AbstractElfHeader::getProgramSize() const
+// boost::uint16_t AbstractElfHeader::getProgramSize() const
+std::uint16_t AbstractElfHeader::getProgramSize() const
 {
     assert(m_header32 != NULL || m_header64 != NULL);
     if (m_is64)
@@ -196,7 +203,8 @@ boost::uint16_t AbstractElfHeader::getProgramSize() const
     return isLE() ? m_header32->m_phentsize : ntohs(m_header32->m_phentsize);
 }
 
-boost::uint32_t AbstractElfHeader::getSectionOffset() const
+// boost::uint32_t AbstractElfHeader::getSectionOffset() const
+std::uint32_t AbstractElfHeader::getSectionOffset() const
 {
     assert(m_header32 != NULL || m_header64 != NULL);
     if (m_is64)
@@ -206,7 +214,8 @@ boost::uint32_t AbstractElfHeader::getSectionOffset() const
     return isLE() ? m_header32->m_shoff : ntohl(m_header32->m_shoff);
 }
 
-boost::uint16_t AbstractElfHeader::getSectionSize() const
+// boost::uint16_t AbstractElfHeader::getSectionSize() const
+std::uint16_t AbstractElfHeader::getSectionSize() const
 {
     assert(m_header32 != NULL || m_header64 != NULL);
 
@@ -217,7 +226,8 @@ boost::uint16_t AbstractElfHeader::getSectionSize() const
     return isLE() ? m_header32->m_shentsize : ntohs(m_header32->m_shentsize);
 }
 
-boost::uint16_t AbstractElfHeader::getSectionCount() const
+// boost::uint16_t AbstractElfHeader::getSectionCount() const
+std::uint16_t AbstractElfHeader::getSectionCount() const
 {
     assert(m_header32 != NULL || m_header64 != NULL);
     if (m_is64)
@@ -227,7 +237,8 @@ boost::uint16_t AbstractElfHeader::getSectionCount() const
     return isLE() ? m_header32->m_shnum : ntohs(m_header32->m_shnum);
 }
 
-boost::uint16_t AbstractElfHeader::getStringTableIndex() const
+// boost::uint16_t AbstractElfHeader::getStringTableIndex() const
+std::uint16_t AbstractElfHeader::getStringTableIndex() const
 {
     assert(m_header32 != NULL || m_header64 != NULL);
     if (m_is64)
@@ -237,7 +248,8 @@ boost::uint16_t AbstractElfHeader::getStringTableIndex() const
     return isLE() ? m_header32->m_shtrndx : ntohs(m_header32->m_shtrndx);
 }
 
-boost::uint32_t AbstractElfHeader::getStringTableOffset(const char* p_start) const
+// boost::uint32_t AbstractElfHeader::getStringTableOffset(const char* p_start) const
+std::uint32_t AbstractElfHeader::getStringTableOffset(const char* p_start) const
 {
     if (getStringTableIndex() == 0)
     {
@@ -246,14 +258,16 @@ boost::uint32_t AbstractElfHeader::getStringTableOffset(const char* p_start) con
 
     if (m_is64)
     {
-        boost::uint32_t offset = getSectionOffset() + (getStringTableIndex() * sizeof(elf::section_header_64));
+        // boost::uint32_t offset = getSectionOffset() + (getStringTableIndex() * sizeof(elf::section_header_64));
+        std::uint32_t offset = getSectionOffset() + (getStringTableIndex() * sizeof(elf::section_header_64));
         const elf::section_header_64* strTab =
             reinterpret_cast<const elf::section_header_64*>(p_start + offset);
         return strTab->m_offset;
     }
     else
     {
-        boost::uint32_t offset = getSectionOffset() + (getStringTableIndex() * sizeof(elf::section_header_32));
+        // boost::uint32_t offset = getSectionOffset() + (getStringTableIndex() * sizeof(elf::section_header_32));
+        std::uint32_t offset = getSectionOffset() + (getStringTableIndex() * sizeof(elf::section_header_32));
         const elf::section_header_32* strTab =
             reinterpret_cast<const elf::section_header_32*>(p_start + offset);
         return strTab->m_offset;
@@ -274,7 +288,8 @@ bool AbstractElfHeader::isLE() const
 
 std::string AbstractElfHeader::getMachine() const
 {
-    boost::uint16_t machine = m_is64 ? m_header64->m_machine : m_header32->m_machine;
+    // boost::uint16_t machine = m_is64 ? m_header64->m_machine : m_header32->m_machine;
+    std::uint16_t machine = m_is64 ? m_header64->m_machine : m_header32->m_machine;
     if (!isLE())
     {
         machine = ntohs(machine);
@@ -301,7 +316,8 @@ std::string AbstractElfHeader::getMachine() const
 
 std::string AbstractElfHeader::getEncoding() const
 {
-    boost::uint8_t encoding = m_header64 != NULL ? m_header64->m_encoding : m_header32->m_encoding;
+    // boost::uint8_t encoding = m_header64 != NULL ? m_header64->m_encoding : m_header32->m_encoding;
+    std::uint8_t encoding = m_header64 != NULL ? m_header64->m_encoding : m_header32->m_encoding;
     switch (encoding)
     {
         case 0:
@@ -351,7 +367,8 @@ std::string AbstractElfHeader::getFileVersion() const
 std::string AbstractElfHeader::getEHSize() const
 {
     assert(m_header32 != NULL || m_header64 != NULL);
-    boost::uint16_t value = 0;
+    // boost::uint16_t value = 0;
+    std::uint16_t value = 0;
     if (m_is64)
     {
         value = isLE() ? m_header64->m_ehsize : ntohs(m_header64->m_ehsize);
@@ -368,7 +385,8 @@ std::string AbstractElfHeader::getEHSize() const
 std::string AbstractElfHeader::getFlags() const
 {
     assert(m_header32 != NULL || m_header64 != NULL);
-    boost::uint32_t value = 0;
+    // boost::uint32_t value = 0;
+    std::uint32_t value = 0;
     if (m_is64)
     {
         value = isLE() ? m_header64->m_flags : ntohl(m_header64->m_flags);
@@ -407,7 +425,8 @@ std::string AbstractElfHeader::printToStdOut() const
     return return_value.str();
 }
 
-void AbstractElfHeader::evaluate(std::vector<std::pair<boost::int32_t, std::string> >&,
+// void AbstractElfHeader::evaluate(std::vector<std::pair<boost::int32_t, std::string> >&,
+void AbstractElfHeader::evaluate(std::vector<std::pair<std::int32_t, std::string> >&,
                                  std::map<elf::Capabilties, std::set<std::string> >& p_capabilities) const
 {
     if (getProgramOffset() != 0 && getProgramOffset() < 45)

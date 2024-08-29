@@ -1,10 +1,11 @@
+//boost free
 #include "abstract_programheader.hpp"
 #include "structures/programheader.hpp"
 #include "abstract_segments.hpp"
 
 #include <sstream>
 #include <stdexcept>
-#include <boost/foreach.hpp>
+//#include <boost/foreach.hpp>
 #include <algorithm>
 
 #include <iostream>
@@ -18,7 +19,8 @@
 #endif
 
 AbstractProgramHeader::AbstractProgramHeader(const char* p_data,
-                                             boost::uint16_t p_size, bool p_is64,
+                                            //  boost::uint16_t p_size, bool p_is64,
+                                            std::uint16_t p_size, bool p_is64,
                                              bool p_isLE) :
     m_program_header32(),
     m_program_header64(),
@@ -150,7 +152,8 @@ std::string AbstractProgramHeader::getName() const
     }
 }
 
-boost::uint32_t AbstractProgramHeader::getType() const
+// boost::uint32_t AbstractProgramHeader::getType() const
+std::uint32_t AbstractProgramHeader::getType() const
 {
     if (m_is64)
     {
@@ -159,7 +162,8 @@ boost::uint32_t AbstractProgramHeader::getType() const
     return m_isLE ? m_program_header32->m_type : ntohl(m_program_header32->m_type);
 }
 
-boost::uint64_t AbstractProgramHeader::getOffset() const
+// boost::uint64_t AbstractProgramHeader::getOffset() const
+std::uint64_t AbstractProgramHeader::getOffset() const
 {
     if (m_is64)
     {
@@ -168,7 +172,8 @@ boost::uint64_t AbstractProgramHeader::getOffset() const
     return m_isLE ? m_program_header32->m_offset : ntohl(m_program_header32->m_offset);
 }
 
-boost::uint64_t AbstractProgramHeader::getVirtualAddress() const
+// boost::uint64_t AbstractProgramHeader::getVirtualAddress() const
+std::uint64_t AbstractProgramHeader::getVirtualAddress() const
 {
     if (m_is64)
     {
@@ -184,7 +189,8 @@ std::string AbstractProgramHeader::getVirtualAddressString() const
     return result.str();
 }
 
-boost::uint64_t AbstractProgramHeader::getPhysicalAddress() const
+// boost::uint64_t AbstractProgramHeader::getPhysicalAddress() const
+std::uint64_t AbstractProgramHeader::getPhysicalAddress() const
 {
     if (m_is64)
     {
@@ -200,7 +206,8 @@ std::string AbstractProgramHeader::getPhysicalAddressString() const
     return result.str();
 }
 
-boost::uint64_t AbstractProgramHeader::getFileSize() const
+// boost::uint64_t AbstractProgramHeader::getFileSize() const
+std::uint64_t AbstractProgramHeader::getFileSize() const
 {
     if (m_is64)
     {
@@ -209,7 +216,8 @@ boost::uint64_t AbstractProgramHeader::getFileSize() const
     return m_isLE ? m_program_header32->m_filesz : ntohl(m_program_header32->m_filesz);
 }
 
-boost::uint64_t AbstractProgramHeader::getMemorySize() const
+// boost::uint64_t AbstractProgramHeader::getMemorySize() const
+std::uint64_t AbstractProgramHeader::getMemorySize() const
 {
     if (m_is64)
     {
@@ -218,7 +226,8 @@ boost::uint64_t AbstractProgramHeader::getMemorySize() const
     return m_isLE ? m_program_header32->m_memsz : ntohl(m_program_header32->m_memsz);
 }
 
-boost::uint32_t AbstractProgramHeader::getFlags() const
+// boost::uint32_t AbstractProgramHeader::getFlags() const
+std::uint32_t AbstractProgramHeader::getFlags() const
 {
     if (m_is64)
     {
