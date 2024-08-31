@@ -1,31 +1,51 @@
+//boost free
 #ifndef INIT_ARRAY_HPP
 #define INIT_ARRAY_HPP
 
 #include <string>
 #include <vector>
-#include <boost/cstdint.hpp>
+// #include <boost/cstdint.hpp>
 #include <cstdint>
 
 class InitArray
 {
+// public:
+//     explicit InitArray(const std::string& p_name);
+//     ~InitArray();
+
+//     void set(const char* p_data, boost::uint32_t p_size, boost::uint32_t p_offset,
+//              boost::uint32_t p_entries, bool p_is64, bool p_isLE);
+
+//     boost::uint32_t getOffset() const;
+
+//     std::vector<std::pair<boost::uint64_t, std::string> >& getEntries();
+
+//     std::string printToStd() const;
+
+// private:
+
+//     std::string m_name;
+//     boost::uint32_t m_offset;
+//     std::vector<std::pair<boost::uint64_t, std::string> > m_entries;
+// };
 public:
     explicit InitArray(const std::string& p_name);
     ~InitArray();
 
-    void set(const char* p_data, boost::uint32_t p_size, boost::uint32_t p_offset,
-             boost::uint32_t p_entries, bool p_is64, bool p_isLE);
+    void set(const char* p_data, std::uint32_t p_size, std::uint32_t p_offset,
+             std::uint32_t p_entries, bool p_is64, bool p_isLE);
 
-    boost::uint32_t getOffset() const;
+    std::uint32_t getOffset() const;
 
-    std::vector<std::pair<boost::uint64_t, std::string> >& getEntries();
+    std::vector<std::pair<std::uint64_t, std::string> >& getEntries();
 
     std::string printToStd() const;
 
 private:
 
     std::string m_name;
-    boost::uint32_t m_offset;
-    std::vector<std::pair<boost::uint64_t, std::string> > m_entries;
+    std::uint32_t m_offset;
+    std::vector<std::pair<std::uint64_t, std::string> > m_entries;
 };
 
 #endif

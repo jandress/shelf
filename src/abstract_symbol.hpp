@@ -1,9 +1,10 @@
+//boost free
 #ifndef ABSTRACT_SYMBOL_HPP
 #define ABSTRACT_SYMBOL_HPP
 
 #include <string>
 
-#include <boost/cstdint.hpp>
+// #include <boost/cstdint.hpp>
 #include <cstdint>
 
 namespace elf
@@ -18,20 +19,31 @@ namespace elf
 class AbstractSymbol
 {
 public:
-    AbstractSymbol(const char* p_data, boost::uint32_t p_offset,
+    // AbstractSymbol(const char* p_data, boost::uint32_t p_offset,
+    AbstractSymbol(const char* p_data, std::uint32_t p_offset,
                    bool p_is64, bool p_isLE);
     AbstractSymbol(const AbstractSymbol& p_rhs);
     ~AbstractSymbol();
 
-    boost::uint32_t getStructSize() const;
-    boost::uint8_t getType() const;
-    boost::uint8_t getInfo() const;
+    // boost::uint32_t getStructSize() const;
+    // boost::uint8_t getType() const;
+    // boost::uint8_t getInfo() const;
+    // std::string getTypeName() const;
+    // std::string getBinding() const;
+    // boost::uint64_t getValue() const;
+    // boost::uint32_t getNameIndex() const;
+    // const std::string& getName() const;
+    // boost::uint16_t getSectionIndex() const;
+
+    std::uint32_t getStructSize() const;
+    std::uint8_t getType() const;
+    std::uint8_t getInfo() const;
     std::string getTypeName() const;
     std::string getBinding() const;
-    boost::uint64_t getValue() const;
-    boost::uint32_t getNameIndex() const;
+    std::uint64_t getValue() const;
+    std::uint32_t getNameIndex() const;
     const std::string& getName() const;
-    boost::uint16_t getSectionIndex() const;
+    std::uint16_t getSectionIndex() const;
 
     void setName(const std::string& p_name);
 

@@ -53,7 +53,8 @@ std::set<std::string> AbstractSegments::getFiles() const
     // BOOST_FOREACH(const Symbols& symbol, m_otherSymbols)
     for(const auto& symbol : m_otherSymbols)
     {
-        const std::set<std::string>& unique(symbol.getFiles());
+        // const std::set<std::string>& unique(symbol.getFiles());
+        const std::set<std::string>& unique(symbol->getFiles());
         // BOOST_FOREACH(const std::string& value, unique)
         for(const std::string& value : unique)
         {
@@ -172,29 +173,34 @@ void AbstractSegments::generateSegments()
         {
             if (section.getType() == "K_NOTE")
             {
-                m_types.push_back(new NoteSegment(m_data, section.getPhysOffset(), section.getSize(), elf::k_note));
+                // m_types.push_back(new NoteSegment(m_data, section.getPhysOffset(), section.getSize(), elf::k_note));
+                m_types.push_back(std::make_unique<NoteSegment>(m_data, section.getPhysOffset(), section.getSize(), elf::k_note));
                 m_offsets.insert(m_data + section.getPhysOffset());
             }
             else if (section.getType() == "K_PROGBITS")
             {
                 if (section.getName() == ".comment")
                 {
-                    m_types.push_back(new CommentSegment(m_data, section.getPhysOffset(), section.getSize(), elf::k_progbits));
+                    // m_types.push_back(new CommentSegment(m_data, section.getPhysOffset(), section.getSize(), elf::k_progbits));
+                    m_types.push_back(std::make_unique<CommentSegment>(m_data, section.getPhysOffset(), section.getSize(), elf::k_progbits));
                     m_offsets.insert(m_data + section.getPhysOffset());
                 }
                 else if (section.getName() == ".gnu_debuglink")
                 {
-                    m_types.push_back(new DebugLinkSegment(m_data, section.getPhysOffset(), section.getSize(), elf::k_progbits));
+                    // m_types.push_back(new DebugLinkSegment(m_data, section.getPhysOffset(), section.getSize(), elf::k_progbits));
+                    m_types.push_back(std::make_unique<DebugLinkSegment>(m_data, section.getPhysOffset(), section.getSize(), elf::k_progbits));
                     m_offsets.insert(m_data + section.getPhysOffset());
                 }
                 else if (section.getName() == ".interp")
                 {
-                    m_types.push_back(new InterpSegment(m_data, section.getPhysOffset(), section.getSize(), elf::k_progbits));
+                    // m_types.push_back(new InterpSegment(m_data, section.getPhysOffset(), section.getSize(), elf::k_progbits));
+                    m_types.push_back(std::make_unique<InterpSegment>(m_data, section.getPhysOffset(), section.getSize(), elf::k_progbits));
                     m_offsets.insert(m_data + section.getPhysOffset());
                 }
                 else if (section.getName() == ".rodata")
                 {
-                    m_types.push_back(new ReadOnlySegment(m_data, section.getPhysOffset(), section.getSize(), elf::k_progbits));
+                    // m_types.push_back(new ReadOnlySegment(m_data, section.getPhysOffset(), section.getSize(), elf::k_progbits));
+                    m_types.push_back(std::make_unique<ReadOnlySegment>(m_data, section.getPhysOffset(), section.getSize(), elf::k_progbits));
                     m_offsets.insert(m_data + section.getPhysOffset());
                 }
                 else if (m_ctorsArray.getOffset() == 0 && section.getName() == ".ctors")
@@ -248,8 +254,8 @@ void AbstractSegments::generateSegments()
             }
             else
             {
-                m_types.push_back(new StringTableSegment(m_data, 
-                    m_sections[link].getPhysOffset(), m_sections[link].getSize(), elf::k_strtab));
+                // m_types.push_back(new StringTableSegment(m_data, m_sections[link].getPhysOffset(), m_sections[link].getSize(), elf::k_strtab));
+                m_types.push_back(std::make_unique<StringTableSegment>(m_data, m_sections[link].getPhysOffset(), m_sections[link].getSize(), elf::k_strtab));
                 m_offsets.insert(m_data + m_sections[link].getPhysOffset());
             }
 
@@ -260,7 +266,8 @@ void AbstractSegments::generateSegments()
                                         m_sections[link].getPhysOffset(),
                                         m_sections[link].getSize(),
                                         *this, m_is64, m_isLE, m_isDY);
-            m_otherSymbols.push_back(otherSymbols);
+            // m_otherSymbols.push_back(otherSymbols);
+            m_otherSymbols.push_back(std::make_unique<Symbols>(std::move(*otherSymbols)));
             m_offsets.insert(m_data + m_sections[index].getPhysOffset());
         }
     }
@@ -269,8 +276,8 @@ void AbstractSegments::generateSegments()
     // BOOST_FOREACH(std::size_t index, strTab)
     for(std::size_t index : strTab)
     {
-        m_types.push_back(new StringTableSegment(m_data, m_sections[index].getPhysOffset(),
-            m_sections[index].getSize(), elf::k_strtab));
+        // m_types.push_back(new StringTableSegment(m_data, m_sections[index].getPhysOffset(), m_sections[index].getSize(), elf::k_strtab));
+        m_types.push_back(std::make_unique<StringTableSegment>(m_data, m_sections[index].getPhysOffset(), m_sections[index].getSize(), elf::k_strtab));
         m_offsets.insert(m_data + m_sections[index].getPhysOffset());
     }
 
@@ -281,7 +288,8 @@ void AbstractSegments::generateSegments()
     {
         for (std::size_t i = 0; i < m_otherSymbols.size(); ++i)
         {
-            std::string resolved = m_otherSymbols[i].findSymbol(initArray[j].first);
+            // std::string resolved = m_otherSymbols[i].findSymbol(initArray[j].first);
+            std::string resolved = m_otherSymbols[i]->findSymbol(initArray[j].first);
             if (!resolved.empty())
             {
                 initArray[j].second.assign(resolved);
@@ -294,7 +302,8 @@ void AbstractSegments::generateSegments()
     {
         for (std::size_t i = 0; i < m_otherSymbols.size(); ++i)
         {
-            std::string resolved = m_otherSymbols[i].findSymbol(ctorsArray[j].first);
+            // std::string resolved = m_otherSymbols[i].findSymbol(ctorsArray[j].first);
+            std::string resolved = m_otherSymbols[i]->findSymbol(ctorsArray[j].first);
             if (!resolved.empty())
             {
                 ctorsArray[j].second.assign(resolved);
@@ -343,13 +352,15 @@ void AbstractSegments::evaluate(std::vector<std::pair<std::int32_t, std::string>
     // BOOST_FOREACH(const SegmentType& seg, m_types)
     for(const auto& seg : m_types)
     {
-        seg.evaluate(p_reasons, p_capabilities);
+        // seg.evaluate(p_reasons, p_capabilities);
+        seg->evaluate(p_reasons, p_capabilities);
     }
 
     // BOOST_FOREACH(const Symbols& sym, m_otherSymbols)
     for(const auto& sym : m_otherSymbols)
     {
-        sym.evaluate(p_reasons, p_capabilities);
+        // sym.evaluate(p_reasons, p_capabilities);
+        sym->evaluate(p_reasons, p_capabilities);
     }
 
     if (m_fakeDynamicStringTable)
@@ -364,7 +375,8 @@ std::vector<AbstractSymbol> AbstractSegments::getAllSymbols() const
     // BOOST_FOREACH(const Symbols& other, m_otherSymbols)
     for(const auto& other : m_otherSymbols)
     {
-        const std::vector<AbstractSymbol>& others(other.getSymbols());
+        // const std::vector<AbstractSymbol>& others(other.getSymbols());
+        const std::vector<AbstractSymbol>& others(other->getSymbols());
         // BOOST_FOREACH(const AbstractSymbol& newSymbols, others)
         for(const auto& newSymbols : others)
         {
@@ -430,9 +442,11 @@ std::string AbstractSegments::printSegment(boost::uint64_t p_offset) const
     // BOOST_FOREACH(const SegmentType& segment, m_types)
     for(const auto& segment : m_types)
     {
-        if (segment.getOffset() == p_offset)
+        // if (segment.getOffset() == p_offset)
+        if (segment->getOffset() == p_offset)
         {
-            return segment.printToStdOut();
+            // return segment.printToStdOut();
+            return segment->printToStdOut();
         }
     }
 
@@ -464,13 +478,15 @@ std::string AbstractSegments::printToStdOut() const
     // BOOST_FOREACH(const SegmentType& seg, m_types)
     for(const auto& seg : m_types)
     {
-        returnValue << seg.printToStdOut();
+        // returnValue << seg.printToStdOut();
+        returnValue << seg->printToStdOut();
     }
 
     // BOOST_FOREACH(const Symbols& sym, m_otherSymbols)
     for(const auto& sym : m_otherSymbols)
     {
-        returnValue << sym.printToStdOut();
+        // returnValue << sym.printToStdOut();
+        returnValue << sym->printToStdOut();
     }
 
     return returnValue.str();
