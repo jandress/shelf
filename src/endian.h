@@ -1,3 +1,4 @@
+//boost free
 #ifndef __FINK_ENDIANDEV_PKG_ENDIAN_H__
 #define __FINK_ENDIANDEV_PKG_ENDIAN_H__ 1
 

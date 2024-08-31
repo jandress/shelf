@@ -1,3 +1,4 @@
+//boost free
 #ifndef SC_VERSION_HPP
 #define SC_VERSION_HPP
 

@@ -1,3 +1,4 @@
+//boost free
 #include "abstract_dynamic.hpp"
 
 #include "structures/dynamicstruct.hpp"
@@ -6,7 +7,8 @@
 
 namespace
 {
-    std::string createTag(boost::uint64_t p_tag)
+    // std::string createTag(boost::uint64_t p_tag)
+    std::string createTag(std::uint64_t p_tag)
     {
         switch (p_tag)
         {
@@ -75,7 +77,8 @@ namespace
         }
     }
 
-    std::string createValue(boost::uint64_t p_tag, boost::uint64_t p_value,
+    // std::string createValue(boost::uint64_t p_tag, boost::uint64_t p_value,
+    std::string createValue(std::uint64_t p_tag, std::uint64_t p_value,
                                    const char* p_strTab)
     {
         switch (p_tag)
@@ -120,8 +123,10 @@ namespace
     }
 }
 
-AbstractDynamicEntry::AbstractDynamicEntry(boost::uint64_t p_tag,
-                                           boost::uint64_t p_value) :
+// AbstractDynamicEntry::AbstractDynamicEntry(boost::uint64_t p_tag,
+//                                            boost::uint64_t p_value) :
+AbstractDynamicEntry::AbstractDynamicEntry(std::uint64_t p_tag,
+                                           std::uint64_t p_value) :
     m_tag(p_tag),
     m_value(p_value),
     m_stringValue()
@@ -157,12 +162,14 @@ std::string AbstractDynamicEntry::printToStdOut() const
     return returnValue.str();
 }
 
-boost::uint64_t AbstractDynamicEntry::getTag() const
+// boost::uint64_t AbstractDynamicEntry::getTag() const
+std::uint64_t AbstractDynamicEntry::getTag() const
 {
     return m_tag;
 }
 
-boost::uint64_t AbstractDynamicEntry::getValue() const
+// boost::uint64_t AbstractDynamicEntry::getValue() const
+std::uint64_t AbstractDynamicEntry::getValue() const
 {
     return m_value;
 }

@@ -1,9 +1,10 @@
+//boost free
 #ifndef PROGRAM_HEADERS_HPP
 #define PROGRAM_HEADERS_HPP
 
 #include <vector>
 #include <string>
-#include <boost/cstdint.hpp>
+//#include <boost/cstdint.hpp>
 #include <cstdint>
 
 #ifdef UNIT_TESTS
@@ -35,8 +36,10 @@ public:
      * \param[in] p_is64 indicates if the binary is 64 bit or 32 bit
      * \param[in] p_isLE indicates if we are operating on a LE binary
      */
-    void setHeaders(const char* p_data, boost::uint16_t p_count,
-                    boost::uint16_t p_size, bool p_is64, bool p_isLE);
+    // void setHeaders(const char* p_data, boost::uint16_t p_count,
+    void setHeaders(const char* p_data, std::uint16_t p_count,
+                    // boost::uint16_t p_size, bool p_is64, bool p_isLE);
+                    std::uint16_t p_size, bool p_is64, bool p_isLE);
 
     /*!
      * Passes program header information into AbstractSegments for segment creation
@@ -49,7 +52,8 @@ public:
      * and the entries that are actually present.
      * \param[in,out] p_reasons store score / reason here
      */
-    void evaluate(std::vector<std::pair<boost::int32_t, std::string> >& p_reasons) const;
+    // void evaluate(std::vector<std::pair<boost::int32_t, std::string> >& p_reasons) const;
+    void evaluate(std::vector<std::pair<std::int32_t, std::string> >& p_reasons) const;
 
     //! \return the program header vector
     const std::vector<AbstractProgramHeader>& getProgramHeaders() const;

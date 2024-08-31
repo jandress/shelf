@@ -1,25 +1,41 @@
+//boost free
 #ifndef SEGMENT_HPP
 #define SEGMENT_HPP
 
 #include <string>
 
-#include <boost/cstdint.hpp>
+//#include <boost/cstdint.hpp>
 #include <cstdint>
 
 class Segment
 {
+// public:
+//     Segment(const std::string& p_name, const std::string& p_type,
+//             boost::uint64_t p_physOffset, boost::uint64_t p_virtAddress,
+//             boost::uint64_t p_size, boost::uint32_t p_link,
+//             bool p_executable, bool p_writable,
+//             bool p_isDynamic);
+//     ~Segment();
+
+//     boost::uint64_t getVirtAddress() const;
+//     boost::uint64_t getSize() const;
+//     boost::uint64_t getPhysOffset() const;
+//     boost::uint32_t getLink() const;
+//     const std::string& getName() const;
+//     const std::string& getType() const;
+//     bool isDynamic() const;
 public:
     Segment(const std::string& p_name, const std::string& p_type,
-            boost::uint64_t p_physOffset, boost::uint64_t p_virtAddress,
-            boost::uint64_t p_size, boost::uint32_t p_link,
+            std::uint64_t p_physOffset, std::uint64_t p_virtAddress,
+            std::uint64_t p_size, std::uint32_t p_link,
             bool p_executable, bool p_writable,
             bool p_isDynamic);
     ~Segment();
 
-    boost::uint64_t getVirtAddress() const;
-    boost::uint64_t getSize() const;
-    boost::uint64_t getPhysOffset() const;
-    boost::uint32_t getLink() const;
+    std::uint64_t getVirtAddress() const;
+    std::uint64_t getSize() const;
+    std::uint64_t getPhysOffset() const;
+    std::uint32_t getLink() const;
     const std::string& getName() const;
     const std::string& getType() const;
     bool isDynamic() const;
@@ -36,16 +52,21 @@ private:
     std::string m_type;
 
     //! the file offset to this segment
-    boost::uint64_t m_physOffset;
+    // boost::uint64_t m_physOffset;
+    std::uint64_t m_physOffset;
+
 
     //! the virtual address of this segment
-    boost::uint64_t m_virtAddress;
+    // boost::uint64_t m_virtAddress;
+    std::uint64_t m_virtAddress;
 
     //! size on file
-    boost::uint64_t m_size;
+    // boost::uint64_t m_size;
+    std::uint64_t m_size;
 
     //! the link to another table that may exist
-    boost::uint32_t m_link;
+    // boost::uint32_t m_link;
+    std::uint32_t m_link;
 
     //! indicates if the area is executable
     bool m_executable;
