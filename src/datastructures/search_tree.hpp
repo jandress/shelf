@@ -1,3 +1,4 @@
+//boost free
 #ifndef ELFPARSER_SEARCH_HPP
 #define ELFPARSER_SEARCH_HPP
 
@@ -7,8 +8,9 @@
 #include <queue>
 #include <string>
 
-#include <boost/ptr_container/ptr_vector.hpp>
+//#include <boost/ptr_container/ptr_vector.hpp>
 #include <vector>
+#include <memory>
 
 /*
  *  This is a basic automata implemenation. Used for efficient searching.
@@ -47,7 +49,8 @@ private:
 
     bool m_ready;
 
-    boost::ptr_vector<SearchNode> m_nodeVector;
+    // boost::ptr_vector<SearchNode> m_nodeVector;
+    std::vector<std::unique_ptr<SearchNode>> m_nodeVector;
 };
 
 #endif

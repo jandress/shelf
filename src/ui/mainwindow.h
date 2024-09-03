@@ -1,3 +1,4 @@
+//boost free
 void on_aboutButton_clicked();
 #ifdef QT_GUI
 #ifndef MAINWINDOW_H
@@ -6,10 +7,10 @@ void on_aboutButton_clicked();
 #include <QMainWindow>
 
 
-#include <boost/scoped_ptr.hpp>
+//#include <boost/scoped_ptr.hpp>
 #include <memory>
 
-#include <boost/ptr_container/ptr_vector.hpp>
+//#include <boost/ptr_container/ptr_vector.hpp>
 #include <vector>
 
 namespace Ui {
@@ -38,24 +39,43 @@ private slots:
     void sectionSelected(QTableWidgetItem*, QTableWidgetItem*);
     void programSelected(QTableWidgetItem*, QTableWidgetItem*);
 
+// private:
+//     //! The main window that is created by mainwindow.ui
+//     Ui::MainWindow* m_ui;
+
+//     //! The dialog window
+//     boost::scoped_ptr<QDialog> m_dialog;
+
+//     //! All the allocated Table values
+//     boost::ptr_vector<QTableWidgetItem> m_tableItems;
+
+//     //! All the allocated Tree values
+//     boost::ptr_vector<QTreeWidgetItem> m_treeItems;
+
+//     //! The reusable copy action
+//     boost::scoped_ptr<QAction> m_copyAction;
+
+//     //! The reusable ELF parser
+//     boost::scoped_ptr<ELFParser> m_parser;
+// };
 private:
     //! The main window that is created by mainwindow.ui
     Ui::MainWindow* m_ui;
 
     //! The dialog window
-    boost::scoped_ptr<QDialog> m_dialog;
+    std::unique_ptr<QDialog> m_dialog;
 
     //! All the allocated Table values
-    boost::ptr_vector<QTableWidgetItem> m_tableItems;
+    std::vector<std::unique_ptr<QTableWidgetItem>> m_tableItems;
 
     //! All the allocated Tree values
-    boost::ptr_vector<QTreeWidgetItem> m_treeItems;
+    std::vector<std::unique_ptr<QTreeWidgetItem>> m_treeItems;
 
     //! The reusable copy action
-    boost::scoped_ptr<QAction> m_copyAction;
+    std::unique_ptr<QAction> m_copyAction;
 
     //! The reusable ELF parser
-    boost::scoped_ptr<ELFParser> m_parser;
+    std::unique_ptr<ELFParser> m_parser;
 };
 
 #endif // MAINWINDOW_H

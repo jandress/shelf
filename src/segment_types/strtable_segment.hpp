@@ -1,3 +1,4 @@
+//boost free
 #ifndef STRINGTABLE_SEGMENT_HPP
 #define STRINGTABLE_SEGMENT_HPP
 
@@ -5,7 +6,7 @@
 
 #include <set>
 #include <string>
-#include <boost/cstdint.hpp>
+//#include <boost/cstdint.hpp>
 #include <cstdint>
 
 /*!
@@ -22,8 +23,10 @@ public:
      * \param[in] p_size the size of the segment
      * \param[in] p_type the type of segment
      */
-    StringTableSegment(const char* p_start, boost::uint32_t p_offset,
-                       boost::uint32_t p_size, elf::section_type p_type);
+    // StringTableSegment(const char* p_start, boost::uint32_t p_offset,
+    //                    boost::uint32_t p_size, elf::section_type p_type);
+    StringTableSegment(const char* p_start, std::uint32_t p_offset,
+                       std::uint32_t p_size, elf::section_type p_type);
 
     //! nothing of note
     ~StringTableSegment();

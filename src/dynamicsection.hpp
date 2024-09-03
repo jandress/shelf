@@ -29,7 +29,8 @@ public:
     DynamicSection();
     ~DynamicSection();
 
-    void createDynamic(const char* p_start, boost::uint32_t p_offset,
+    // void createDynamic(const char* p_start, boost::uint32_t p_offset,
+    void createDynamic(const char* p_start, std::uint32_t p_offset,
                     //    boost::uint32_t p_size, boost::uint64_t p_baseAddress,
                        std::uint32_t p_size, std::uint64_t p_baseAddress,
                        bool p_is64, bool p_isLE, const AbstractSegments& p_segments);

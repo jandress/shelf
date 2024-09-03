@@ -437,7 +437,8 @@ std::string AbstractSegments::determineFamily() const
     return "Undetermined";
 }
 
-std::string AbstractSegments::printSegment(boost::uint64_t p_offset) const
+// std::string AbstractSegments::printSegment(boost::uint64_t p_offset) const
+std::string AbstractSegments::printSegment(std::uint64_t p_offset) const
 {
     // BOOST_FOREACH(const SegmentType& segment, m_types)
     for(const auto& segment : m_types)

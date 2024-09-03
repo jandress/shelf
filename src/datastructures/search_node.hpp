@@ -1,3 +1,4 @@
+//boost free
 #ifndef ELFPARSER_SEARCHNODE_HPP
 #define ELFPARSER_SEARCHNODE_HPP
 

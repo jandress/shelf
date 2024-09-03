@@ -1,19 +1,22 @@
+//boost free
 #ifdef QT_GUI
 #include "inttablewidget.hpp"
 
 #include <string>
 #include <sstream>
 
-#include <boost/lexical_cast.hpp>
+//#include <boost/lexical_cast.hpp>
 #include <sstream>
 
-IntWidgetItem::IntWidgetItem(boost::uint64_t p_value, bool p_hex) :
+// IntWidgetItem::IntWidgetItem(boost::uint64_t p_value, bool p_hex) :
+IntWidgetItem::IntWidgetItem(std::uint64_t p_value, bool p_hex) :
     QTableWidgetItem(),
     m_value(p_value)
 {
     if (!p_hex)
     {
-        QString intValue(boost::lexical_cast<std::string>(m_value).c_str());
+        // QString intValue(boost::lexical_cast<std::string>(m_value).c_str());
+        QString intValue(std::to_string(m_value).c_str());
         setText(intValue);
     }
     else

@@ -1,3 +1,4 @@
+//boost free
 #include "note_segment.hpp"
 #include "../structures/noteformat.hpp"
 
@@ -5,29 +6,47 @@
 #include <sstream>
 #include <iostream>
 
-#include <boost/assign.hpp>
+//#include <boost/assign.hpp>
 #include <map>
 
-#include <boost/lexical_cast.hpp>
+//#include <boost/lexical_cast.hpp>
 #include <sstream>
+#include <cstdint>
+#include <string>
 
 namespace
 {
-    const std::map<boost::uint32_t, std::string> type_map = boost::assign::map_list_of
-        ( 1, "NT_GNU_ABI_TAG")
-        ( 2, "NT_GNU_HWCAP")
-        ( 3, "NT_GNU_BUILD_ID")
-        ( 4, "NT_GNU_GOLD_VERSION");
+    // const std::map<boost::uint32_t, std::string> type_map = boost::assign::map_list_of
+    //     ( 1, "NT_GNU_ABI_TAG")
+    //     ( 2, "NT_GNU_HWCAP")
+    //     ( 3, "NT_GNU_BUILD_ID")
+    //     ( 4, "NT_GNU_GOLD_VERSION");
 
-    const std::map<boost::uint32_t, std::string> abi_map = boost::assign::map_list_of
-        ( 0, "OS Linux")
-        ( 1, "OS GNU")
-        ( 2, "OS Solaris")
-        ( 3, "OS FreeBSD");
+    const std::map<std::uint32_t, std::string> type_map = {
+    {1, "NT_GNU_ABI_TAG"},
+    {2, "NT_GNU_HWCAP"},
+    {3, "NT_GNU_BUILD_ID"},
+    {4, "NT_GNU_GOLD_VERSION"}
+    };
 
-    std::string parse_abi(const char* p_data, boost::uint32_t p_size)
+    // const std::map<boost::uint32_t, std::string> abi_map = boost::assign::map_list_of
+    //     ( 0, "OS Linux")
+    //     ( 1, "OS GNU")
+    //     ( 2, "OS Solaris")
+    //     ( 3, "OS FreeBSD");
+
+    const std::map<std::uint32_t, std::string> abi_map = {
+    {0, "OS Linux"},
+    {1, "OS GNU"},
+    {2, "OS Solaris"},
+    {3, "OS FreeBSD"}
+    };
+
+    // std::string parse_abi(const char* p_data, boost::uint32_t p_size)
+    std::string parse_abi(const char* p_data, std::uint32_t p_size)
     {
-        const boost::uint32_t* abi = reinterpret_cast<const boost::uint32_t*>(p_data);
+        // const boost::uint32_t* abi = reinterpret_cast<const boost::uint32_t*>(p_data);
+        const std::uint32_t* abi = reinterpret_cast<const std::uint32_t*>(p_data);
 
         if (p_size != 16)
         {
@@ -35,27 +54,42 @@ namespace
         }
 
         std::string return_value;
-        std::map<boost::uint32_t, std::string>::const_iterator abiIt = abi_map.find(abi[0]);
+        // std::map<boost::uint32_t, std::string>::const_iterator abiIt = abi_map.find(abi[0]);
+        std::map<std::uint32_t, std::string>::const_iterator abiIt = abi_map.find(abi[0]);
         if (abiIt != abi_map.end())
         {
             return_value.assign(abiIt->second);
         }
+        // else
+        // {
+        //     return_value.assign(boost::lexical_cast<std::string>(abi[0]));
+        // }
+        // return_value.push_back(' ');
+        // return_value.append(boost::lexical_cast<std::string>(abi[1]));
+        // return_value.push_back('.');
+        // return_value.append(boost::lexical_cast<std::string>(abi[2]));
+        // return_value.push_back('.');
+        // return_value.append(boost::lexical_cast<std::string>(abi[3]));
+        // return return_value;
         else
         {
-            return_value.assign(boost::lexical_cast<std::string>(abi[0]));
+            return_value.assign(std::to_string(abi[0]));
         }
         return_value.push_back(' ');
-        return_value.append(boost::lexical_cast<std::string>(abi[1]));
+        return_value.append(std::to_string(abi[1]));
         return_value.push_back('.');
-        return_value.append(boost::lexical_cast<std::string>(abi[2]));
+        return_value.append(std::to_string(abi[2]));
         return_value.push_back('.');
-        return_value.append(boost::lexical_cast<std::string>(abi[3]));
+        return_value.append(std::to_string(abi[3]));
         return return_value;
+
     }
 }
 
-NoteSegment::NoteSegment(const char* p_start, boost::uint32_t p_offset,
-                         boost::uint32_t p_size, elf::section_type p_type) :
+// NoteSegment::NoteSegment(const char* p_start, boost::uint32_t p_offset,
+//                          boost::uint32_t p_size, elf::section_type p_type) :
+NoteSegment::NoteSegment(const char* p_start, std::uint32_t p_offset,
+                         std::uint32_t p_size, elf::section_type p_type) :
     SegmentType(p_start, p_offset, p_size, p_type),
     m_note(NULL),
     m_name(),
@@ -69,7 +103,8 @@ NoteSegment::NoteSegment(const char* p_start, boost::uint32_t p_offset,
                       m_note->m_nameSize - 1);
     }
 
-    std::map<boost::uint32_t, std::string>::const_iterator typeIt = type_map.find(m_note->m_type);
+    // std::map<boost::uint32_t, std::string>::const_iterator typeIt = type_map.find(m_note->m_type);
+    std::map<std::uint32_t, std::string>::const_iterator typeIt = type_map.find(m_note->m_type);
     if (typeIt != type_map.end())
     {
         m_noteType.assign(typeIt->second);

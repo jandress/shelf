@@ -1,10 +1,11 @@
+//boost free
 #ifndef COMMENT_SEGMENT_HPP
 #define COMMENT_SEGMENT_HPP
 
 #include "segment_type.hpp"
 
 #include <string>
-#include <boost/cstdint.hpp>
+//#include <boost/cstdint.hpp>
 #include <cstdint>
 
 /*!
@@ -23,8 +24,10 @@ public:
      * \param[in] p_size the size of this segment
      * \param[in] p_type elf::k_progbits
      */
-    CommentSegment(const char* p_start, boost::uint32_t p_offset,
-                   boost::uint32_t p_size, elf::section_type p_type);
+    // CommentSegment(const char* p_start, boost::uint32_t p_offset,
+    //                boost::uint32_t p_size, elf::section_type p_type);
+        CommentSegment(const char* p_start, std::uint32_t p_offset,
+                   std::uint32_t p_size, elf::section_type p_type);
 
     //! Nothing of note
     ~CommentSegment();
