@@ -1,9 +1,12 @@
+//boost free
 #include "interp_segment.hpp"
 
 #include <sstream>
 
-InterpSegment::InterpSegment(const char* start, boost::uint32_t p_offset,
-                             boost::uint32_t p_size,
+// InterpSegment::InterpSegment(const char* start, boost::uint32_t p_offset,
+//                              boost::uint32_t p_size,
+InterpSegment::InterpSegment(const char* start, std::uint32_t p_offset,
+                             std::uint32_t p_size,
                              elf::section_type p_type) :
     SegmentType(start, p_offset, p_size, p_type),
     m_interpreter(start + p_offset)

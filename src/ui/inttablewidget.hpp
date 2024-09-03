@@ -1,23 +1,26 @@
+//boost free
 #ifdef QT_GUI
 #ifndef INTENTRY_HPP
 #define INTENTRY_HPP
 
 #include <QTableWidgetItem>
 
-#include <boost/cstdint.hpp>
+//#include <boost/cstdint.hpp>
 #include <cstdint>
 
 class IntWidgetItem : public QTableWidgetItem
 {
 public:
-    IntWidgetItem(boost::uint64_t p_value, bool p_hex = false);
+    //IntWidgetItem(boost::uint64_t p_value, bool p_hex = false);
+    IntWidgetItem(std::uint64_t p_value, bool p_hex = false);
     ~IntWidgetItem();
 
     bool operator <(const QTableWidgetItem &other) const;
 
 private:
     //! the underlying value in int format
-    boost::uint64_t m_value;
+    // boost::uint64_t m_value;
+    std::uint64_t m_value;
 };
 
 #endif

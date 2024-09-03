@@ -1,10 +1,11 @@
+//boost free
 #ifndef DEBUGLINK_SEGMENT_HPP
 #define DEBUGLINK_SEGMENT_HPP
 
 #include "segment_type.hpp"
 
 #include <string>
-#include <boost/cstdint.hpp>
+//#include <boost/cstdint.hpp>
 #include <cstdint>
 
 /*!
@@ -22,8 +23,10 @@ public:
      * \param[in] p_size the size of this segment
      * \param[in] p_type elf::k_progbits
      */
-    DebugLinkSegment(const char* start, boost::uint32_t p_offset,
-                     boost::uint32_t p_size, elf::section_type p_type);
+    // DebugLinkSegment(const char* start, boost::uint32_t p_offset,
+    //                  boost::uint32_t p_size, elf::section_type p_type);
+    DebugLinkSegment(const char* start, std::uint32_t p_offset,
+                     std::uint32_t p_size, elf::section_type p_type);
 
     //! Nothing of note
     ~DebugLinkSegment();

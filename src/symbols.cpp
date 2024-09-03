@@ -304,7 +304,8 @@ std::string Symbols::findSymbol(std::uint64_t p_address) const
     return "";
 }
 
-void Symbols::evaluate(std::vector<std::pair<boost::int32_t, std::string> >& p_reasons,
+// void Symbols::evaluate(std::vector<std::pair<boost::int32_t, std::string> >& p_reasons,
+void Symbols::evaluate(std::vector<std::pair<std::int32_t, std::string> >& p_reasons,
                        std::map<elf::Capabilties, std::set<std::string> >& p_capabilities) const
 {
     (void)p_reasons; //appears to be unused

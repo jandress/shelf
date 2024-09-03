@@ -1,3 +1,4 @@
+//boost free
 #ifndef READONLY_SEGMENT_HPP
 #define READONLY_SEGMENT_HPP
 
@@ -6,7 +7,7 @@
 #include <set>
 #include <vector>
 #include <string>
-#include <boost/cstdint.hpp>
+//#include <boost/cstdint.hpp>
 #include <cstdint>
 
 /*!
@@ -23,8 +24,10 @@ public:
      * \param[in] p_size the size of this segment
      * \param[in] p_type the type of this segment
      */
-    ReadOnlySegment(const char* p_start, boost::uint32_t p_offset,
-                    boost::uint32_t p_size, elf::section_type p_type);
+    // ReadOnlySegment(const char* p_start, boost::uint32_t p_offset,
+    //                 boost::uint32_t p_size, elf::section_type p_type);
+    ReadOnlySegment(const char* p_start, std::uint32_t p_offset,
+                    std::uint32_t p_size, elf::section_type p_type);
 
     //! Nothing of note
     ~ReadOnlySegment();
@@ -34,7 +37,8 @@ public:
      * \param[in] p_reasons the scoring vector to put the scores into
      * \param[in] unused capabilties set
      */
-    void evaluate(std::vector<std::pair<boost::int32_t, std::string> >& p_reasons,
+    // void evaluate(std::vector<std::pair<boost::int32_t, std::string> >& p_reasons,
+    void evaluate(std::vector<std::pair<std::int32_t, std::string> >& p_reasons,
                   std::map<elf::Capabilties, std::set<std::string> >&) const;
 
     //! \return the string representation of the read only segment

@@ -1,3 +1,4 @@
+//boost free
 #ifndef SEGMENTTYPE_HPP
 #define SEGMENTTYPE_HPP
 
@@ -5,7 +6,7 @@
 #include <map>
 #include <string>
 #include <vector>
-#include <boost/cstdint.hpp>
+//#include <boost/cstdint.hpp>
 #include <cstdint>
 
 #include "../structures/sectionheader.hpp"
@@ -27,8 +28,10 @@ public:
      * \param[in] p_type the type of segment being created
      * \note p_start is currently not used, but is there for future use
      */
-    SegmentType(const char* p_start, boost::uint32_t p_offset,
-                boost::uint32_t p_size, elf::section_type p_type);
+    // SegmentType(const char* p_start, boost::uint32_t p_offset,
+    SegmentType(const char* p_start, std::uint32_t p_offset,
+                // boost::uint32_t p_size, elf::section_type p_type);
+                std::uint32_t p_size, elf::section_type p_type);
 
     //! Nothing of note
     virtual ~SegmentType();
@@ -37,7 +40,8 @@ public:
     elf::section_type getType() const;
 
     //! \return the offset to this segment
-    boost::uint32_t getOffset() const;
+    // boost::uint32_t getOffset() const;
+    std::uint32_t getOffset() const;
 
     /*!
      * Stores this segments corresponding string table if one exists and the
@@ -52,7 +56,8 @@ public:
      * \param[in,out] unused the reasons vector
      * \param[in,out] unused the capabilities vector
      */
-    virtual void evaluate(std::vector<std::pair<boost::int32_t, std::string> >&,
+    // virtual void evaluate(std::vector<std::pair<boost::int32_t, std::string> >&,
+    virtual void evaluate(std::vector<std::pair<std::int32_t, std::string> >&,
                           std::map<elf::Capabilties, std::set<std::string> >&) const
     {
     }
@@ -72,10 +77,12 @@ protected:
     elf::section_type m_type;
 
     //! The offset to this segment
-    boost::uint32_t m_offset;
+    // boost::uint32_t m_offset;
+    std::uint32_t m_offset;
 
     //! The size of this segment
-    boost::uint32_t m_size;
+    // boost::uint32_t m_size;
+    std::uint32_t m_size;
 
     //! A pointer to a string segment
     SegmentType* m_strings;

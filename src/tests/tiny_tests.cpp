@@ -1,3 +1,4 @@
+//boost free
 #include "gtest/gtest.h"
 #include "../elfparser.hpp"
 #include "../abstract_programheader.hpp"
@@ -8,7 +9,7 @@
 #include "../dynamicsection.hpp"
 #include "../symbols.hpp"
 
-#include <boost/foreach.hpp>
+//#include <boost/foreach.hpp>
 #include <algorithm>
 
 class TinyTest : public testing::Test

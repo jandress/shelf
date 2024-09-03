@@ -1,6 +1,8 @@
+//boost free
 #include "search_tree.hpp"
-#include <boost/concept_check.hpp>
+//#include <boost/concept_check.hpp>
 #include <concepts>
+#include <cassert>
 
 SearchTree::SearchTree() :
     m_rootNode(),
@@ -11,7 +13,8 @@ SearchTree::SearchTree() :
 
 SearchTree::~SearchTree()
 {
-    m_nodeVector.release();
+    // m_nodeVector.release();
+    m_nodeVector.clear();
 }
 
 void SearchTree::addWord(const std::string& p_string, void* p_storeData)
@@ -118,8 +121,10 @@ void SearchTree::doAddWord(SearchNode* p_node, const unsigned char* p_input,
     {
         /* create a node to transition to - store the allocated node in a vector
          * for easy clean up */
-        m_nodeVector.push_back(new SearchNode());
-        SearchNode* newNode = &m_nodeVector.back();
+        // m_nodeVector.push_back(new SearchNode());
+        m_nodeVector.push_back(std::make_unique<SearchNode>());
+        // SearchNode* newNode = &m_nodeVector.back();
+        SearchNode* newNode = m_nodeVector.back().get();
 
         p_node->setNext(p_input[0], newNode);
         p_node = newNode;

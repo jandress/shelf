@@ -1,3 +1,4 @@
+//boost free
 #ifndef ABSTRACT_ELFHEADER_HPP
 #define ABSTRACT_ELFHEADER_HPP
 
@@ -6,7 +7,7 @@
 #include <vector>
 #include <string>
 #include <cstddef>
-#include <boost/cstdint.hpp>
+//#include <boost/cstdint.hpp>
 #include <cstdint>
 
 namespace elf
@@ -75,31 +76,40 @@ public:
     std::string getVersion() const;
 
     //! \return the virtual address of the entry pointer
-    boost::uint64_t getEntryPoint() const;
+    // boost::uint64_t getEntryPoint() const;
+    std::uint64_t getEntryPoint() const;
 
     //! \return the offset to the program header
-    boost::uint32_t getProgramOffset() const;
+    // boost::uint32_t getProgramOffset() const;
+    std::uint32_t getProgramOffset() const;
 
     //! \return the number of expected program header entries
-    boost::uint16_t getProgramCount() const;
+    // boost::uint16_t getProgramCount() const;
+    std::uint16_t getProgramCount() const;
 
     //! \return the size of a program header entry
-    boost::uint16_t getProgramSize() const;
+    // boost::uint16_t getProgramSize() const;
+    std::uint16_t getProgramSize() const;
 
     //! \return the offset to the section header
-    boost::uint32_t getSectionOffset() const;
+    // boost::uint32_t getSectionOffset() const;
+    std::uint32_t getSectionOffset() const;
 
     //! \return the size of a section table entry
-    boost::uint16_t getSectionSize() const;
+    // boost::uint16_t getSectionSize() const;
+    std::uint16_t getSectionSize() const;
 
     //! \return the number of entries in the section header
-    boost::uint16_t getSectionCount() const;
+    // boost::uint16_t getSectionCount() const;
+    std::uint16_t getSectionCount() const;
 
     //! \return the index of the section header string table
-    boost::uint16_t getStringTableIndex() const;
+    // boost::uint16_t getStringTableIndex() const;
+    std::uint16_t getStringTableIndex() const;
 
     //! \return the offset of the section header string table
-    boost::uint32_t getStringTableOffset(const char* p_start) const;
+    // boost::uint32_t getStringTableOffset(const char* p_start) const;
+    std::uint32_t getStringTableOffset(const char* p_start) const;
 
     //! \return an if there is le or not
     bool isLE() const;
@@ -116,7 +126,9 @@ public:
      * \param[in,out] p_reasons the reasons for scoring vector
      * \param[in,out] p_capabilities the capabilities map
      */
-    void evaluate(std::vector<std::pair<boost::int32_t, std::string> >& p_reasons,
+    // void evaluate(std::vector<std::pair<boost::int32_t, std::string> >& p_reasons,
+    //               std::map<elf::Capabilties, std::set<std::string> >& p_capabilities) const;
+    void evaluate(std::vector<std::pair<std::int32_t, std::string> >& p_reasons,
                   std::map<elf::Capabilties, std::set<std::string> >& p_capabilities) const;
 
 private:
@@ -131,7 +143,8 @@ private:
     bool m_is64;
 
     //! Stores the file size due to true.asm silliness
-    boost::uint32_t m_fileSize;
+    // boost::uint32_t m_fileSize;
+    std::uint32_t m_fileSize;
 
     //! A pointer to the 32 bit version of the ELF header
     const elf::elf_header_32* m_header32;

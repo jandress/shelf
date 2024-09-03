@@ -1,9 +1,10 @@
+//boost free
 #include "strtable_segment.hpp"
 
 #include <cstring>
 #include <sstream>
 
-#include <boost/foreach.hpp>
+//#include <boost/foreach.hpp>
 #include <algorithm>
 
 #ifndef WINDOWS
@@ -11,8 +12,10 @@
 #endif
 
 StringTableSegment::StringTableSegment(const char* start,
-                                       boost::uint32_t p_offset,
-                                       boost::uint32_t p_size,
+                                    //    boost::uint32_t p_offset,
+                                    //    boost::uint32_t p_size,
+                                       std::uint32_t p_offset,
+                                       std::uint32_t p_size,
                                        elf::section_type p_type) :
     SegmentType(start, p_offset, p_size, p_type),
     m_stringsSet(),
@@ -67,7 +70,8 @@ std::string StringTableSegment::printToStdOut() const
         << ", size=" << std::dec << m_size << ", entries="
         << m_stringsSet.size() << ")\n";
 
-    BOOST_FOREACH(const std::string& p_ascii, m_stringsSet)
+    // BOOST_FOREACH(const std::string& p_ascii, m_stringsSet)
+    for(const std::string& p_ascii : m_stringsSet)
     {
         return_value << "\tString=\"" << p_ascii << "\"\n";
     }

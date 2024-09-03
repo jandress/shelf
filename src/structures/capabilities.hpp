@@ -1,3 +1,4 @@
+//boost free
 #ifndef CAPABILITIES_HPP
 #define CAPABILITIES_HPP
 

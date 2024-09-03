@@ -1,3 +1,4 @@
+//boost free
 #ifndef SEARCH_VALUE_HPP
 #define SEARCH_VALUE_HPP
 
