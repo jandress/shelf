@@ -9,7 +9,9 @@ ELF Parser has a number of compilation targets that can be configured by CMakeLi
 * Windows build
 
 ## How do I compile it?
-ELF Parser can be compiled on Windows, OS X, or Linux (demangling and unit tests don't work on Windows). Windows uses the VS 2010 project in the base directory for compilation whereas Linux/OS X uses CMake. 
+ELF Parser can be compiled on Windows, OS X, or Linux (demangling and unit tests don't work on Windows). Windows uses the VS 2010 project in the base directory for compilation whereas Linux/OS X uses CMake.
+
+NOTE: boost is no longer required to compile shelf. Updated compile instructions will be along shortly.
 
 ### Linux
 Compiling the GUI version on Linux goes like this (currently working on Ubuntu 24.04):
