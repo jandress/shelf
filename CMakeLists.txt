@@ -62,12 +62,12 @@ endif()
 
 #package locations
 set(CMAKE_MODULE_PATH ${${PROJECT_NAME}_SOURCE_DIR}/CMake)
-set(Boost_USE_STATIC_LIBS ON)
+#set(Boost_USE_STATIC_LIBS ON)
 #find_package(Boost 1.46 COMPONENTS program_options iostreams system filesystem regex REQUIRED)
-find_package(Boost 1.46 COMPONENTS system REQUIRED)
+#find_package(Boost 1.46 COMPONENTS system REQUIRED)
 
 # includes
-include_directories(SYSTEM ${Boost_INCLUDE_DIR})
+#include_directories(SYSTEM ${Boost_INCLUDE_DIR})
 include_directories(SYSTEM lib/hash-lib)
 include_directories(lib/CLI11/include)
 
@@ -157,7 +157,8 @@ if (qt)
                    ${EXTRA_SOURCES}
                    ${RESOURCE_ADDED})
 
-    target_link_libraries(elfparser ${Boost_LIBRARIES} Qt5::Core Qt5::Widgets Qt5::Gui)
+    # target_link_libraries(elfparser ${Boost_LIBRARIES} Qt5::Core Qt5::Widgets Qt5::Gui)
+    target_link_libraries(elfparser Qt5::Core Qt5::Widgets Qt5::Gui)
 endif()
 
 if (cli)
@@ -189,7 +190,8 @@ if (cli)
                    lib/hash-lib/sha256.cpp
                    lib/hash-lib/md5.cpp)
 
-    target_link_libraries(elfparser-cli ${Boost_LIBRARIES})
+    # target_link_libraries(elfparser-cli ${Boost_LIBRARIES})
+    target_link_libraries(elfparser-cli)
 endif()
 
 if(APPLE)
@@ -272,7 +274,8 @@ if (test)
                    src/tests/ls_tests.cpp
                    src/tests/tiny_tests.cpp)
 
-    target_link_libraries(${PROJECT_NAME}_test gtest gtest_main ${Boost_LIBRARIES})
+    # target_link_libraries(${PROJECT_NAME}_test gtest gtest_main ${Boost_LIBRARIES})
+    target_link_libraries(${PROJECT_NAME}_test gtest gtest_main)
 endif()
 
 # CPACK stuff
