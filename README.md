@@ -11,14 +11,12 @@ ELF Parser has a number of compilation targets that can be configured by CMakeLi
 ## How do I compile it?
 ELF Parser can be compiled on Windows, OS X, or Linux (demangling and unit tests don't work on Windows). Windows uses the VS 2010 project in the base directory for compilation whereas Linux/OS X uses CMake.
 
-NOTE: boost is no longer required to compile shelf. Updated compile instructions will be along shortly.
-
 ### Linux
 Compiling the GUI version on Linux goes like this (currently working on Ubuntu 24.04):
 
 #### Install all the needed developmnent packages
 ```
-sudo apt-get install build-essential cmake libboost-all-dev qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools libbz2-dev liblzma-dev libzstd-dev
+sudo apt-get install build-essential cmake qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools libbz2-dev liblzma-dev libzstd-dev
 ```
 
 #### Download shelf and make a build directory
@@ -27,16 +25,26 @@ git clone https://github.com/jandress/shelf.git
 cd ~/shelf
 ```
 
-#### Build the project
+#### Build the project (GUI)
 ```
 mkdir build
-cd build/
+cd build
 cmake -Dqt=ON ..
 make
 ```
 
+#### Build the project (CLI)
+```
+mkdir build
+cd build
+cmake -Dcli=ON ..
+make
+```
+
 ### Windows
-Compiling the GUI version on Linux goes like this (work in progress on Windows 10):
+NOTE: boost is no longer required to build shelf. Updated instructions for Windows will be along shortly.
+
+Compiling the GUI version on Windows goes like this (work in progress on Windows 10):
 
 Get a coffee and a snack, take a deep breath, and buckle in.
 
