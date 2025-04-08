@@ -4,7 +4,6 @@
 
 #include <string>
 #include <vector>
-//#include <boost/cstdint.hpp>
 #include <cstdint>
 
 #ifdef UNIT_TESTS
@@ -23,10 +22,6 @@ namespace elf
 class AbstractSectionHeader
 {
 public:
-
-    // AbstractSectionHeader(const char* p_data, boost::uint16_t p_size,
-    //                       const char* p_file, boost::uint64_t p_fileSize,
-    //                       boost::uint8_t p_strIndex,
     AbstractSectionHeader(const char* p_data, std::uint16_t p_size,
                           const char* p_file, std::uint64_t p_fileSize,
                           std::uint8_t p_strIndex,
@@ -44,16 +39,6 @@ public:
     std::string getName() const;
     std::string getTypeString() const;
     std::string getFlagsString() const;
-    // boost::uint32_t getType() const;
-    // boost::uint64_t getFlags() const;
-    // boost::uint64_t getVirtAddress() const;
-    // std::string getVirtAddressString() const;
-    // boost::uint64_t getPhysOffset() const;
-    // boost::uint64_t getSize() const;
-    // boost::uint32_t getLink() const;
-    // boost::uint32_t getInfo() const;
-    // boost::uint64_t getAddrAlign() const;
-    // boost::uint64_t getEntSize() const;
     std::uint32_t getType() const;
     std::uint64_t getFlags() const;
     std::uint64_t getVirtAddress() const;
@@ -90,11 +75,9 @@ private:
     const char* m_fileStart;
 
     //! The size of the file in memory
-    // boost::uint64_t m_size;
     std::uint64_t m_size;
 
     //! Index of the string table
-    // boost::uint8_t m_strIndex;
     std::uint8_t m_strIndex;
 
     //! Indicates if the binary is 64 bit or not

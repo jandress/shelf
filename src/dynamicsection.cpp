@@ -3,10 +3,8 @@
 #include "structures/dynamicstruct.hpp"
 #include "abstract_segments.hpp"
 
-//#include <boost/foreach.hpp>
 #include <algorithm>
 
-//#include <boost/assign.hpp>
 #include <map>
 
 #ifdef __APPLE__
@@ -34,15 +32,12 @@ DynamicSection::~DynamicSection()
 {
 }
 
-// boost::uint64_t DynamicSection::getOffset() const
 std::uint64_t DynamicSection::getOffset() const
 {
     return m_offset;
 }
 
-// void DynamicSection::createDynamic(const char* p_start, boost::uint32_t p_offset,
-//                                    boost::uint32_t p_size, boost::uint64_t p_baseAddress,
-//                                    bool p_is64, bool p_isLE, const AbstractSegments& p_segments)
+
 void DynamicSection::createDynamic(const char* p_start, std::uint32_t p_offset,
                                    std::uint32_t p_size, std::uint64_t p_baseAddress,
                                    bool p_is64, bool p_isLE, const AbstractSegments& p_segments)
@@ -81,11 +76,9 @@ void DynamicSection::createDynamic(const char* p_start, std::uint32_t p_offset,
     // resolve all strings
     if (i != m_entries.size())
     {
-        // boost::uint64_t offset = p_segments.getOffsetFromVirt(m_entries[i].getValue());
         std::uint64_t offset = p_segments.getOffsetFromVirt(m_entries[i].getValue());
         if (offset != 0)
         {
-            // BOOST_FOREACH(AbstractDynamicEntry& entry, m_entries)
             for(auto& entry : m_entries)
             {
                 entry.createString(p_start + offset);
@@ -94,7 +87,6 @@ void DynamicSection::createDynamic(const char* p_start, std::uint32_t p_offset,
     }
 
     // look for symbol table info
-    // BOOST_FOREACH(const AbstractDynamicEntry& entry, m_entries)
     for(const auto& entry : m_entries)
     {
         switch (entry.getTag())
@@ -112,8 +104,6 @@ void DynamicSection::createDynamic(const char* p_start, std::uint32_t p_offset,
             case elf::dynamic::k_gnuhash:
                 if (m_symbolTableSize == 0)
                 {
-                    // const boost::uint32_t* hashStart =
-                    //     reinterpret_cast<const boost::uint32_t*>(p_start + (entry.getValue() - p_baseAddress));
                     const std::uint32_t* hashStart =
                         reinterpret_cast<const std::uint32_t*>(p_start + (entry.getValue() - p_baseAddress));
                     ++hashStart;
@@ -138,15 +128,12 @@ void DynamicSection::createDynamic(const char* p_start, std::uint32_t p_offset,
 
 void DynamicSection::doDynamic64(const elf::dynamic::dynamic_64* p_dynamic,
                                  const char* p_start, const char* p_end,
-                                //  boost::uint64_t p_baseAddress, bool p_isLE)
                                 std::uint64_t p_baseAddress, bool p_isLE)
 {
     (void)p_start; //appears to be unused
     (void)p_baseAddress; //appears to be unused
     for ( ; reinterpret_cast<const char*>(p_dynamic) < p_end; ++p_dynamic)
     {
-        // boost::uint64_t tag = p_isLE ? p_dynamic->m_tag : htobe64(p_dynamic->m_tag);
-        // boost::uint64_t value = p_isLE ? p_dynamic->m_val : htobe64(p_dynamic->m_val);
         std::uint64_t tag = p_isLE ? p_dynamic->m_tag : htobe64(p_dynamic->m_tag);
         std::uint64_t value = p_isLE ? p_dynamic->m_val : htobe64(p_dynamic->m_val);
         m_entries.emplace_back(tag, value);
@@ -167,8 +154,6 @@ void DynamicSection::doDynamic32 (const elf::dynamic::dynamic_32* p_dynamic,
     (void)p_baseAddress; //appears to be unused
     for ( ; reinterpret_cast<const char*>(p_dynamic) < p_end; ++p_dynamic)
     {
-        // boost::uint32_t tag = p_isLE ? p_dynamic->m_tag : ntohl(p_dynamic->m_tag);
-        // boost::uint32_t value = p_isLE ? p_dynamic->m_val : ntohl(p_dynamic->m_val);
         std::uint32_t tag = p_isLE ? p_dynamic->m_tag : ntohl(p_dynamic->m_tag);
         std::uint32_t value = p_isLE ? p_dynamic->m_val : ntohl(p_dynamic->m_val);
         m_entries.emplace_back(tag, value);
@@ -180,50 +165,41 @@ void DynamicSection::doDynamic32 (const elf::dynamic::dynamic_32* p_dynamic,
     }
 }
 
-// boost::uint64_t DynamicSection::getSymbolTableVirtAddress() const
 std::uint64_t DynamicSection::getSymbolTableVirtAddress() const
 {
     return m_symbolTableVirtAddress;
 }
 
-// boost::uint64_t DynamicSection::getStringTableVirtualAddress() const
 std::uint64_t DynamicSection::getStringTableVirtualAddress() const
 {
     return m_stringTableVirtAddress;
 }
 
-// boost::uint64_t DynamicSection::getStringTableSize() const
 std::uint64_t DynamicSection::getStringTableSize() const
 {
     return m_stringTableSize;
 }
 
-// boost::uint32_t DynamicSection::getSymbolTableSize() const
 std::uint32_t DynamicSection::getSymbolTableSize() const
 {
     return m_symbolTableSize;
 }
 
-// boost::uint64_t DynamicSection::getInitArray() const
 std::uint64_t DynamicSection::getInitArray() const
 {
     return m_initArrayVirtAddress;
 }
 
-// boost::uint32_t DynamicSection::getInitArrayEntries() const
 std::uint32_t DynamicSection::getInitArrayEntries() const
 {
     return m_initArrayEntries;
 }
 
-// void DynamicSection::evaluate(std::vector<std::pair<boost::int32_t, std::string> >& p_reasons,
-//                               std::map<elf::Capabilties, std::set<std::string> >& p_capabilities) const
 void DynamicSection::evaluate(std::vector<std::pair<std::int32_t, std::string> >& p_reasons,
                               std::map<elf::Capabilties, std::set<std::string> >& p_capabilities) const
 {
     (void)p_capabilities; //appears to be unused
     std::set<std::string> needed;
-    // BOOST_FOREACH(const AbstractDynamicEntry& entry, m_entries)
     for(const auto& entry : m_entries)
     {
         if (entry.getTag() == elf::dynamic::k_needed)
@@ -242,7 +218,6 @@ std::string DynamicSection::printToStdOut() const
 {
     std::stringstream returnValue;
     returnValue << "Dynamic Section (count = " << m_entries.size() << ")\n";
-    // BOOST_FOREACH(const AbstractDynamicEntry& entry, m_entries)
     for(const auto& entry : m_entries)
     {
         returnValue << entry.printToStdOut();

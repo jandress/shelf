@@ -9,10 +9,8 @@
 #include <cstddef>
 
 
-// #include <boost/cstdint.hpp>
 #include <cstdint>
 
-// #include <boost/ptr_container/ptr_vector.hpp>
 #include <vector>
 #include <memory>
 
@@ -43,7 +41,6 @@ public:
 
     std::set<std::string> getFiles() const;
 
-    // void setStart(const char* p_data, boost::uint32_t p_size,
     void setStart(const char* p_data, std::uint32_t p_size,
                   bool p_is64, bool p_isLE, bool p_isDY);
 
@@ -55,10 +52,8 @@ public:
     void generateSegments();
 
     //! \return the base address
-    // boost::uint64_t getBaseAddress() const;
     std::uint64_t getBaseAddress() const;
 
-    // boost::uint64_t getOffsetFromVirt(boost::uint64_t p_virtual) const;
     std::uint64_t getOffsetFromVirt(std::uint64_t p_virtual) const;
 
     /*!
@@ -66,7 +61,6 @@ public:
      * \param[in,out] p_reasons stores the scoring and reasons
      * \param[in,out] p_capabilities stores information about what the binary does
      */
-    // void evaluate(std::vector<std::pair<boost::int32_t, std::string> >& p_reasons,
     void evaluate(std::vector<std::pair<std::int32_t, std::string> >& p_reasons,
                   std::map<elf::Capabilties, std::set<std::string> >& p_capabilities) const;
 
@@ -76,7 +70,6 @@ public:
     std::string determineFamily() const;
 
     //! \return the string at the given offset
-    // std::string printSegment(boost::uint64_t p_offset) const;
     std::string printSegment(std::uint64_t p_offset) const;
 
     //! \return a string version of all segments. Name is a bit misleading.
@@ -98,7 +91,6 @@ private:
     const char* m_data;
 
     //! the size of the file in memory
-    // boost::uint32_t m_size;
     std::uint32_t m_size;
 
     //! All the section segments
@@ -108,14 +100,12 @@ private:
     std::vector<Segment> m_programs;
 
     //! All the sections/programs converted to subtypes
-    // boost::ptr_vector<SegmentType> m_types;
     std::vector<std::unique_ptr<SegmentType>> m_types;
 
     //! All the offsets so we don't parse the same thing twice
     std::set<const char*> m_offsets;
 
     //! The base address. Taken from the first PT_LOAD
-    // boost::uint64_t m_baseAddress;
     std::uint64_t m_baseAddress;
 
     //! A fully populated dynamic section
@@ -125,7 +115,6 @@ private:
     Symbols m_dynSymbols;
 
     //! Other symbols
-    // boost::ptr_vector<Symbols> m_otherSymbols;
     std::vector<std::unique_ptr<Symbols>> m_otherSymbols;
 
     //! the init array

@@ -6,7 +6,6 @@
 
 #include <sstream>
 #include <stdexcept>
-//#include <boost/foreach.hpp>
 #include <algorithm>
 
 #ifdef __APPLE__
@@ -19,8 +18,6 @@
 
 namespace
 {
-    // std::string make_name(const char* p_start, boost::uint32_t p_offset,
-    //                       boost::uint64_t p_size)
     std::string make_name(const char* p_start, std::uint32_t p_offset,
                           std::uint64_t p_size)
     {
@@ -33,14 +30,6 @@ namespace
     }
 }
 
-// AbstractSectionHeader::AbstractSectionHeader(const char* p_data,
-//                                              boost::uint16_t p_size,
-//                                              const char* p_fileStart,
-//                                              boost::uint64_t p_fileSize,
-//                                              boost::uint8_t p_strIndex,
-//                                              const std::vector<AbstractSectionHeader>& p_sections,
-//                                              bool p_is64,
-//                                              bool p_isLE) :
 AbstractSectionHeader::AbstractSectionHeader(const char* p_data,
                                              std::uint16_t p_size,
                                              const char* p_fileStart,
@@ -124,7 +113,6 @@ bool AbstractSectionHeader::isWritable() const
 
 std::string AbstractSectionHeader::getName() const
 {
-    // boost::uint32_t offset = 0;
     std::uint32_t offset = 0;
     if (m_is64)
     {
@@ -145,7 +133,6 @@ std::string AbstractSectionHeader::getName() const
     return make_name(m_fileStart, offset, m_size);
 }
 
-// boost::uint32_t AbstractSectionHeader::getType() const
 std::uint32_t AbstractSectionHeader::getType() const
 {
     if (m_is64)
@@ -236,7 +223,6 @@ std::string AbstractSectionHeader::getFlagsString() const
     return result;
 }
 
-// boost::uint64_t AbstractSectionHeader::getFlags() const
 std::uint64_t AbstractSectionHeader::getFlags() const
 {
     if (m_is64)
@@ -246,7 +232,6 @@ std::uint64_t AbstractSectionHeader::getFlags() const
     return m_isLE ? m_section_header32->m_flags : ntohl(m_section_header32->m_flags);
 }
 
-// boost::uint64_t AbstractSectionHeader::getVirtAddress() const
 std::uint64_t AbstractSectionHeader::getVirtAddress() const
 {
     if (m_is64)
@@ -263,7 +248,6 @@ std::string AbstractSectionHeader::getVirtAddressString() const
     return result.str();
 }
 
-// boost::uint64_t AbstractSectionHeader::getPhysOffset() const
 std::uint64_t AbstractSectionHeader::getPhysOffset() const
 {
     if (m_is64)
@@ -273,7 +257,6 @@ std::uint64_t AbstractSectionHeader::getPhysOffset() const
     return m_isLE ? m_section_header32->m_offset : ntohl(m_section_header32->m_offset);
 }
 
-// boost::uint64_t AbstractSectionHeader::getSize() const
 std::uint64_t AbstractSectionHeader::getSize() const
 {
     if (m_is64)
@@ -283,7 +266,6 @@ std::uint64_t AbstractSectionHeader::getSize() const
     return m_isLE ? m_section_header32->m_size : ntohl(m_section_header32->m_size);
 }
 
-// boost::uint32_t AbstractSectionHeader::getLink() const
 std::uint32_t AbstractSectionHeader::getLink() const
 {
     if (m_is64)
@@ -293,7 +275,6 @@ std::uint32_t AbstractSectionHeader::getLink() const
     return m_isLE ? m_section_header32->m_link : ntohl(m_section_header32->m_link);
 }
 
-// boost::uint32_t AbstractSectionHeader::getInfo() const
 std::uint32_t AbstractSectionHeader::getInfo() const
 {
     if (m_is64)
@@ -303,7 +284,6 @@ std::uint32_t AbstractSectionHeader::getInfo() const
     return m_isLE ? m_section_header32->m_info : ntohl(m_section_header32->m_info);
 }
 
-// boost::uint64_t AbstractSectionHeader::getAddrAlign() const
 std::uint64_t AbstractSectionHeader::getAddrAlign() const
 {
     if (m_is64)
@@ -313,7 +293,6 @@ std::uint64_t AbstractSectionHeader::getAddrAlign() const
     return m_isLE ? m_section_header32->m_addralign : ntohl(m_section_header32->m_addralign);
 }
 
-// boost::uint64_t AbstractSectionHeader::getEntSize() const
 std::uint64_t AbstractSectionHeader::getEntSize() const
 {
     if (m_is64)

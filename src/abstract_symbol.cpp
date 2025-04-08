@@ -3,7 +3,6 @@
 
 #include "structures/symtable_entry.hpp"
 
-//#include <boost/lexical_cast.hpp>
 #include <sstream>
 
 #include <sstream>
@@ -18,7 +17,6 @@
 
 namespace
 {
-    // std::string getSymBinding(boost::uint8_t p_info)
     std::string getSymBinding(std::uint8_t p_info)
     {
         switch ((p_info >> 4) & 0x0f)
@@ -30,12 +28,10 @@ namespace
             case elf::symbol::k_weak:
                 return "STB_WEAK";
             default:
-                // return boost::lexical_cast<std::string>((p_info >> 4) & 0x0f);
                 return std::to_string((p_info >> 4) & 0x0f);
         }
     }
 
-    // std::string getSymType(boost::uint8_t p_info)
     std::string getSymType(std::uint8_t p_info)
     {
         switch (p_info & 0x0f)
@@ -55,13 +51,11 @@ namespace
             case elf::symbol::k_tls:
                 return "STT_TLS";
             default:
-                // return boost::lexical_cast<std::string>(p_info & 0x0f);
                 return std::to_string(p_info & 0x0f);
         }
     }
 }
 
-// AbstractSymbol::AbstractSymbol(const char* p_data, boost::uint32_t p_offset,
 AbstractSymbol::AbstractSymbol(const char* p_data, std::uint32_t p_offset,
                                bool p_is64, bool p_isLE) :
     m_symbol32(),
@@ -97,7 +91,6 @@ AbstractSymbol::~AbstractSymbol()
 {
 }
 
-// boost::uint32_t AbstractSymbol::getStructSize() const
 std::uint32_t AbstractSymbol::getStructSize() const
 {
     if (m_is64)
@@ -107,7 +100,6 @@ std::uint32_t AbstractSymbol::getStructSize() const
     return sizeof(elf::symbol::symtable_entry32);
 }
 
-// boost::uint8_t AbstractSymbol::getType() const
 std::uint8_t AbstractSymbol::getType() const
 {
     if (m_is64)
@@ -117,7 +109,6 @@ std::uint8_t AbstractSymbol::getType() const
     return m_symbol32->m_info & 0x0f;
 }
 
-// boost::uint8_t AbstractSymbol::getInfo() const
 std::uint8_t AbstractSymbol::getInfo() const
 {
     if (m_is64)
@@ -137,7 +128,6 @@ std::string AbstractSymbol::getBinding() const
     return getSymBinding(getInfo());
 }
 
-// boost::uint64_t AbstractSymbol::getValue() const
 std::uint64_t AbstractSymbol::getValue() const
 {
     if (m_is64)
@@ -147,7 +137,6 @@ std::uint64_t AbstractSymbol::getValue() const
     return m_isLE ? m_symbol32->m_address : ntohl(m_symbol32->m_address);
 }
 
-// boost::uint32_t AbstractSymbol::getNameIndex() const
 std::uint32_t AbstractSymbol::getNameIndex() const
 {
     if (m_is64)

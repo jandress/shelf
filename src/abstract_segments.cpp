@@ -17,8 +17,6 @@
 
 #include <sstream>
 #include <iostream>
-
-//#include <boost/foreach.hpp>
 #include <algorithm>
 
 
@@ -50,12 +48,9 @@ AbstractSegments::~AbstractSegments()
 std::set<std::string> AbstractSegments::getFiles() const
 {
     std::set<std::string> combined = m_dynSymbols.getFiles();
-    // BOOST_FOREACH(const Symbols& symbol, m_otherSymbols)
     for(const auto& symbol : m_otherSymbols)
     {
-        // const std::set<std::string>& unique(symbol.getFiles());
         const std::set<std::string>& unique(symbol->getFiles());
-        // BOOST_FOREACH(const std::string& value, unique)
         for(const std::string& value : unique)
         {
             combined.insert(value);
@@ -64,7 +59,6 @@ std::set<std::string> AbstractSegments::getFiles() const
     return combined;
 }
 
-// void AbstractSegments::setStart(const char* p_data, boost::uint32_t p_size,
 void AbstractSegments::setStart(const char* p_data, std::uint32_t p_size,
                                 bool p_is64, bool p_isLE, bool p_isDY)
 {
@@ -100,7 +94,6 @@ void AbstractSegments::makeSegmentFromProgramHeader(const AbstractProgramHeader&
 
 void AbstractSegments::createDynamic()
 {
-    // BOOST_FOREACH(const Segment& program, m_programs)
     for(const auto& program : m_programs)
     {
         if (program.isDynamic())
@@ -110,8 +103,6 @@ void AbstractSegments::createDynamic()
                                     m_is64, m_isLE, *this);
 
             // build the symtab based off of the dynamic section
-            // boost::uint64_t symTab = getOffsetFromVirt(m_dynamic.getSymbolTableVirtAddress());
-            // boost::uint64_t strTab = getOffsetFromVirt(m_dynamic.getStringTableVirtualAddress());
             std::uint64_t symTab = getOffsetFromVirt(m_dynamic.getSymbolTableVirtAddress());
             std::uint64_t strTab = getOffsetFromVirt(m_dynamic.getStringTableVirtualAddress());
             m_dynSymbols.createSymbols(m_data, m_size, symTab, m_dynamic.getSymbolTableSize(),
@@ -133,7 +124,6 @@ void AbstractSegments::createDynamic()
         }
     }
 
-    // BOOST_FOREACH(const Segment& section, m_sections)
     for(const auto& section : m_sections)
     {
         if (section.isDynamic())
@@ -143,8 +133,6 @@ void AbstractSegments::createDynamic()
                                     m_is64, m_isLE, *this);
 
             // build the symtab based off of the dynamic section
-            // boost::uint64_t symTab = getOffsetFromVirt(m_dynamic.getSymbolTableVirtAddress());
-            // boost::uint64_t strTab = getOffsetFromVirt(m_dynamic.getStringTableVirtualAddress());
             std::uint64_t symTab = getOffsetFromVirt(m_dynamic.getSymbolTableVirtAddress());
             std::uint64_t strTab = getOffsetFromVirt(m_dynamic.getStringTableVirtualAddress());
             m_dynSymbols.createSymbols(m_data, m_size, symTab, m_dynamic.getSymbolTableSize(),
@@ -166,14 +154,12 @@ void AbstractSegments::generateSegments()
     std::size_t tableIndex = 0;
     std::set<std::size_t> strTab;
     std::set<std::size_t> symTab;
-    // BOOST_FOREACH(const Segment& section, m_sections)
     for(const auto& section : m_sections)
     {
         if (m_offsets.find(m_data + section.getPhysOffset()) == m_offsets.end())
         {
             if (section.getType() == "K_NOTE")
             {
-                // m_types.push_back(new NoteSegment(m_data, section.getPhysOffset(), section.getSize(), elf::k_note));
                 m_types.push_back(std::make_unique<NoteSegment>(m_data, section.getPhysOffset(), section.getSize(), elf::k_note));
                 m_offsets.insert(m_data + section.getPhysOffset());
             }
@@ -181,25 +167,21 @@ void AbstractSegments::generateSegments()
             {
                 if (section.getName() == ".comment")
                 {
-                    // m_types.push_back(new CommentSegment(m_data, section.getPhysOffset(), section.getSize(), elf::k_progbits));
                     m_types.push_back(std::make_unique<CommentSegment>(m_data, section.getPhysOffset(), section.getSize(), elf::k_progbits));
                     m_offsets.insert(m_data + section.getPhysOffset());
                 }
                 else if (section.getName() == ".gnu_debuglink")
                 {
-                    // m_types.push_back(new DebugLinkSegment(m_data, section.getPhysOffset(), section.getSize(), elf::k_progbits));
                     m_types.push_back(std::make_unique<DebugLinkSegment>(m_data, section.getPhysOffset(), section.getSize(), elf::k_progbits));
                     m_offsets.insert(m_data + section.getPhysOffset());
                 }
                 else if (section.getName() == ".interp")
                 {
-                    // m_types.push_back(new InterpSegment(m_data, section.getPhysOffset(), section.getSize(), elf::k_progbits));
                     m_types.push_back(std::make_unique<InterpSegment>(m_data, section.getPhysOffset(), section.getSize(), elf::k_progbits));
                     m_offsets.insert(m_data + section.getPhysOffset());
                 }
                 else if (section.getName() == ".rodata")
                 {
-                    // m_types.push_back(new ReadOnlySegment(m_data, section.getPhysOffset(), section.getSize(), elf::k_progbits));
                     m_types.push_back(std::make_unique<ReadOnlySegment>(m_data, section.getPhysOffset(), section.getSize(), elf::k_progbits));
                     m_offsets.insert(m_data + section.getPhysOffset());
                 }
@@ -233,7 +215,6 @@ void AbstractSegments::generateSegments()
     }
 
     // loop over the symbol tables we saved and resolve the links.
-    // BOOST_FOREACH(std::size_t index, symTab)
     for(std::size_t index : symTab)
     {
         // validate that the symtab has a good strtab
@@ -254,7 +235,6 @@ void AbstractSegments::generateSegments()
             }
             else
             {
-                // m_types.push_back(new StringTableSegment(m_data, m_sections[link].getPhysOffset(), m_sections[link].getSize(), elf::k_strtab));
                 m_types.push_back(std::make_unique<StringTableSegment>(m_data, m_sections[link].getPhysOffset(), m_sections[link].getSize(), elf::k_strtab));
                 m_offsets.insert(m_data + m_sections[link].getPhysOffset());
             }
@@ -266,29 +246,24 @@ void AbstractSegments::generateSegments()
                                         m_sections[link].getPhysOffset(),
                                         m_sections[link].getSize(),
                                         *this, m_is64, m_isLE, m_isDY);
-            // m_otherSymbols.push_back(otherSymbols);
             m_otherSymbols.push_back(std::make_unique<Symbols>(std::move(*otherSymbols)));
             m_offsets.insert(m_data + m_sections[index].getPhysOffset());
         }
     }
 
     // for any remaining strtab just create the segment
-    // BOOST_FOREACH(std::size_t index, strTab)
     for(std::size_t index : strTab)
     {
-        // m_types.push_back(new StringTableSegment(m_data, m_sections[index].getPhysOffset(), m_sections[index].getSize(), elf::k_strtab));
         m_types.push_back(std::make_unique<StringTableSegment>(m_data, m_sections[index].getPhysOffset(), m_sections[index].getSize(), elf::k_strtab));
         m_offsets.insert(m_data + m_sections[index].getPhysOffset());
     }
 
     // segments are done try to resolve init array functions
-    // std::vector<std::pair<boost::uint64_t, std::string> >& initArray = m_initArray.getEntries();
     std::vector<std::pair<std::uint64_t, std::string> >& initArray = m_initArray.getEntries();
     for (std::size_t j = 0 ; j < initArray.size(); ++j)
     {
         for (std::size_t i = 0; i < m_otherSymbols.size(); ++i)
         {
-            // std::string resolved = m_otherSymbols[i].findSymbol(initArray[j].first);
             std::string resolved = m_otherSymbols[i]->findSymbol(initArray[j].first);
             if (!resolved.empty())
             {
@@ -296,13 +271,11 @@ void AbstractSegments::generateSegments()
             }
         }
     }
-    // std::vector<std::pair<boost::uint64_t, std::string> >& ctorsArray = m_ctorsArray.getEntries();
     std::vector<std::pair<_STDDEF_H_::uint64_t, std::string> >& ctorsArray = m_ctorsArray.getEntries();
     for (std::size_t j = 0 ; j < ctorsArray.size(); ++j)
     {
         for (std::size_t i = 0; i < m_otherSymbols.size(); ++i)
         {
-            // std::string resolved = m_otherSymbols[i].findSymbol(ctorsArray[j].first);
             std::string resolved = m_otherSymbols[i]->findSymbol(ctorsArray[j].first);
             if (!resolved.empty())
             {
@@ -312,16 +285,13 @@ void AbstractSegments::generateSegments()
     }
 }
 
-// boost::uint64_t AbstractSegments::getBaseAddress() const
 std::uint64_t AbstractSegments::getBaseAddress() const
 {
     return m_baseAddress;
 }
 
-// boost::uint64_t AbstractSegments::getOffsetFromVirt(boost::uint64_t p_virtual) const
 std::uint64_t AbstractSegments::getOffsetFromVirt(std::uint64_t p_virtual) const
 {
-    // BOOST_FOREACH(const Segment& program, m_programs)
     for(const auto& program : m_programs)
     {
         if (program.getVirtAddress() <= p_virtual &&
@@ -330,7 +300,6 @@ std::uint64_t AbstractSegments::getOffsetFromVirt(std::uint64_t p_virtual) const
             return program.getPhysOffset() + (p_virtual - program.getVirtAddress());
         }
     }
-    // BOOST_FOREACH(const Segment& section, m_sections)
     for(const auto& section : m_sections)
     {
         if (section.getVirtAddress() <= p_virtual &&
@@ -342,24 +311,19 @@ std::uint64_t AbstractSegments::getOffsetFromVirt(std::uint64_t p_virtual) const
     return 0;
 }
 
-// void AbstractSegments::evaluate(std::vector<std::pair<boost::int32_t, std::string> >& p_reasons,
 void AbstractSegments::evaluate(std::vector<std::pair<std::int32_t, std::string> >& p_reasons,
                                 std::map<elf::Capabilties, std::set<std::string> >& p_capabilities) const
 {
     m_dynamic.evaluate(p_reasons, p_capabilities);
     m_dynSymbols.evaluate(p_reasons, p_capabilities);
 
-    // BOOST_FOREACH(const SegmentType& seg, m_types)
     for(const auto& seg : m_types)
     {
-        // seg.evaluate(p_reasons, p_capabilities);
         seg->evaluate(p_reasons, p_capabilities);
     }
 
-    // BOOST_FOREACH(const Symbols& sym, m_otherSymbols)
     for(const auto& sym : m_otherSymbols)
     {
-        // sym.evaluate(p_reasons, p_capabilities);
         sym->evaluate(p_reasons, p_capabilities);
     }
 
@@ -372,12 +336,9 @@ void AbstractSegments::evaluate(std::vector<std::pair<std::int32_t, std::string>
 std::vector<AbstractSymbol> AbstractSegments::getAllSymbols() const
 {
     std::vector<AbstractSymbol> symbols(m_dynSymbols.getSymbols());
-    // BOOST_FOREACH(const Symbols& other, m_otherSymbols)
     for(const auto& other : m_otherSymbols)
     {
-        // const std::vector<AbstractSymbol>& others(other.getSymbols());
         const std::vector<AbstractSymbol>& others(other->getSymbols());
-        // BOOST_FOREACH(const AbstractSymbol& newSymbols, others)
         for(const auto& newSymbols : others)
         {
             symbols.push_back(newSymbols);
@@ -422,7 +383,6 @@ std::string AbstractSegments::determineFamily() const
     }
 
     const std::vector<AbstractSymbol>& symbols(getAllSymbols());
-    // BOOST_FOREACH(const AbstractSymbol& symbol, symbols)
     for(const auto& symbol : symbols)
     {
         if (symbol.getType() == elf::symbol::k_function)
@@ -437,16 +397,12 @@ std::string AbstractSegments::determineFamily() const
     return "Undetermined";
 }
 
-// std::string AbstractSegments::printSegment(boost::uint64_t p_offset) const
 std::string AbstractSegments::printSegment(std::uint64_t p_offset) const
 {
-    // BOOST_FOREACH(const SegmentType& segment, m_types)
     for(const auto& segment : m_types)
     {
-        // if (segment.getOffset() == p_offset)
         if (segment->getOffset() == p_offset)
         {
-            // return segment.printToStdOut();
             return segment->printToStdOut();
         }
     }
@@ -476,17 +432,13 @@ std::string AbstractSegments::printToStdOut() const
     returnValue << m_dynSymbols.printToStdOut();
     returnValue << m_initArray.printToStd();
 
-    // BOOST_FOREACH(const SegmentType& seg, m_types)
     for(const auto& seg : m_types)
     {
-        // returnValue << seg.printToStdOut();
         returnValue << seg->printToStdOut();
     }
 
-    // BOOST_FOREACH(const Symbols& sym, m_otherSymbols)
     for(const auto& sym : m_otherSymbols)
     {
-        // returnValue << sym.printToStdOut();
         returnValue << sym->printToStdOut();
     }
 

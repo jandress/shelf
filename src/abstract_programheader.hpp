@@ -4,7 +4,6 @@
 
 #include <vector>
 #include <string>
-//#include <boost/cstdint.hpp>
 #include <cstdint>
 
 namespace elf
@@ -31,7 +30,6 @@ public:
      * \param[in] p_is64 indicates if the binary is 64 bit or 32 bit
      * \param[in] p_isLE indicates if the binary is little endian
      */
-    // AbstractProgramHeader(const char* p_data, boost::uint16_t p_size,
     AbstractProgramHeader(const char* p_data, std::uint16_t p_size,
                           bool p_is64, bool p_isLE);
     AbstractProgramHeader(const AbstractProgramHeader& p_rhs);
@@ -45,15 +43,6 @@ public:
     bool isWritable() const;
     std::string getFlagsString() const;
     std::string getName() const;
-    // boost::uint32_t getType() const;
-    // boost::uint64_t getOffset() const;
-    // boost::uint64_t getVirtualAddress() const;
-    // std::string getVirtualAddressString() const;
-    // boost::uint64_t getPhysicalAddress() const;
-    // std::string getPhysicalAddressString() const;
-    // boost::uint64_t getFileSize() const;
-    // boost::uint64_t getMemorySize() const;
-    // boost::uint32_t getFlags() const;
     std::uint32_t getType() const;
     std::uint64_t getOffset() const;
     std::uint64_t getVirtualAddress() const;

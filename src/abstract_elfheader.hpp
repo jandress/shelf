@@ -7,7 +7,6 @@
 #include <vector>
 #include <string>
 #include <cstddef>
-//#include <boost/cstdint.hpp>
 #include <cstdint>
 
 namespace elf
@@ -143,7 +142,6 @@ private:
     bool m_is64;
 
     //! Stores the file size due to true.asm silliness
-    // boost::uint32_t m_fileSize;
     std::uint32_t m_fileSize;
 
     //! A pointer to the 32 bit version of the ELF header
