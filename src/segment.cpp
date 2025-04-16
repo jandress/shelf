@@ -5,11 +5,6 @@
 #include <iostream>
 #include <cstdint>
 
-// Segment::Segment(const std::string& p_name, const std::string& p_type,
-//                  boost::uint64_t p_physOffset, boost::uint64_t p_virtAddress,
-//                  boost::uint64_t p_size, boost::uint32_t p_link,
-//                  bool p_executable, bool p_writable, bool p_isDynamic) :
-
 Segment::Segment(const std::string& p_name, const std::string& p_type,
                  std::uint64_t p_physOffset, std::uint64_t p_virtAddress,
                  std::uint64_t p_size, std::uint32_t p_link,
@@ -30,25 +25,21 @@ Segment::~Segment()
 {
 }
 
-// boost::uint64_t Segment::getVirtAddress() const
 std::uint64_t Segment::getVirtAddress() const
 {
     return m_virtAddress;
 }
 
-// boost::uint64_t Segment::getSize() const
 std::uint64_t Segment::getSize() const
 {
     return m_size;
 }
 
-// boost::uint64_t Segment::getPhysOffset() const
 std::uint64_t Segment::getPhysOffset() const
 {
     return m_physOffset;
 }
 
-// boost::uint32_t Segment::getLink() const
 std::uint32_t Segment::getLink() const
 {
     return m_link;

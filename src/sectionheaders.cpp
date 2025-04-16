@@ -2,10 +2,7 @@
 #include "sectionheaders.hpp"
 #include "abstract_segments.hpp"
 #include "abstract_sectionheader.hpp"
-
-//#include <boost/foreach.hpp>
 #include <algorithm>
-
 #include <sstream>
 #include <iostream>
 
@@ -19,13 +16,6 @@ SectionHeaders::SectionHeaders() :
 SectionHeaders::~SectionHeaders()
 {
 }
-
-// void SectionHeaders::setHeaders(const char* p_data, const char* p_start,
-//                                 boost::uint64_t p_total_size, boost::uint16_t p_count,
-//                                 boost::uint16_t p_size, std::size_t p_stringIndex,
-//                                 bool p_is64, bool p_isLE,
-//                                 std::map<elf::Capabilties, std::set<std::string> >& p_capabilities)
-// {
 
 void SectionHeaders::setHeaders(const char* p_data, const char* p_start,
                                 std::uint64_t p_total_size, std::uint16_t p_count,
@@ -77,15 +67,12 @@ void SectionHeaders::setHeaders(const char* p_data, const char* p_start,
 
 void SectionHeaders::extractSegments(AbstractSegments& p_segments)
 {
-    // BOOST_FOREACH(const AbstractSectionHeader& header, m_sectionHeaders)
     for(const auto& header : m_sectionHeaders)
     {
         p_segments.makeSegmentFromSectionHeader(header);
     }
 }
 
-// void SectionHeaders::evaluate(std::vector<std::pair<boost::int32_t, std::string> >& p_reasons,
-//                               std::map<elf::Capabilties, std::set<std::string> >& p_capabilities) const
 void SectionHeaders::evaluate(std::vector<std::pair<std::int32_t, std::string> >& p_reasons,
                               std::map<elf::Capabilties, std::set<std::string> >& p_capabilities) const
 {
@@ -102,7 +89,6 @@ const std::vector<AbstractSectionHeader>& SectionHeaders::getSections() const
     return m_sectionHeaders;
 }
 
-// boost::uint32_t SectionHeaders::getStringTableIndex() const
 std::uint32_t SectionHeaders::getStringTableIndex() const
 {
     return m_stringIndex;
@@ -113,7 +99,6 @@ std::string SectionHeaders::printToStdOut() const
     std::stringstream returnValue;
     returnValue << "Section Headers (count=" << m_sectionHeaders.size()
                 << ")\n";
-    // BOOST_FOREACH(const AbstractSectionHeader& header, m_sectionHeaders)
     for(const auto& header : m_sectionHeaders)
     {
         returnValue << "\tSection name=\"";

@@ -1,8 +1,6 @@
 //boost free
 #include "segment_type.hpp"
 
-// SegmentType::SegmentType (const char*, boost::uint32_t p_offset,
-//                   boost::uint32_t p_size, elf::section_type p_type) :
 SegmentType::SegmentType (const char*, std::uint32_t p_offset,
                   std::uint32_t p_size, elf::section_type p_type) :
     m_type(p_type),
@@ -21,7 +19,6 @@ elf::section_type SegmentType::getType() const
     return m_type;
 }
 
-// boost::uint32_t SegmentType::getOffset() const
 std::uint32_t SegmentType::getOffset() const
 {
     return m_offset;

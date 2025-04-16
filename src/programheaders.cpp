@@ -3,10 +3,7 @@
 #include "abstract_segments.hpp"
 #include "abstract_programheader.hpp"
 #include "structures/programheader.hpp"
-
-//#include <boost/foreach.hpp>
 #include <algorithm>
-
 #include <sstream>
 
 ProgramHeaders::ProgramHeaders() :
@@ -18,8 +15,6 @@ ProgramHeaders::~ProgramHeaders()
 {
 }
 
-// void ProgramHeaders::setHeaders(const char* p_data, boost::uint16_t p_count,
-//                                 boost::uint16_t p_size, bool p_is64, bool p_isLE)
 void ProgramHeaders::setHeaders(const char* p_data, std::uint16_t p_count,
                                 std::uint16_t p_size, bool p_is64, bool p_isLE)
 {
@@ -36,7 +31,6 @@ void ProgramHeaders::setHeaders(const char* p_data, std::uint16_t p_count,
 
 void ProgramHeaders::extractSegments(AbstractSegments& p_segments)
 {
-    // BOOST_FOREACH(const AbstractProgramHeader& header, m_programHeaders)
     for(const auto& header : m_programHeaders)
     {
         p_segments.makeSegmentFromProgramHeader(header);
@@ -52,7 +46,6 @@ std::string ProgramHeaders::printToStdOut() const
 {
     std::stringstream returnValue;
     returnValue << "Program Header (count = " << m_programHeaders.size() << ")\n";
-    // BOOST_FOREACH(const AbstractProgramHeader& header, m_programHeaders)
     for(const auto& header : m_programHeaders)
     {
         returnValue << "\tEntry type=" << header.getName()
@@ -67,14 +60,12 @@ std::string ProgramHeaders::printToStdOut() const
     return returnValue.str();
 }
 
-// void ProgramHeaders::evaluate(std::vector<std::pair<boost::int32_t, std::string> >& p_reasons) const
 void ProgramHeaders::evaluate(std::vector<std::pair<std::int32_t, std::string> >& p_reasons) const
 {
     bool found_load = false;
     std::size_t entry_count = 0;
     std::size_t load_count = 0;
 
-    // BOOST_FOREACH(const AbstractProgramHeader& header, m_programHeaders)
     for(const auto& header : m_programHeaders)
     {
         switch (header.getType())

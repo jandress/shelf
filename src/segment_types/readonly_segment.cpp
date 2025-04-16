@@ -1,16 +1,9 @@
 //boost free
 #include "readonly_segment.hpp"
-
-#include <boost/assign.hpp>
 #include <map>
-
-#include <boost/foreach.hpp>
 #include <algorithm>
-
 #include <sstream>
 
-// ReadOnlySegment::ReadOnlySegment(const char* start, boost::uint32_t p_offset,
-//                                  boost::uint32_t p_size, elf::section_type p_type) :
 ReadOnlySegment::ReadOnlySegment(const char* start, std::uint32_t p_offset,
                                  std::uint32_t p_size, elf::section_type p_type) :
     SegmentType(start, p_offset, p_size, p_type),
@@ -18,10 +11,8 @@ ReadOnlySegment::ReadOnlySegment(const char* start, std::uint32_t p_offset,
 {
     std::string current;
     const char* readOnly = start + p_offset;
-    // for (boost::uint32_t i = 0; i < p_size; ++i)
     for (std::uint32_t i = 0; i < p_size; ++i)
     {
-        // if (isprint(static_cast<boost::uint8_t>(readOnly[i])))
         if (isprint(static_cast<std::uint8_t>(readOnly[i])))
         {
             current.push_back(readOnly[i]);
@@ -48,7 +39,6 @@ std::string ReadOnlySegment::printToStdOut() const
                  << ", size=" << std::dec << m_size << ", strings="
                  << m_asciiStrings.size() << ")\n";
 
-    // BOOST_FOREACH(const std::string& p_ascii, m_asciiStrings)
     for(const std::string& p_ascii : m_asciiStrings)
     {
         return_value << "\tString=\"" << p_ascii << "\"\n";
@@ -56,7 +46,6 @@ std::string ReadOnlySegment::printToStdOut() const
     return return_value.str();
 }
 
-// void ReadOnlySegment::evaluate(std::vector<std::pair<boost::int32_t, std::string> >& p_reasons,
 void ReadOnlySegment::evaluate(std::vector<std::pair<std::int32_t, std::string> >& p_reasons,
                                std::map<elf::Capabilties, std::set<std::string> >&) const
 {

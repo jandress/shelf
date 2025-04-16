@@ -6,8 +6,6 @@
 #include <set>
 #include <string>
 #include <vector>
-
-//#include <boost/cstdint.hpp>
 #include <cstdint>
 
 #include "structures/capabilities.hpp"
@@ -43,8 +41,6 @@ public:
      * \param[in,out] p_reasons scoring reasons
      */
     void setHeaders(const char* p_data, const char* p_start,
-                    // boost::uint64_t p_total_size, boost::uint16_t p_count,
-                    // boost::uint16_t p_size, std::size_t p_stringIndex,
                     std::uint64_t p_total_size, std::uint16_t p_count,
                     std::uint16_t p_size, std::size_t p_stringIndex,
                     bool p_is64, bool p_isLE,
@@ -61,7 +57,6 @@ public:
      * \param[in,out] p_reasons stores the scoring and reasons
      * \param[in,out] p_capabilities stores information about what the binary does
      */
-    // void evaluate(std::vector<std::pair<boost::int32_t, std::string> >& p_reasons,
     void evaluate(std::vector<std::pair<std::int32_t, std::string> >& p_reasons,
                   std::map<elf::Capabilties, std::set<std::string> >& p_capabilities) const;
 
@@ -69,7 +64,6 @@ public:
     const std::vector<AbstractSectionHeader>& getSections() const;
 
     //! \return the string table index
-    // boost::uint32_t getStringTableIndex() const;
     std::uint32_t getStringTableIndex() const;
 
     //! \return a string representation of the section headers
@@ -87,11 +81,9 @@ private:
     std::vector<AbstractSectionHeader> m_sectionHeaders;
 
     //! Total size of the binary
-    // boost::uint32_t m_totalSize;
     std::uint32_t m_totalSize;
 
     //! The index of the strings in the sections
-    // boost::uint32_t m_stringIndex;
     std::uint32_t m_stringIndex;
 };
 

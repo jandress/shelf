@@ -5,8 +5,6 @@
 #include "segment_type.hpp"
 
 #include <string>
-
-//#include <boost/cstdint.hpp>
 #include <cstdint>
 
 /*!
@@ -24,8 +22,6 @@ public:
      * \param[in] p_size the size of this segment
      * \param[in] p_type elf::k_progbits
      */
-    // InterpSegment(const char* start, boost::uint32_t p_offset,
-    //               boost::uint32_t p_size, elf::section_type p_type);
     InterpSegment(const char* start, std::uint32_t p_offset,
                   std::uint32_t p_size, elf::section_type p_type);
 

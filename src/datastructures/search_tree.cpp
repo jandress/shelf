@@ -1,6 +1,5 @@
 //boost free
 #include "search_tree.hpp"
-//#include <boost/concept_check.hpp>
 #include <concepts>
 #include <cassert>
 

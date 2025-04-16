@@ -2,26 +2,13 @@
 #ifndef SECTION_HEADER_HPP
 #define SECTION_HEADER_HPP
 
-//#include <boost/cstdint.hpp>
 #include <cstdint>
-
-//#include <boost/static_assert.hpp>
 #include <cassert>
 
 namespace elf
 {
     struct section_header_32
     {
-        // boost::uint32_t m_name;
-        // boost::uint32_t m_type;
-        // boost::uint32_t m_flags;
-        // boost::uint32_t m_addr;
-        // boost::uint32_t m_offset;
-        // boost::uint32_t m_size;
-        // boost::uint32_t m_link;
-        // boost::uint32_t m_info;
-        // boost::uint32_t m_addralign;
-        // boost::uint32_t m_entsize;
         std::uint32_t m_name;
         std::uint32_t m_type;
         std::uint32_t m_flags;
@@ -34,22 +21,11 @@ namespace elf
         std::uint32_t m_entsize;
     };
 
-    //BOOST_STATIC_ASSERT(sizeof(section_header_32) == 40);
     static_assert(40 == sizeof(section_header_32), "Size of section_header_32 must be 40 bytes");
     
 
     struct section_header_64
     {
-        // boost::uint32_t m_name;
-        // boost::uint32_t m_type;
-        // boost::uint64_t m_flags;
-        // boost::uint64_t m_addr;
-        // boost::uint64_t m_offset;
-        // boost::uint64_t m_size;
-        // boost::uint32_t m_link;
-        // boost::uint32_t m_info;
-        // boost::uint64_t m_addralign;
-        // boost::uint64_t m_entsize;
         std::uint32_t m_name;
         std::uint32_t m_type;
         std::uint64_t m_flags;
@@ -62,7 +38,6 @@ namespace elf
         std::uint64_t m_entsize;
     };
 
-    //BOOST_STATIC_ASSERT(sizeof(section_header_64) == 64);
     static_assert(64 == sizeof(section_header_64), "Size of section_header_64 must be 64 bytes");
 
     enum section_type

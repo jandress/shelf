@@ -147,7 +147,6 @@ void DynamicSection::doDynamic64(const elf::dynamic::dynamic_64* p_dynamic,
 
 void DynamicSection::doDynamic32 (const elf::dynamic::dynamic_32* p_dynamic,
                                   const char* p_start, const char* p_end,
-                                //   boost::uint64_t p_baseAddress, bool p_isLE)
                                 std::uint64_t p_baseAddress, bool p_isLE)
 {
     (void)p_start; //appears to be unused

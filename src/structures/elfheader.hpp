@@ -1,14 +1,8 @@
 //boost free
 #ifndef ELF_HEADER_HPP
 #define ELF_HEADER_HPP
-
 #include <string>
-
-
-#include <boost/cstdint.hpp>
 #include <cstdint>
-
-#include <boost/static_assert.hpp>
 #include <cassert>
 
 namespace elf
@@ -49,19 +43,9 @@ namespace elf
     {
         union
         {
-            // boost::uint8_t m_ident[16];
             std::uint8_t m_ident[16];
             struct
             {
-                // boost::uint8_t m_magic0;
-                // boost::uint8_t m_magic1;
-                // boost::uint8_t m_magic2;
-                // boost::uint8_t m_magic3;
-                // boost::uint8_t m_class;
-                // boost::uint8_t m_encoding;
-                // boost::uint8_t m_fileversion;
-                // boost::uint8_t m_os;
-                // boost::uint8_t m_abi;
                 std::uint8_t m_magic0;
                 std::uint8_t m_magic1;
                 std::uint8_t m_magic2;
@@ -73,19 +57,6 @@ namespace elf
                 std::uint8_t m_abi;
             };
         };
-        // boost::uint16_t m_type;
-        // boost::uint16_t m_machine;
-        // boost::uint32_t m_version;
-        // boost::uint32_t m_entry;
-        // boost::uint32_t m_phoff;
-        // boost::uint32_t m_shoff;
-        // boost::uint32_t m_flags;
-        // boost::uint16_t m_ehsize;
-        // boost::uint16_t m_phentsize;
-        // boost::uint16_t m_phnum;
-        // boost::uint16_t m_shentsize;
-        // boost::uint16_t m_shnum;
-        // boost::uint16_t m_shtrndx;
         std::uint16_t m_type;
         std::uint16_t m_machine;
         std::uint32_t m_version;
@@ -101,26 +72,15 @@ namespace elf
         std::uint16_t m_shtrndx;
     };
 
-    //BOOST_STATIC_ASSERT(sizeof(elf_header_32) == 52);
     static_assert(52 == sizeof(elf_header_32), "Size of elf_header_32 must be 52 bytes");
 
     struct elf_header_64
     {
         union
         {
-            // boost::uint8_t m_ident[16];
             std::uint8_t m_ident[16];
             struct
             {
-                // boost::uint8_t m_magic0;
-                // boost::uint8_t m_magic1;
-                // boost::uint8_t m_magic2;
-                // boost::uint8_t m_magic3;
-                // boost::uint8_t m_class;
-                // boost::uint8_t m_encoding;
-                // boost::uint8_t m_fileversion;
-                // boost::uint8_t m_os;
-                // boost::uint8_t m_abi;
                 std::uint8_t m_magic0;
                 std::uint8_t m_magic1;
                 std::uint8_t m_magic2;
@@ -132,19 +92,6 @@ namespace elf
                 std::uint8_t m_abi;
             };
         };
-        // boost::uint16_t m_type;
-        // boost::uint16_t m_machine;
-        // boost::uint32_t m_version;
-        // boost::uint64_t m_entry;
-        // boost::uint64_t m_phoff;
-        // boost::uint64_t m_shoff;
-        // boost::uint32_t m_flags;
-        // boost::uint16_t m_ehsize;
-        // boost::uint16_t m_phentsize;
-        // boost::uint16_t m_phnum;
-        // boost::uint16_t m_shentsize;
-        // boost::uint16_t m_shnum;
-        // boost::uint16_t m_shtrndx;
         std::uint16_t m_type;
         std::uint16_t m_machine;
         std::uint32_t m_version;
@@ -160,7 +107,6 @@ namespace elf
         std::uint16_t m_shtrndx;
     };
 
-    //BOOST_STATIC_ASSERT(sizeof(elf_header_64) == 64);
     static_assert(64 == sizeof(elf_header_64), "Size of elf_header_64 must be 64 bytes");
     #pragma pack(pop)
 }

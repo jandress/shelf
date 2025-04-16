@@ -3,8 +3,6 @@
 
 #include <cstring>
 #include <sstream>
-
-//#include <boost/foreach.hpp>
 #include <algorithm>
 
 #ifndef WINDOWS
@@ -12,8 +10,6 @@
 #endif
 
 StringTableSegment::StringTableSegment(const char* start,
-                                    //    boost::uint32_t p_offset,
-                                    //    boost::uint32_t p_size,
                                        std::uint32_t p_offset,
                                        std::uint32_t p_size,
                                        elf::section_type p_type) :
@@ -70,7 +66,6 @@ std::string StringTableSegment::printToStdOut() const
         << ", size=" << std::dec << m_size << ", entries="
         << m_stringsSet.size() << ")\n";
 
-    // BOOST_FOREACH(const std::string& p_ascii, m_stringsSet)
     for(const std::string& p_ascii : m_stringsSet)
     {
         return_value << "\tString=\"" << p_ascii << "\"\n";

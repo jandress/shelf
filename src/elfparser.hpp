@@ -7,13 +7,9 @@
 #include <utility>
 #include <vector>
 #include <string>
-
-
-///#include <boost/cstdint.hpp>
 #include <cstdint>
 #include <memory>
 
-//#include <boost/iostreams/device/mapped_file.hpp> //replace with custom class
 #include "mappedfile.hpp"
 
 #include "abstract_elfheader.hpp"
@@ -58,7 +54,6 @@ public:
     void evaluate();
 
     //! \return the binaries score
-    //boost::uint32_t getScore() const;
     std::uint32_t getScore() const;
 
     //! prints the various elf structures to standard out
@@ -86,7 +81,6 @@ public:
     std::string getMD5() const;
 
     //! \return the vector of scoring reasons
-    //const std::vector<std::pair<boost::int32_t, std::string> >& getReasons() const;
     const std::vector<std::pair<std::int32_t, std::string> >& getReasons() const;
 
     //! \return the capabilties map
@@ -121,7 +115,6 @@ private:
 private:
 
     //! The binaries score
-    //boost::uint32_t m_score;
     std::uint32_t m_score;
 
     //! The object that parses the elf header
@@ -137,12 +130,10 @@ private:
     AbstractSegments m_segments;
 
     //! The memory mapped file
-    //boost::iostreams::mapped_file_source m_mapped_file;
     MappedFile m_mapped_file;
 
 
     //! A log (of sorts) of the scoring
-    //std::vector<std::pair<boost::int32_t, std::string> > m_reasons;
     std::vector<std::pair<std::int32_t, std::string> > m_reasons;
 
     //! Information about things the binary can do (ie, file manipulation)
@@ -158,7 +149,6 @@ private:
     SearchTree m_searchEngine;
 
     //! The ptr vector to hold the search engine values
-    //boost::ptr_vector<SearchValue> m_searchValues;
     std::vector<std::unique_ptr<SearchValue>> m_searchValues;
 };
 

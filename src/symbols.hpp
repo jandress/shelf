@@ -6,7 +6,6 @@
 #include <map>
 #include <vector>
 #include <string>
-//#include <boost/cstdint.hpp>
 #include <cstdint>
 
 #ifdef UNIT_TESTS
@@ -24,9 +23,6 @@ public:
     Symbols();
     ~Symbols();
 
-    // void createSymbols(const char* p_data, boost::uint64_t p_dataSize, boost::uint64_t p_symTabOffset,
-    //                    boost::uint32_t p_symTabSize, boost::uint64_t p_strTabOffset,
-    //                    boost::uint64_t p_strTableSize,
     void createSymbols(const char* p_data, std::uint64_t p_dataSize, std::uint64_t p_symTabOffset,
                        std::uint32_t p_symTabSize, std::uint64_t p_strTabOffset,
                        std::uint64_t p_strTableSize,
@@ -36,7 +32,6 @@ public:
     const std::vector<AbstractSymbol>& getSymbols() const;
 
     //! find a symbol based on a passed in address
-    // std::string findSymbol(boost::uint64_t p_address) const;
     std::string findSymbol(std::uint64_t p_address) const;
 
     //! return the set of files found in the symbols
@@ -47,7 +42,6 @@ public:
      * \param[in,out] p_reasons stores the scoring and reasons
      * \param[in,out] p_capabilities stores information about what the binary does
      */
-    // void evaluate(std::vector<std::pair<boost::int32_t, std::string> >& p_reasons,
     void evaluate(std::vector<std::pair<std::int32_t, std::string> >& p_reasons,
                   std::map<elf::Capabilties, std::set<std::string> >& p_capabilities) const;
 

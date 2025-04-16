@@ -3,11 +3,7 @@
 #define SYMTABLE_ENTRY_HPP
 
 #include <string>
-
-//#include <boost/cstdint.hpp>
 #include <cstdint>
-
-//#include <boost/static_assert.hpp>
 #include <cassert>
 
 namespace elf
@@ -17,12 +13,6 @@ namespace elf
         #pragma pack(push, 1)
         struct symtable_entry32
         {
-            // boost::uint32_t m_name;
-            // boost::uint32_t m_address;
-            // boost::uint32_t m_size;
-            // boost::uint8_t m_info;
-            // boost::uint8_t m_other;
-            // boost::uint16_t m_shndx;
             std::uint32_t m_name;
             std::uint32_t m_address;
             std::uint32_t m_size;
@@ -36,12 +26,6 @@ namespace elf
 
         struct symtable_entry64
         {
-            // boost::uint32_t m_name;
-            // boost::uint8_t m_info;
-            // boost::uint8_t m_other;
-            // boost::uint16_t m_shndx;
-            // boost::uint64_t m_address;
-            // boost::uint64_t m_size;
             std::uint32_t m_name;
             std::uint8_t m_info;
             std::uint8_t m_other;
@@ -50,7 +34,6 @@ namespace elf
             std::uint64_t m_size;
         };
 
-        //BOOST_STATIC_ASSERT(sizeof(symtable_entry64) == 24);
         static_assert(24 == sizeof(symtable_entry64), "Size of symtable_entry64 must be 24 bytes");
         #pragma pack(pop)
 

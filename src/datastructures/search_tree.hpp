@@ -7,8 +7,6 @@
 #include <set>
 #include <queue>
 #include <string>
-
-//#include <boost/ptr_container/ptr_vector.hpp>
 #include <vector>
 #include <memory>
 
@@ -49,7 +47,6 @@ private:
 
     bool m_ready;
 
-    // boost::ptr_vector<SearchNode> m_nodeVector;
     std::vector<std::unique_ptr<SearchNode>> m_nodeVector;
 };
 
