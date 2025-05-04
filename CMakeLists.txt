@@ -62,19 +62,15 @@ endif()
 
 #package locations
 set(CMAKE_MODULE_PATH ${${PROJECT_NAME}_SOURCE_DIR}/CMake)
-#set(Boost_USE_STATIC_LIBS ON)
-#find_package(Boost 1.46 COMPONENTS program_options iostreams system filesystem regex REQUIRED)
-#find_package(Boost 1.46 COMPONENTS system REQUIRED)
 
 # includes
-#include_directories(SYSTEM ${Boost_INCLUDE_DIR})
 include_directories(SYSTEM lib/hash-lib)
 include_directories(lib/CLI11/include)
 
 if (qt)
-    include_directories(${Qt5Core_INCLUDE_DIRS})
-    include_directories(${Qt5Widgets_INCLUDE_DIRS})
-    include_directories(${Qt5Gui_INCLUDE_DIRS})
+    include_directories(${Qt6ore_INCLUDE_DIRS})
+    include_directories(${Qt6Widgets_INCLUDE_DIRS})
+    include_directories(${Qt6Gui_INCLUDE_DIRS})
 endif()
 
 # preprocessor definitions
@@ -96,21 +92,26 @@ if (qt)
     # from the QT5 cmake guide
     set(CMAKE_INCLUDE_CURRENT_DIR ON)
     set(CMAKE_AUTOMOC ON)
+
     if (APPLE)
-        set(CMAKE_PREFIX_PATH "~/Qt/5.3/clang_64")
+        # Update for Qt6 on macOS
+        set(CMAKE_PREFIX_PATH "~/Qt/6.0.0/clang_64")
     else()
-        if(windows)
-            set(CMAKE_PREFIX_PATH "C:\\Qt\\5.3\\msvc2013_64\\")
+        if(WIN32)
+            # Update for Qt6 on Windows
+            set(CMAKE_PREFIX_PATH "C:\\Qt\\6.0.0\\msvc2019_64\\")
         else()
-            set(CMAKE_PREFIX_PATH "~/Qt/5.2.0/gcc_64")
+            # Update for Qt6 on Linux
+            set(CMAKE_PREFIX_PATH "~/Qt/6.0.0/gcc_64")
         endif()
     endif()
-    find_package(Qt5Core REQUIRED)
-    find_package(Qt5Widgets REQUIRED)
-    find_package(Qt5Gui REQUIRED)
+
+    find_package(Qt6Core REQUIRED)
+    find_package(Qt6Widgets REQUIRED)
+    find_package(Qt6Gui REQUIRED)
 
     # let QT generate files
-    qt5_wrap_ui(UI_HEADERS src/ui/mainwindow.ui src/ui/about.ui)
+    qt6_wrap_ui(UI_HEADERS src/ui/mainwindow.ui src/ui/about.ui)
     set(EXTRA_SOURCES src/ui/mainwindow.cpp)
     set(EXTRA_SOURCES ${EXTRA_SOURCES} ${UI_HEADERS})
 
@@ -121,7 +122,7 @@ if (qt)
     endif()
 
     # add a resource
-    qt5_add_resources(RESOURCE_ADDED "${CMAKE_SOURCE_DIR}/src/ui/icons.qrc")
+    qt6_add_resources(RESOURCE_ADDED "${CMAKE_SOURCE_DIR}/src/ui/icons.qrc")
 endif()
 
 # compilation units
@@ -158,7 +159,7 @@ if (qt)
                    ${RESOURCE_ADDED})
 
     # target_link_libraries(elfparser ${Boost_LIBRARIES} Qt5::Core Qt5::Widgets Qt5::Gui)
-    target_link_libraries(elfparser Qt5::Core Qt5::Widgets Qt5::Gui)
+    target_link_libraries(elfparser Qt6::Core Qt6::Widgets Qt6::Gui)
 endif()
 
 if (cli)
@@ -283,8 +284,8 @@ if (APPLE)
     if (qt)
         install(TARGETS elfparser BUNDLE DESTINATION . RUNTIME DESTINATION bin)
         set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/bundle")
-        include(DeployQt5)
-        install_qt5_executable("elfparser.app" "qcocoa")
+        include(DeployQt6)
+        install_qt6_executable("elfparser.app" "qcocoa")
         set(CPACK_PACKAGE_VERSION_MAJOR "${PROJECT_VERSION_MAJOR}")
         set(CPACK_PACKAGE_VERSION_MINOR "${PROJECT_VERSION_MAJOR}")
         set(CPACK_PACKAGE_VERSION_PATCH "${PROJECT_VERSION_PATCH}")
@@ -343,7 +344,7 @@ else()
         SET(CPACK_PACKAGE_VERSION_PATCH "${PROJECT_VERSION_PATCH}")
         SET(CPACK_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}_${CMAKE_SYSTEM_PROCESSOR}_${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
         SET(CPACK_SOURCE_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}_${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
-        SET(CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.1.3), libgcc1 (>= 1:4.1.1), libstdc++6 (>= 4.2.1), libQt5Widgets5 (>= 5.2.0)")
+        SET(CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.1.3), libgcc1 (>= 1:4.1.1), libstdc++6 (>= 4.2.1), libQt6Widgets6 (>= 6.0.0)")
         SET(CPACK_DEBIAN_PACKAGE_PRIORITY "optional")
         SET(CPACK_DEBIAN_ARCHITECTURE ${CMAKE_SYSTEM_PROCESSOR})
         INCLUDE(CPack)
